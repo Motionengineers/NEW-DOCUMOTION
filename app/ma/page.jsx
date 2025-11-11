@@ -1,6 +1,4 @@
 import Navbar from "@/components/Navbar";
-import BusinessCustomerInfographic from "@/components/BusinessCustomerInfographic";
-
 export const metadata = {
   title: "M&A Hub • Documotion",
   description:
@@ -183,17 +181,6 @@ export default function MAHubPage() {
           </div>
         </section>
 
-        <section className="space-y-6">
-          <header className="space-y-2">
-            <h2 className="text-2xl font-semibold" style={{ color: "var(--label)" }}>
-              Portfolio & Pipeline Intelligence
-            </h2>
-            <p className="text-sm" style={{ color: "var(--secondary-label)" }}>
-              Track momentum across buyers and sellers with live revenue benchmarks, funnel health, and expansion hotspots. Toggle glass vs. solid views to match your brand theme.
-            </p>
-          </header>
-          <BusinessCustomerInfographic variant="glass" />
-        </section>
       </main>
     </div>
   );
