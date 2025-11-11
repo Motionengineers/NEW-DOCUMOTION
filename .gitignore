@@ -45,6 +45,9 @@ yarn-error.log*
 /public/uploads
 /uploads
 
+# Runtime cache
+/data/runtime/
+
 # CSV data - keep sample data
 # /data/*.csv
 
