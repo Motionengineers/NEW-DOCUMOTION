@@ -23,6 +23,7 @@ import Recommendations from '@/components/Recommendations';
 import SkeletonLoader from '@/components/SkeletonLoader';
 import Button from './Button';
 import { FileText, Shield, Palette, TrendingUp, Trophy } from 'lucide-react';
+import BusinessCustomerInfographic from '@/components/BusinessCustomerInfographic';
 
 export default function DashboardUX() {
   const [loading, setLoading] = useState(true);
@@ -142,6 +143,17 @@ export default function DashboardUX() {
         {/* Summary Cards - Apply Law of Common Region: Grouped stats */}
         <div className="mb-8">
           <SummaryCards />
+        </div>
+
+        {/* Business Customer Infographic widgets */}
+        <div
+          className="mb-10 rounded-3xl border p-6 sm:p-8"
+          style={{
+            backgroundColor: 'var(--system-secondary-background)',
+            borderColor: 'var(--separator)',
+          }}
+        >
+          <BusinessCustomerInfographic />
         </div>
 
         {/* Apply Law of Common Region: Group main content */}

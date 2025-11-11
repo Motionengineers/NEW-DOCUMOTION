@@ -13,6 +13,7 @@ In a world drowning in data, Documotion brings clarity, structure, and intellige
 - **Pitch Deck Library**: Curated collection of pitch decks
 - **Auto-Apply**: Automated application submission system
 - **Glassmorphic UI**: Modern dark/light theme with glass effects
+- **Business Customer Infographic**: Glass & solid widgets for revenue, funnel, and cohort insights
 
 ## Tech Stack
 
