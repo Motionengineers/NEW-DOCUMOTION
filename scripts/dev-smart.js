@@ -6,7 +6,7 @@ const waitOn = require('wait-on');
 const open = require('open');
 const os = require('os');
 
-const HOST = process.env.HOST || '127.0.0.1';
+const HOST = process.env.HOST || 'localhost';
 const CANDIDATE_PORTS = (process.env.PORTS || '3000,3001,3002,3003,3004,3005')
   .split(',')
   .map(p => parseInt(p.trim(), 10))
