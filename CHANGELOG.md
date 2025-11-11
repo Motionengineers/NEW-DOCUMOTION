@@ -10,3 +10,4 @@
 - Documented setup/test/deployment workflow and supplied `.env.example` for new environments.
 - Added `.gitignore` entry for runtime cache and removed generated notification cache from version control.
 - Created release smoke test procedure and deployment guidance in README.
+- Normalized talent dataset mapping so talent cards show names, roles, locations, and skills sourced from `google_sheets_talent.csv`.
