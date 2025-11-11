@@ -1,0 +1,7 @@
+title,companyName,stage,category,industry,source,fileUrl,thumbnail,year,description,tags
+TechVentures Pitch Deck,TechVentures Pvt Ltd,Series A,SaaS,B2B Technology,Internal,https://example.com/decks/techventures.pdf,https://example.com/thumbs/techventures.jpg,2024,SaaS platform for business automation,SaaS,B2B,Automation,2024
+AgriTech Solutions Seed Round,AgriTech Solutions,Seed,AgriTech,Agriculture,Internal,https://example.com/decks/agritech.pdf,https://example.com/thumbs/agritech.jpg,2023,AI-powered farm management platform,AgriTech,AI,Farming,2023
+FinTech Innovations Series B,FinTech Innovations,Series B,FinTech,Financial Services,Public,https://example.com/decks/fintech.pdf,https://example.com/thumbs/fintech.jpg,2024,Digital payment solutions for SMEs,FinTech,Payments,SME,2024
+EduLearn Pre-Seed,EduLearn Pvt Ltd,Pre-Seed,EdTech,Education,Internal,https://example.com/decks/edulearn.pdf,https://example.com/thumbs/edulearn.jpg,2023,Personalized learning platform,EdTech,K-12,Learning,2023
+HealthCare Plus Seed,HealthCare Plus,Seed,HealthTech,Healthcare,Public,https://example.com/decks/healthcare.pdf,https://example.com/thumbs/healthcare.jpg,2024,Telemedicine platform,HealthTech,Telemedicine,Digital Health,2024
+

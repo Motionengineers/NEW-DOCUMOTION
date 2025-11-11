@@ -1,0 +1,81 @@
+[
+  {
+    "scheme": "Startup India Seed Fund",
+    "match": {
+      "stage": ["Idea", "MVP", "Prototype"],
+      "has_prototype": true
+    },
+    "message": "You may qualify for the Startup India Seed Fund. Your profile matches early-stage founder requirements."
+  },
+  {
+    "scheme": "PMEGP",
+    "match": {
+      "sector": ["manufacturing", "services"],
+      "age_limit": "<35"
+    },
+    "message": "Your startup fits PMEGP's criteria for manufacturing/service founders with subsidy benefits."
+  },
+  {
+    "scheme": "CGTMSE",
+    "match": {
+      "needs_loan": true,
+      "collateral": "none"
+    },
+    "message": "You qualify for CGTMSE: collateral-free loans up to ₹2 Cr."
+  },
+  {
+    "scheme": "Stand-Up India",
+    "match": {
+      "founder_type": ["SC", "ST", "Woman"]
+    },
+    "message": "Your founder profile qualifies for Stand-Up India loans between ₹10 lakh–₹1 Cr."
+  },
+  {
+    "scheme": "Mudra Loan – Tarun",
+    "match": {
+      "needs_loan": true,
+      "stage": ["Early", "Growth"],
+      "loan_amount": "<=1000000"
+    },
+    "message": "You are eligible for Mudra Tarun loans (₹5–₹10 lakh)."
+  },
+  {
+    "scheme": "BIRAC BIG",
+    "match": {
+      "sector": ["biotech", "pharma", "healthtech"]
+    },
+    "message": "Your startup fits the Biotechnology Ignition Grant (BIG) eligibility—₹50 lakh grant."
+  },
+  {
+    "scheme": "TIDE 2.0",
+    "match": {
+      "sector": ["deeptech", "AI", "ML", "IoT"],
+      "stage": ["Idea", "Prototype"]
+    },
+    "message": "Your deep-tech idea may qualify for TIDE 2.0 grants up to ₹40 lakh."
+  },
+  {
+    "scheme": "NIDHI PRAYAS",
+    "match": {
+      "has_prototype": false,
+      "stage": ["Idea"]
+    },
+    "message": "You may qualify for NIDHI PRAYAS—prototype funding up to ₹10 lakh."
+  },
+  {
+    "scheme": "Karnataka Elevate",
+    "match": {
+      "state": "Karnataka",
+      "stage": ["Early", "MVP"]
+    },
+    "message": "Your Karnataka startup is eligible for Elevate grants up to ₹50 lakh."
+  },
+  {
+    "scheme": "Tamil Nadu Capital Subsidy",
+    "match": {
+      "state": "Tamil Nadu",
+      "sector": ["manufacturing"]
+    },
+    "message": "You qualify for TN Capital Subsidy—up to ₹150 lakh support."
+  }
+]

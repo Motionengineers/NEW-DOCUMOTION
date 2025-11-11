@@ -1,0 +1,7 @@
+schemeName,ministry,department,benefitType,amountRange,eligibility,sectors,region,applicationLink,status,description
+Startup India Seed Fund Scheme,MSME,DPIIT,Grant,20 Lakhs - 50 Lakhs,Registered DPIIT startups less than 10 years,All sectors,National,https://seedfund.startupindia.gov.in/,Active,Equity-free funding for early-stage startups
+Pradhan Mantri Mudra Yojana,Finance,MUDRA,Loan,50K - 10 Lakhs,Indian citizen with viable business plan,All sectors,National,https://mudra.org.in/,Active,Micro loans for small businesses
+Stand-Up India,Cabinet,Ministry of Finance,Loan,10 Lakhs - 1 Crore,SC/ST/Woman entrepreneur,Manufacturing services trading,Limited states,https://standupmitra.in/,Active,Promotes entrepreneurship among marginalized groups
+Credit Guarantee Fund Trust,Cabinet,SIDBI,Lending Support,Up to 2 Crores,Small enterprises seeking loans,All sectors,National,https://www.cgtmse.in/,Active,Credit guarantee for collateral-free loans
+Software Technology Parks,Electronics,MeitY,Infrastructure + Tax Benefits,Infrastructure,N/A,IT services software,Multiple states,https://www.stpi.in/,Active,Tax holidays and infrastructure support for IT parks
+

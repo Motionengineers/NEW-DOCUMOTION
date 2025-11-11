@@ -1,0 +1,50 @@
+scheme_name,ministry_or_department,category,eligibility,benefits,max_assistance,application_process,official_link,status
+PMEGP,Ministry of MSME,Credit Support,"New manufacturing/service startups",Subsidy 15–35% on project cost,"₹25 lakh (manuf) / ₹10 lakh (service)",Apply via KVIC portal,www.kvic.gov.in,Active
+CGTMSE,Ministry of MSME,Loan Guarantee,Micro & Small Enterprises,75–85% credit guarantee,Up to ₹2 Cr,Apply through bank,sidbi.in/en/schemes/cgtmse,Active
+ASPIRE,Ministry of MSME,Incubation/Innovation,"Startups in agro/tech areas",Incubator funding + technology support,₹62.5 lakh,Apply via MSME portal,msme.gov.in,Active
+ZED Certification,Ministry of MSME,Quality/Manufacturing,Manufacturing MSMEs,Subsidy 50–80% for quality certification,N/A,Apply online,zup.msme.gov.in,Active
+National SC-ST Hub,Ministry of MSME,Social Inclusion,SC/ST Entrepreneurs,Marketing + credit + subsidy support,N/A,Apply via SC-ST hub portal,scsthub.in,Active
+Procurement & Marketing Support,Ministry of MSME,Marketing,MSMEs,Trade fair reimbursement + branding,N/A,Via MSME portal,msme.gov.in,Active
+Design Clinic Scheme,MSME,Design/Technology,Manufacturing MSMEs,"₹60,000–₹7.5 lakh per project",₹7.5 lakh,Apply via MSME portal,msme.gov.in,Active
+Lean Manufacturing Scheme,MSME,Tech Efficiency,Manufacturing MSMEs,Lean training & audits,N/A,Apply online,msme.gov.in,Active
+TEQUP Scheme,MSME,Tech Upgrade,MSMEs,15% subsidy for tech machines,₹15 lakh,Online submission,msme.gov.in,Active
+UDYAM Registration,Ministry of MSME,Registration,All enterprises,N/A,N/A,Self-register portal,udyamregistration.gov.in,Active
+Karnataka Startup Policy 2022,Karnataka IT/BT Dept,State Funding,Karnataka startups,Seed funding + innovation grants,₹50 lakh,Apply via Startup Karnataka,startup.karnataka.gov.in,Active
+Elevate 2019/2023,Karnataka,Grants,Early-stage startups,Grant funding,₹50 lakh,Online portal,startup.karnataka.gov.in,Active
+Payroll Subsidy Scheme,Tamil Nadu Industries,State Support,Manufacturing units,Reimbursement of EPF/ESI,N/A,DIC office,tn.gov.in,Active
+Capital Subsidy (TN),Tamil Nadu Industries,Infra Subsidy,MSMEs,30% capital subsidy,₹150 lakh,DIC,msmeonline.tn.gov.in,Active
+Energy Audit Subsidy,TN MSME Dept,Energy Efficiency,MSMEs,50% reimbursement,N/A,Apply via TN portal,msmeonline.tn.gov.in,Active
+Quality Certification Reimbursement,TN MSME Dept,Quality Support,MSMEs,ISO/ISI reimbursement,N/A,TN MSME portal,msmeonline.tn.gov.in,Active
+SIDBI SMILE,SIDBI,Soft Loan,MSMEs,Soft loans for expansion,₹25 lakh,SIDBI branches,sidbi.in,Active
+SIDBI Fund of Funds (FFS),SIDBI + DPIIT,Equity Fund,Startups via AIFs,Equity support to startups,N/A,Through AIFs,dpiit.gov.in,Active
+SIDBI PRAYAAS,SIDBI,Micro-loans,Nano entrepreneurs,Loans up to ₹5 lakh,₹5 lakh,SIDBI,Active
+NABARD Dairy Venture Scheme,NABARD,Agriculture,Dairy entrepreneurs,Interest subsidy,₹50 lakh,Via banks,nabard.org,Active
+NABARD Poultry Venture Scheme,NABARD,Agriculture,Poultry units,Capital subsidy,₹50 lakh,Bank supported,nabard.org,Active
+Agri Clinic & Agri Business Centre,MoA,Agri Entrepreneurship,Agripreneurs,Subs + training + loan,N/A,ACABC portal,acabcmis.gov.in,Active
+Gramin Bhandaran Yojana,MoA,Warehouse/Infra,Rural startups,Subsidy 15–33%,₹3 Crore,Apply via NABARD,nabard.org,Active
+Mudra Loan (Shishu),MoF,Credit,"Startups <1 yr",Loan for small businesses,₹50,000,Bank,mudra.org.in,Active
+Mudra Loan (Kishore),MoF,Credit,Startups,"₹50,000–₹5 lakh",₹5 lakh,Bank,mudra.org.in,Active
+Mudra Loan (Tarun),MoF,Credit,Growth-stage startups,"₹5–₹10 lakh",₹10 lakh,Bank,mudra.org.in,Active
+Stand-Up India,MoF,Women/SC/ST,Women/SC/ST founders,"₹10 lakh–₹1 Cr",₹1 Cr,Bank,standupmitra.in,Active
+Startup India Seed Fund,Startup India/ DPIIT,Seed Funding,Startups with prototype,Seed funding,₹50 lakh,Through incubators,startupindia.gov.in,Active
+Startup India Learning,Startup India,Skill Development,Founders,N/A,Online modules,startupindia.gov.in,Active
+Startup India MAARG,Startup India,Mentorship,Founders,Free mentorship,N/A,Portal,startupindia.gov.in,Active
+Biotechnology Ignition Grant (BIG),BIRAC,BioTech,Bio-startups,Grant funding,₹50 lakh,BIRAC portal,birac.nic.in,Active
+TIDE 2.0,MeitY,Tech Innovation,Deep-tech startups,Grant + incubation,₹40 lakh,Through incubators,meity.gov.in,Active
+NIDHI-PRAYAS,DBT/NSF,Prototype Funding,Early-stage founders,Grant for prototype,₹10 lakh,Incubators,nstedb.com,Active
+NIDHI-EIR,DBT/NSF,Founder Stipend,Early founders,Stipend for 1 yr,N/A,Incubators,nstedb.com,Active
+MSME Champions Scheme,MSME,Support,MSMEs,Tech/Quality support,N/A,Online,msme.gov.in,Active
+Credit Linked Capital Subsidy,MSME,Tech Upgrade,MSMEs,15% subsidy,₹15 lakh,Online,msme.gov.in,Active
+Market Access Initiative,Commerce Ministry,Marketing,Export-ready startups,Subsidy for shows,N/A,commerce.gov.in,Active
+Export Promotion Capital Goods,Commerce,Manufacturing exporters,Zero-duty machinery imports,N/A,Apply DGFT,dgft.gov.in,Active
+Atal Incubation Centre,NITI Aayog,Incubation,Early startups,Grant + space,N/A,AIM portal,aim.gov.in,Active
+Atal New India Challenge,NITI/MeitY,Innovation,Tech founders,Grant support,N/A,AIM portal,aim.gov.in,Active
+MSME Samadhan,MSME,Payment Recovery,MSMEs,Delayed payment resolution,N/A,Online,samadhan.msme.gov.in,Active
+MSME Sambandh,MSME,Procurement,MSMEs,PSU procurement monitoring,N/A,Portal,sambandh.msme.gov.in,Active
+Digital MSME Scheme,MSME,Technology,SaaS adoption support,Subsidy for ERP/tech,N/A,Portal,msme.gov.in,Active
+eBiz Portal,MeitY,Single Window,All entrepreneurs,Unified business services,N/A,Portal,ebiz.gov.in,Active
+Single Window Tamil Nadu,TN Govt,State Support,New companies,Registrations + approvals,N/A,Portal,tnswp.com,Active
+Karnataka Udyami Mitra,Karnataka,State Aid,MSMEs,Single-window,N/A,Portal,kum.karnataka.gov.in,Active
+Maharashtra Package Scheme,Maharashtra,State Incentive,Manufacturing units,"Tax + capital subsidies",N/A,DIC Office,maharashtra.gov.in,Active
+Gujarat StartUp Scheme,Gujarat Govt,State Funding,Tech startups,Seed support,₹30 lakh,startup.gujarat.gov.in,Active
+

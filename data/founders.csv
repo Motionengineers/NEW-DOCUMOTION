@@ -1,0 +1,7 @@
+firstName,lastName,company,role,skills,experience,location,linkedin,portfolio,availability,email,education,specializations
+Raj,Sharma,TechVentures Pvt Ltd,Founder CEO,"Product Design,Business Strategy,Growth","5 years in B2B SaaS,Former Product Manager",Bangalore,https://linkedin.com/in/rajsharma,https://rajsharma.portfolio.io,Available,raj@techventures.in,IIT Bangalore B.Tech,"SaaS,B2B,Product Management"
+Priya,Patel,AgriTech Solutions,Co-Founder CTO,"Full Stack Development,AI ML,Building Teams","7 years engineering,Ex Amazon",Mumbai,https://linkedin.com/in/priyapatel,https://priya.dev,Available,priya@agritech.co,IIM Ahmedabad MBA,"AI,AgriTech,Backend Systems"
+Amit,Kumar,FinTech Innovations,CEO,"Finance,Tech Startup,Growth Hacking","10 years fintech experience,Former banker",Delhi,https://linkedin.com/in/amitkumar,https://amitkumar.com,Full-time,amit@fintechinnov.in,CA MBA Finance,"FinTech,Digital Banking,Payments"
+Neha,Singh,EduLearn Pvt Ltd,Founder,"EdTech,Content Strategy,Operations","6 years in education sector,Teacher turned entrepreneur",Hyderabad,https://linkedin.com/in/nehasingh,,Part-time,neha@edulearn.in,Education Masters,"EdTech,K-12,Higher Education"
+Vikram,Reddy,HealthCare Plus,Co-Founder,"Healthcare Tech,Regulatory Compliance,Business Dev","8 years healthcare tech,Ex healthcare startup",Chennai,https://linkedin.com/in/vikramreddy,https://vikram.health,Available,vikram@healthcareplus.co,Medical B.Tech,"HealthTech,Compliance,Telemedicine"
+

@@ -1,0 +1,82 @@
+{
+  "summary": {
+    "overallStatus": "green",
+    "notes": "Static analysis fixed, tests passing, DB validated, build succeeds. Some integrations missing keys."
+  },
+  "fixed": [
+    {
+      "area": "lint",
+      "changes": [
+        "Resolved duplicate imports/handlers in app/api/agencies/[id]/route.js and app/api/challenges/route.js",
+        "Added .prettierignore to ignore macOS resource forks",
+        "Moved shebang to top of auto-fix-agent.js"
+      ]
+    },
+    {
+      "area": "routing",
+      "changes": [
+        "Removed conflicting dynamic routes app/challenges/[id] and app/api/challenges/[id] (use [slug])"
+      ]
+    },
+    {
+      "area": "build-config",
+      "changes": [
+        "Moved transpilePackages out of experimental in next.config.js"
+      ]
+    },
+    {
+      "area": "ci",
+      "changes": [
+        "Added GitHub Actions workflow .github/workflows/ci.yml (lint, typecheck, test, build)"
+      ]
+    }
+  ],
+  "pending": [
+    {
+      "area": "integrations",
+      "blockedBy": "Missing test/prod credentials",
+      "items": ["OPENAI_API_KEY", "RAZORPAY_KEY_ID/SECRET", "GOOGLE_PLACES_API_KEY", "NEWS_API_KEY", "GOV_DATA_API_KEY"]
+    },
+    {
+      "area": "docs",
+      "blockedBy": "Repository write constraints for dotfiles",
+      "items": [".env.example creation"]
+    }
+  ],
+  "tests": {
+    "unit": { "suites": 1, "passed": 1, "failed": 0 },
+    "integration": { "suites": 0, "passed": 0, "failed": 0 },
+    "e2e": { "suites": 0, "passed": 0, "failed": 0 },
+    "coverage": {
+      "statements": null,
+      "branches": null,
+      "functions": null,
+      "lines": null
+    }
+  },
+  "db": {
+    "migrations": "up-to-date",
+    "integrity": "ok",
+    "engine": "sqlite",
+    "checks": ["foreignKeys", "uniqueConstraints", "rowCounts"]
+  },
+  "security": {
+    "sca": { "npmAudit": { "high": 0, "critical": 0 } },
+    "secretScan": { "status": "basic-scan", "findings": 0 }
+  },
+  "containers": { "present": false },
+  "i18n": { "routesVerified": true },
+  "artifacts": {
+    "build": true,
+    "ciWorkflow": ".github/workflows/ci.yml"
+  },
+  "commits": [],
+  "rollback": {
+    "script": "rollback.sh",
+    "notes": "No production changes performed; rollback not required."
+  },
+  "risks": [
+    "Integrations unvalidated without keys",
+    "Warnings remain for lint rules (non-blocking)"
+  ]
+}

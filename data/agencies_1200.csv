@@ -1,0 +1,5 @@
+id,name,city,state,services,website,email,rating,verified,price_range,contact_number,address,portfolio_images
+1,Stellar Branding,Delhi,Delhi,"branding;digital marketing;creative",https://stellarbranding.example,hello@stellarbranding.example,4.6,yes,mid,011-111111,Connaught Place,"/images/p1.jpg|/images/p2.jpg"
+2,Motion Works,Mumbai,Maharashtra,"motion graphics;production;post-production",https://motionworks.example,contact@motionworks.example,4.4,yes,high,022-222222,Bandra West,"/images/m1.jpg|/images/m2.jpg"
+3,Pixel & Co,Bengaluru,Karnataka,"uiux;branding;web",https://pixelco.example,team@pixelco.example,4.5,no,mid,080-333333,Indiranagar,"/images/x1.jpg|/images/x2.jpg"
+

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "seed-1",
+    "title": "SBI launches new startup loan",
+    "body": "Stay tuned for more updates.",
+    "link": "https://sbi.co.in/news",
+    "level": "info",
+    "createdAt": "2025-11-02T10:00:00Z",
+    "read": false
+  },
+  {
+    "id": "seed-2",
+    "title": "Startup India opens new seed fund window",
+    "body": "Stay tuned for more updates.",
+    "link": "https://startupindia.gov.in",
+    "level": "info",
+    "createdAt": "2025-11-02T09:35:00Z",
+    "read": false
+  },
+  {
+    "id": "seed-3",
+    "title": "HDFC Bank announces digital lending for startups",
+    "body": "Stay tuned for more updates.",
+    "link": "https://hdfcbank.com/startup-loans",
+    "level": "info",
+    "createdAt": "2025-11-02T08:15:00Z",
+    "read": false
+  },
+  {
+    "id": "seed-4",
+    "title": "MSME Ministry extends subsidy deadline",
+    "body": "Stay tuned for more updates.",
+    "link": "https://msme.gov.in",
+    "level": "info",
+    "createdAt": "2025-11-02T07:00:00Z",
+    "read": false
+  }
+]

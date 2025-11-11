@@ -1,0 +1,335 @@
+openapi: 3.0.3
+info:
+  title: Documotion API
+  version: '1.0.0'
+  description: 'Core API surface for Documotion (summary spec). Generate clients / stubs / docs from this file.'
+
+servers:
+  - url: https://api.yourdomain.com
+  - url: http://localhost:3000
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: next-auth.session-token
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+        error:
+          type: string
+
+    DashboardSummary:
+      type: object
+      properties:
+        schemes:
+          type: integer
+        banks:
+          type: integer
+        talent:
+          type: integer
+        pitchdecks:
+          type: integer
+
+    Agency:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        slug: { type: string }
+        location: { type: string }
+        services:
+          type: array
+          items: { type: string }
+        rating: { type: number }
+        minBudget: { type: integer }
+        portfolio:
+          type: array
+          items:
+            type: object
+            properties:
+              title: { type: string }
+              coverUrl: { type: string }
+
+    AgencyRequestIn:
+      type: object
+      required: [agencyId, serviceType]
+      properties:
+        agencyId: { type: integer }
+        serviceType: { type: string }
+        budget: { type: integer }
+        timeline: { type: string }
+        message: { type: string }
+        files: { type: array, items: { type: string }, description: 'URLs or upload tokens' }
+
+    PitchDeck:
+      type: object
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        startupName: { type: string }
+        stage: { type: string, enum: [pre_seed, seed, series_a, yc] }
+        pdfUrl: { type: string }
+
+paths:
+  /api/dashboard:
+    get:
+      summary: 'Dashboard summary'
+      responses:
+        '200':
+          description: counts summary
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data: { $ref: '#/components/schemas/DashboardSummary' }
+        '401':
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /api/govt-schemes:
+    get:
+      summary: 'List govt schemes (supports source param)'
+      parameters:
+        - in: query
+          name: source
+          schema: { type: string }
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  schemes:
+                    type: array
+                    items:
+                      type: object
+
+  /api/bank-schemes:
+    get:
+      summary: 'Bank & loan schemes'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  schemes: { type: array, items: { type: object } }
+
+  /api/agency:
+    get:
+      summary: 'List agencies (filters: location, service, minBudget, rating, q)'
+      parameters:
+        - in: query
+          name: location
+          schema: { type: string }
+        - in: query
+          name: service
+          schema: { type: string }
+        - in: query
+          name: minBudget
+          schema: { type: integer }
+        - in: query
+          name: q
+          schema: { type: string }
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  agencies:
+                    type: array
+                    items: { $ref: '#/components/schemas/Agency' }
+
+    post:
+      summary: 'Create an agency (admin)'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Agency'
+      security:
+        - bearerAuth: []
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  agency: { $ref: '#/components/schemas/Agency' }
+
+  /api/agency/{id}:
+    get:
+      summary: 'Agency detail by id or slug'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  agency: { $ref: '#/components/schemas/Agency' }
+
+  /api/agency/request:
+    post:
+      summary: 'Create an agency request (startup -> agency)'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgencyRequestIn'
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  requestId: { type: integer }
+
+  /api/pitch-decks:
+    get:
+      summary: 'List pitch decks (filters: stage, q)'
+      parameters:
+        - in: query
+          name: stage
+          schema: { type: string }
+        - in: query
+          name: q
+          schema: { type: string }
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  decks:
+                    type: array
+                    items: { $ref: '#/components/schemas/PitchDeck' }
+
+  /api/pitch-decks/{id}:
+    get:
+      summary: 'Get a pitch deck'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  deck: { $ref: '#/components/schemas/PitchDeck' }
+
+  /api/documents/upload:
+    post:
+      summary: 'Upload a document (multipart)'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  url: { type: string }
+
+  /api/payment/razorpay/create-order:
+    post:
+      summary: 'Create Razorpay order'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount: { type: integer }
+                currency: { type: string, default: 'INR' }
+                receipt: { type: string }
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  order: { type: object }
+
+  /api/challenges/{slug}/submit:
+    post:
+      summary: 'Submit to challenge'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                companyName: { type: string }
+                founders: { type: string }
+                deck: { type: string, format: binary }
+                proposal: { type: string, format: binary }
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  submissionId: { type: integer }
+
+security:
+  - cookieAuth: []

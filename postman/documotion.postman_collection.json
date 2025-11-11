@@ -1,0 +1,53 @@
+{
+  "info": {
+    "name": "Documotion API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Govt Schemes (external)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/govt-schemes?source=external&resource_id={{GOV_DATA_RESOURCE_ID}}&q=msme&limit=3",
+          "host": ["http://localhost:3000"],
+          "path": ["api", "govt-schemes"],
+          "query": [
+            { "key": "source", "value": "external" },
+            { "key": "resource_id", "value": "{{GOV_DATA_RESOURCE_ID}}" },
+            { "key": "q", "value": "msme" },
+            { "key": "limit", "value": "3" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Agencies (Google Places)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/agencies?source=places&q=branding%20agency%20in%20Chennai&limit=5",
+          "host": ["http://localhost:3000"],
+          "path": ["api", "agencies"],
+          "query": [
+            { "key": "source", "value": "places" },
+            { "key": "q", "value": "branding agency in Chennai" },
+            { "key": "limit", "value": "5" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Live Updates (NewsAPI)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/live-updates?pageSize=5",
+          "host": ["http://localhost:3000"],
+          "path": ["api", "live-updates"],
+          "query": [{ "key": "pageSize", "value": "5" }]
+        }
+      }
+    }
+  ]
+}

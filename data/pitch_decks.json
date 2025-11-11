@@ -1,0 +1,67 @@
+[
+  {
+    "title": "TechVentures Pitch Deck,TechVentures Pvt Ltd,Series A,SaaS",
+    "companyName": "B2B Technology",
+    "stage": "Internal",
+    "category": "https://example.com/decks/techventures.pdf",
+    "industry": "https://example.com/thumbs/techventures.jpg",
+    "source": "2024",
+    "fileUrl": "SaaS platform for business automation",
+    "thumbnail": "SaaS",
+    "year": "B2B",
+    "description": "Automation",
+    "tags": "2024"
+  },
+  {
+    "title": "AgriTech Solutions Seed Round,AgriTech Solutions,Seed,AgriTech",
+    "companyName": "Agriculture",
+    "stage": "Internal",
+    "category": "https://example.com/decks/agritech.pdf",
+    "industry": "https://example.com/thumbs/agritech.jpg",
+    "source": "2023",
+    "fileUrl": "AI-powered farm management platform",
+    "thumbnail": "AgriTech",
+    "year": "AI",
+    "description": "Farming",
+    "tags": "2023"
+  },
+  {
+    "title": "FinTech Innovations Series B,FinTech Innovations,Series B,FinTech",
+    "companyName": "Financial Services",
+    "stage": "Public",
+    "category": "https://example.com/decks/fintech.pdf",
+    "industry": "https://example.com/thumbs/fintech.jpg",
+    "source": "2024",
+    "fileUrl": "Digital payment solutions for SMEs",
+    "thumbnail": "FinTech",
+    "year": "Payments",
+    "description": "SME",
+    "tags": "2024"
+  },
+  {
+    "title": "EduLearn Pre-Seed,EduLearn Pvt Ltd,Pre-Seed,EdTech",
+    "companyName": "Education",
+    "stage": "Internal",
+    "category": "https://example.com/decks/edulearn.pdf",
+    "industry": "https://example.com/thumbs/edulearn.jpg",
+    "source": "2023",
+    "fileUrl": "Personalized learning platform",
+    "thumbnail": "EdTech",
+    "year": "K-12",
+    "description": "Learning",
+    "tags": "2023"
+  },
+  {
+    "title": "HealthCare Plus Seed,HealthCare Plus,Seed,HealthTech",
+    "companyName": "Healthcare",
+    "stage": "Public",
+    "category": "https://example.com/decks/healthcare.pdf",
+    "industry": "https://example.com/thumbs/healthcare.jpg",
+    "source": "2024",
+    "fileUrl": "Telemedicine platform",
+    "thumbnail": "HealthTech",
+    "year": "Telemedicine",
+    "description": "Digital Health",
+    "tags": "2024"
+  }
+]

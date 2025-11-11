@@ -1,0 +1,212 @@
+[
+  {
+    "name": "improveFX",
+    "location": "New Delhi, India",
+    "city": "New Delhi",
+    "state": "Delhi",
+    "website": "https://improvefx.com",
+    "rating": 5.0,
+    "services": "SEO, Digital Marketing, Performance Marketing",
+    "description": "Premier SEO marketing agency dedicated to revenue growth and online presence.",
+    "source": "superbcompanies"
+  },
+  {
+    "name": "Turain Software",
+    "location": "Vadodara, India",
+    "city": "Vadodara",
+    "state": "Gujarat",
+    "website": "https://turainsoft.com",
+    "rating": 4.8,
+    "services": "Advertising, Branding, Web Development",
+    "description": "Full-service digital and advertising solutions for SMBs and enterprises.",
+    "source": "superbcompanies"
+  },
+  {
+    "name": "Brrandom",
+    "location": "Mumbai, India",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "website": "https://brrandom.com",
+    "rating": 4.7,
+    "services": "Branding, Advertising, Creative",
+    "description": "Creative brand and advertising studio delivering integrated campaigns.",
+    "source": "superbcompanies"
+  },
+  {
+    "name": "Evendigit",
+    "location": "Indore, India",
+    "city": "Indore",
+    "state": "Madhya Pradesh",
+    "website": "https://evendigit.com",
+    "rating": 4.6,
+    "services": "SEO, PPC, Social Media Marketing",
+    "description": "Performance-driven digital marketing and advertising services.",
+    "source": "superbcompanies"
+  },
+  {
+    "name": "CyberWorx",
+    "location": "New Delhi, India",
+    "city": "New Delhi",
+    "state": "Delhi",
+    "website": "https://cyberworx.in",
+    "rating": 4.6,
+    "services": "Advertising, Web Design, Digital Marketing",
+    "description": "Creative advertising and web agency building growth-focused brands.",
+    "source": "superbcompanies"
+  },
+  {
+    "name": "Invoidea",
+    "location": "New Delhi, India",
+    "city": "New Delhi",
+    "state": "Delhi",
+    "website": "https://invoidea.com",
+    "rating": 4.5,
+    "services": "Advertising, Branding, Web Development",
+    "description": "End-to-end digital solutions with advertising and brand strategy.",
+    "source": "superbcompanies"
+  },
+  {
+    "name": "B M Digital",
+    "location": "Bengaluru, India",
+    "city": "Bengaluru",
+    "state": "Karnataka",
+    "website": "https://bmdigital.co.in",
+    "rating": 4.5,
+    "services": "Advertising, Performance Marketing, Social Media",
+    "description": "Advertising and performance marketing for consumer brands.",
+    "source": "superbcompanies"
+  },
+  {
+    "name": "Ogilvy India",
+    "location": "Mumbai, India",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "website": "https://ogilvy.com",
+    "rating": 4.9,
+    "services": "Branding, Advertising, Creative, Strategy",
+    "description": "Top global creative and advertising network in India.",
+    "source": "semrush"
+  },
+  {
+    "name": "DDB Mudra Group",
+    "location": "Mumbai, India",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "website": "https://ddbmudragroup.com",
+    "rating": 4.8,
+    "services": "Branding, Advertising, Creative",
+    "description": "Full-service advertising agency delivering integrated brand solutions.",
+    "source": "semrush"
+  },
+  {
+    "name": "McCann Worldgroup India",
+    "location": "Delhi, India",
+    "city": "Delhi",
+    "state": "Delhi",
+    "website": "https://mccann.co.in",
+    "rating": 4.8,
+    "services": "Branding, Advertising, Creative",
+    "description": "Creative powerhouse with award-winning advertising work.",
+    "source": "semrush"
+  },
+  {
+    "name": "Leo Burnett India",
+    "location": "Mumbai, India",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "website": "https://leoburnett.co.in",
+    "rating": 4.7,
+    "services": "Branding, Advertising, Creative",
+    "description": "Global advertising network crafting iconic brand platforms.",
+    "source": "semrush"
+  },
+  {
+    "name": "MullenLowe Lintas Group",
+    "location": "Gurugram, India",
+    "city": "Gurugram",
+    "state": "Haryana",
+    "website": "https://lintas.in",
+    "rating": 4.7,
+    "services": "Branding, Advertising, Strategy",
+    "description": "Creative + strategy agency with impact-driven campaigns.",
+    "source": "semrush"
+  },
+  {
+    "name": "WATConsult",
+    "location": "Mumbai, India",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "website": "https://watconsult.com",
+    "rating": 4.7,
+    "services": "Digital, Advertising, Social",
+    "description": "Digital-first agency integrating creative and performance.",
+    "source": "semrush"
+  },
+  {
+    "name": "Kinnect",
+    "location": "Mumbai, India",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "website": "https://kinnectonline.com",
+    "rating": 4.6,
+    "services": "Branding, Digital, Social",
+    "description": "Independent digital agency driving results and brand love.",
+    "source": "semrush"
+  },
+  {
+    "name": "Schbang",
+    "location": "Mumbai, India",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "website": "https://schbang.com",
+    "rating": 4.6,
+    "services": "Branding, Video, Advertising",
+    "description": "End-to-end marketing company for modern brands.",
+    "source": "semrush"
+  },
+  {
+    "name": "FoxyMoron",
+    "location": "Mumbai, India",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "website": "https://foxy.co.in",
+    "rating": 4.6,
+    "services": "Digital Creative, Advertising",
+    "description": "Digital creative agency known for culture-first work.",
+    "source": "semrush"
+  },
+  {
+    "name": "The Womb",
+    "location": "Mumbai, India",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "website": "https://thewomb.in",
+    "rating": 4.8,
+    "services": "Strategy, Branding, Advertising",
+    "description": "Independent strategy and creative consultancy.",
+    "source": "semrush"
+  },
+  {
+    "name": "Talented",
+    "location": "Remote, India",
+    "city": "Remote",
+    "state": "",
+    "website": "https://talented.team",
+    "rating": 4.9,
+    "services": "Branding, Creative, Advertising",
+    "description": "Agency by ex-Ogilvy leaders crafting standout campaigns.",
+    "source": "semrush"
+  },
+  {
+    "name": "Interactive Avenues",
+    "location": "Mumbai, India",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "website": "https://www.interactiveavenues.com",
+    "rating": 4.7,
+    "services": "Digital, Media, Performance",
+    "description": "Full-service digital agency across media and performance.",
+    "source": "semrush"
+  }
+]
+

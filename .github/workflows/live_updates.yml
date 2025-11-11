@@ -1,0 +1,30 @@
+name: Fetch Live Startup Updates
+
+on:
+  schedule:
+    - cron: '*/2 * * * *' # every 2 minutes
+  workflow_dispatch:
+
+jobs:
+  update-feed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Fetch Updates
+        run: |
+          node scripts/fetchUpdates.js
+
+      - name: Commit & Push
+        run: |
+          git config --local user.email "bot@github.com"
+          git config --local user.name "GitHub Bot"
+          git add data/live_updates.json
+          git commit -m "Auto-update live feed" || exit 0
+          git push

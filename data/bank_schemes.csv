@@ -1,0 +1,7 @@
+bankName,schemeName,description,interestRate,maxLoanAmt,minLoanAmt,eligibility,link,state,tenure,collateral
+State Bank of India,CGTMSE Scheme,Credit Guarantee backed loans for startups,8.5,2.00,0.10,Startups with valid DPIIT registration,https://sbi.co.in/,National,7 years,CGTMSE cover
+HDFC Bank,Startup Loan,Loans for registered startups,10.5,50.00,1.00,DPIIT registered < 3 years old,https://hdfcbank.com/,National,5 years,Personal guarantee
+ICICI Bank,Venture Capital Financing,Equity + debt for high-growth startups,9.75,100.00,5.00,Seed to Series A stages,https://icicibank.com/,National,Variable,Equity stake
+Axis Bank,MSME Business Loans,Collateral-free loans for small businesses,11.0,1.00,0.25,Business running 6+ months,https://axisbank.com/,National,5 years,CGTMSE
+Kotak Mahindra Bank,Emerging Entrepreneur,Loans for new ventures,10.25,25.00,2.00,Fresh entrepreneurs with viable plan,https://kotak.com/,National,7 years,Personal property
+
