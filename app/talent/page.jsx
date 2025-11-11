@@ -26,13 +26,21 @@ export default async function TalentPage() {
 
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {featured.map(profile => (
-            <article key={`${profile.email || profile.fullName}-${profile.fullName}`} className="glass rounded-2xl p-6 border border-white/10 space-y-2">
+            <article
+              key={`${profile.email || profile.fullName}-${profile.fullName}`}
+              className="glass rounded-2xl p-6 border border-white/10 space-y-3"
+            >
               <h2 className="text-lg font-semibold" style={{ color: "var(--label)" }}>
                 {profile.fullName || "Talent profile"}
               </h2>
               <div className="text-sm" style={{ color: "var(--secondary-label)" }}>
                 {profile.designation || "Operator"}
               </div>
+              {profile.company && (
+                <div className="text-sm" style={{ color: "var(--secondary-label)" }}>
+                  {profile.company}
+                </div>
+              )}
               {profile.industry && (
                 <div className="text-xs uppercase tracking-wide" style={{ color: "var(--tertiary-label)" }}>
                   {profile.industry}
@@ -52,6 +60,28 @@ export default async function TalentPage() {
                   ))}
                 </div>
               )}
+              <div className="flex items-center justify-between pt-3">
+                {profile.link && (
+                  <a
+                    href={profile.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium hover:underline"
+                    style={{ color: "var(--system-blue)" }}
+                  >
+                    View LinkedIn →
+                  </a>
+                )}
+                {profile.email && (
+                  <a
+                    href={`mailto:${profile.email}`}
+                    className="text-sm hover:underline"
+                    style={{ color: "var(--secondary-label)" }}
+                  >
+                    Email
+                  </a>
+                )}
+              </div>
             </article>
           ))}
         </section>
