@@ -9,7 +9,7 @@ In a world drowning in data, Documotion brings clarity, structure, and intellige
 - **Document Vault**: Upload, verify, and manage startup documents
 - **Government Schemes**: Comprehensive database of Indian govt schemes
 - **Bank & Loan Hub**: Access to startup-friendly banking schemes
-- **Talent Database**: Connect with founders and startup talent
+- **Talent Database**: Connect with founders and startup talent (searchable, infinite scroll)
 - **Pitch Deck Library**: Curated collection of pitch decks
 - **Auto-Apply**: Automated application submission system
 - **Glassmorphic UI**: Modern dark/light theme with glass effects

@@ -12,3 +12,4 @@
 - Created release smoke test procedure and deployment guidance in README.
 - Normalized talent dataset mapping so talent cards show names, roles, locations, and skills sourced from `google_sheets_talent.csv`.
 - Added business customer infographic section with glass/solid widgets and dashboard toggle.
+- Implemented paginated talent API with search, supporting large datasets and client-side load-more experience.

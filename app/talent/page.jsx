@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
-import { loadTalentProfiles } from "@/lib/dataSources";
+import TalentGrid from "@/components/TalentGrid";
+import { loadTalentProfilesSlice } from "@/lib/dataSources";
 
 export const metadata = {
   title: "Talent Network • Documotion",
@@ -7,8 +8,8 @@ export const metadata = {
 };
 
 export default async function TalentPage() {
-  const profiles = await loadTalentProfiles();
-  const featured = profiles.slice(0, 36);
+  const PAGE_SIZE = 36;
+  const { profiles: initialProfiles, total } = await loadTalentProfilesSlice({ page: 1, limit: PAGE_SIZE });
 
   return (
     <div className="min-h-screen bg-[var(--system-background)]">
@@ -24,67 +25,7 @@ export default async function TalentPage() {
           </p>
         </header>
 
-        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map(profile => (
-            <article
-              key={`${profile.email || profile.fullName}-${profile.fullName}`}
-              className="glass rounded-2xl p-6 border border-white/10 space-y-3"
-            >
-              <h2 className="text-lg font-semibold" style={{ color: "var(--label)" }}>
-                {profile.fullName || "Talent profile"}
-              </h2>
-              <div className="text-sm" style={{ color: "var(--secondary-label)" }}>
-                {profile.designation || "Operator"}
-              </div>
-              {profile.company && (
-                <div className="text-sm" style={{ color: "var(--secondary-label)" }}>
-                  {profile.company}
-                </div>
-              )}
-              {profile.industry && (
-                <div className="text-xs uppercase tracking-wide" style={{ color: "var(--tertiary-label)" }}>
-                  {profile.industry}
-                </div>
-              )}
-              {profile.location && (
-                <div className="text-sm" style={{ color: "var(--secondary-label)" }}>
-                  📍 {profile.location}
-                </div>
-              )}
-              {profile.skills && (
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {profile.skills.split(",").slice(0, 4).map(skill => (
-                    <span key={skill} className="px-3 py-1 text-xs rounded-full bg-white/10" style={{ color: "var(--secondary-label)" }}>
-                      {skill.trim()}
-                    </span>
-                  ))}
-                </div>
-              )}
-              <div className="flex items-center justify-between pt-3">
-                {profile.link && (
-                  <a
-                    href={profile.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm font-medium hover:underline"
-                    style={{ color: "var(--system-blue)" }}
-                  >
-                    View LinkedIn →
-                  </a>
-                )}
-                {profile.email && (
-                  <a
-                    href={`mailto:${profile.email}`}
-                    className="text-sm hover:underline"
-                    style={{ color: "var(--secondary-label)" }}
-                  >
-                    Email
-                  </a>
-                )}
-              </div>
-            </article>
-          ))}
-        </section>
+        <TalentGrid initialProfiles={initialProfiles} total={total} pageSize={PAGE_SIZE} />
       </main>
     </div>
   );
