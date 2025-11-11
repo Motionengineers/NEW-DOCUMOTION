@@ -42,10 +42,10 @@ git clone <your-repo-url>
 cd documotion
 ```
 
-2. Install dependencies
+2. Install dependencies (use `npm ci` in CI environments)
 
 ```bash
-npm install
+npm ci
 ```
 
 3. Set up environment variables
@@ -73,8 +73,8 @@ STARTUP_INDIA_API_KEY=optional
 4. Set up Prisma database
 
 ```bash
-npx prisma generate
-npx prisma migrate dev --name init
+npm run prisma:generate
+npm run prisma:migrate
 ```
 
 5. Import seed data (optional)
@@ -118,7 +118,10 @@ documotion/
 ## Key Commands
 
 - `npm run dev` - Start development server
+- `npm run lint` - Run ESLint (no warnings allowed in CI)
+- `npm test` - Run Jest unit tests
 - `npm run build` - Build for production
+- `npm start` - Serve the production build
 - `npm run prisma:studio` - Open Prisma Studio
 - `npm run prisma:migrate` - Run migrations
 - `npm run import:*` - Import CSV data
@@ -127,6 +130,29 @@ documotion/
 ### Auto Fix Agent
 
 - `npm run auto-fix` - Run automated checks, build/start, and open Chrome at `http://localhost:3001`.
+
+## Testing & QA
+
+1. Install dependencies via `npm ci`.
+2. Run `npm run lint` and ensure zero warnings.
+3. Execute unit tests with `npm test`.
+4. Build the production bundle using `npm run build`.
+5. Serve locally with `npm start` and browse `http://localhost:3000`.
+6. Optional smoke test:
+
+   ```bash
+   routes=(/ /dashboard /dashboard/branding /schemes /bank /services/registration)
+   for route in "${routes[@]}"; do
+     curl -sf -o /dev/null "http://localhost:3000$route"
+   done
+   ```
+
+## Deployment
+
+1. Build artifacts: `npm run build`.
+2. Package `.next`, `public`, and `package*.json` (or build Docker image).
+3. Provide `.env` (or reference `.env.example`) on the server.
+4. Start the app with `npm start` (uses `PORT=3000` by default).
 
 ## Development Roadmap
 
