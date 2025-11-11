@@ -26,12 +26,12 @@ export default async function TalentPage() {
 
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {featured.map(profile => (
-            <article key={`${profile.email}-${profile.full_name}`} className="glass rounded-2xl p-6 border border-white/10 space-y-2">
+            <article key={`${profile.email || profile.fullName}-${profile.fullName}`} className="glass rounded-2xl p-6 border border-white/10 space-y-2">
               <h2 className="text-lg font-semibold" style={{ color: "var(--label)" }}>
-                {profile.full_name || profile.name || "Talent profile"}
+                {profile.fullName || "Talent profile"}
               </h2>
               <div className="text-sm" style={{ color: "var(--secondary-label)" }}>
-                {profile.designation || profile.role || "Operator"}
+                {profile.designation || "Operator"}
               </div>
               {profile.industry && (
                 <div className="text-xs uppercase tracking-wide" style={{ color: "var(--tertiary-label)" }}>
