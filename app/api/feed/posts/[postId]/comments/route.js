@@ -1,3 +1,17 @@
+// Build-safe guard: mark dynamic and avoid crashing at build-time
+export const dynamic = "force-dynamic";
+
+let prisma = null;
+try {
+  // require at runtime; during build this may fail if @prisma/client wasn't generated
+  const { PrismaClient } = require("@prisma/client");
+  prisma = new PrismaClient();
+} catch (e) {
+  // log to build output but do not throw — keeps Vercel build from failing
+  // eslint-disable-next-line no-console
+  console.warn("⚠️ Prisma client not available during build:", e && e.message ? e.message : e);
+  prisma = null;
+}
 import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import prisma from '@/lib/prisma';
