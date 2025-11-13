@@ -27,7 +27,8 @@ const AUTHOR_POOL = [
 
 export const metadata = {
   title: 'Startup Feed • Documotion',
-  description: 'Share startup milestones, product launches, and insights with the Documotion community.',
+  description:
+    'Share startup milestones, product launches, and insights with the Documotion community.',
 };
 
 async function loadInitialFeed() {
@@ -92,8 +93,8 @@ export default async function StartupFeedPage() {
           <div className="space-y-2">
             <h1 className="text-3xl font-semibold md:text-4xl">Documotion Startup Feed</h1>
             <p className="max-w-3xl text-sm text-slate-300 md:text-base">
-              Publish funding milestones, product drops, hiring announcements, and lessons learned. Engage other founders
-              instantly with likes, comments, and saves.
+              Publish funding milestones, product drops, hiring announcements, and lessons learned.
+              Engage other founders instantly with likes, comments, and saves.
             </p>
           </div>
         </header>
@@ -152,7 +153,7 @@ function loadDemoPosts() {
         shares: 8 + (index % 9),
       },
       metrics: {
-        views: `${(2 + (index % 7)) .toFixed(1)}K`,
+        views: `${(2 + (index % 7)).toFixed(1)}K`,
         engagementRate: `${14 + (index % 6)}%`,
         saved: 30 + (index % 20),
       },

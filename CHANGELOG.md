@@ -13,3 +13,6 @@
 - Normalized talent dataset mapping so talent cards show names, roles, locations, and skills sourced from `google_sheets_talent.csv`.
 - Added business customer infographic section with glass/solid widgets and dashboard toggle.
 - Implemented paginated talent API with search, supporting large datasets and client-side load-more experience.
+- Shipped Branding Hub marketplace: category landing page, filterable agency directory, rich agency profiles with hire form, and admin scaffolding for managing agencies.
+- Extended Prisma schema, migrations, and seeds for agencies, services, portfolios, reviews, and leads; added loaders via `lib/brandingHub`.
+- Introduced Razorpay UPI integration with env validation, create-order & verify endpoints, README updates, and Jest coverage for missing key detection.

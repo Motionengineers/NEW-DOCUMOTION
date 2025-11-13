@@ -7,6 +7,7 @@
 This document outlines key UX design principles that should guide the design and development of user interfaces. These laws are based on established psychological and human factors research and help create more intuitive, efficient, and user-friendly experiences.
 
 **Why These Laws Matter:**
+
 - Improve user task completion rates
 - Reduce cognitive load and decision fatigue
 - Increase user satisfaction and engagement
@@ -18,12 +19,14 @@ This document outlines key UX design principles that should guide the design and
 ## Table of Contents
 
 ### Core Interaction Laws
+
 1. [Fitt's Law](#fitts-law)
 2. [Hick's Law](#hicks-law)
 3. [Jakob's Law](#jakobs-law)
 4. [Miller's Law](#millers-law)
 
 ### Visual Design & Gestalt Principles
+
 5. [Aesthetic Usability Effect](#aesthetic-usability-effect)
 6. [Law of Common Region](#law-of-common-region)
 7. [Law of Prägnanz](#law-of-prägnanz-law-of-simplicity)
@@ -32,19 +35,23 @@ This document outlines key UX design principles that should guide the design and
 10. [Law of Uniform Connectedness](#law-of-uniform-connectedness)
 
 ### Performance & Response
+
 11. [Doherty Threshold](#doherty-threshold)
 12. [Postel's Law](#postels-law-robustness-principle)
 
 ### User Memory & Attention
+
 13. [Serial Position Effect](#serial-position-effect)
 14. [Von Restorff Effect](#von-restorff-effect-isolation-effect)
 15. [Zeigarnik Effect](#zeigarnik-effect)
 
 ### Complexity & Simplicity
+
 16. [Occam's Razor](#occams-razor)
 17. [Tesler's Law](#teslers-law-law-of-conservation-of-complexity)
 
 ### Business & Productivity Principles
+
 18. [Pareto Principle](#pareto-principle-8020-rule)
 19. [Parkinson's Law](#parkinsons-law)
 
@@ -65,6 +72,7 @@ Time = a + b × log₂(D/W + 1)
 ```
 
 Where:
+
 - **D** = Distance to target
 - **W** = Width of target
 - **a** and **b** = Constants
@@ -87,12 +95,14 @@ Where:
 ### Real-World Examples
 
 **✅ Good:**
+
 - Large "Sign Up" button (min 48px height) placed prominently above the fold
 - Navigation menu items with 44px+ tap targets
 - Related form buttons grouped together (Save/Cancel side-by-side)
 - Mobile bottom navigation for thumb accessibility
 
 **❌ Bad:**
+
 - Tiny "Submit" button (24px) at the bottom of a long form
 - Menu items with 32px tap targets causing accidental clicks
 - Important actions scattered across the page
@@ -115,6 +125,7 @@ Time = a + b × log₂(n)
 ```
 
 Where:
+
 - **n** = Number of choices
 - **a** and **b** = Constants
 
@@ -137,12 +148,14 @@ Where:
 ### Real-World Examples
 
 **✅ Good:**
+
 - Main navigation with 5-6 items + a "More" dropdown
 - Multi-step checkout process (3-4 steps)
 - Settings page with collapsible sections
 - Onboarding with one concept per screen
 
 **❌ Bad:**
+
 - Navigation menu with 15+ items all visible
 - Single-page form with 20+ fields
 - Settings page with all options visible at once
@@ -177,26 +190,28 @@ People carry mental models from familiar applications and websites.
 
 ### Common Patterns Users Expect
 
-| Element | Expected Location | Standard Icon/Pattern |
-|---------|------------------|----------------------|
-| Logo | Top-left | Clickable, returns to home |
-| Search | Top-right or prominent | Magnifying glass icon |
-| Navigation | Top horizontal or left sidebar | Hamburger menu on mobile |
-| User Account | Top-right | Profile icon or avatar |
-| Shopping Cart | Top-right | Cart/bag icon with badge |
-| Settings | Top-right dropdown or bottom nav | Gear icon |
-| Back Button | Top-left (mobile) | Arrow left icon |
-| Primary CTA | Prominent, above fold | Large, contrasting button |
+| Element       | Expected Location                | Standard Icon/Pattern      |
+| ------------- | -------------------------------- | -------------------------- |
+| Logo          | Top-left                         | Clickable, returns to home |
+| Search        | Top-right or prominent           | Magnifying glass icon      |
+| Navigation    | Top horizontal or left sidebar   | Hamburger menu on mobile   |
+| User Account  | Top-right                        | Profile icon or avatar     |
+| Shopping Cart | Top-right                        | Cart/bag icon with badge   |
+| Settings      | Top-right dropdown or bottom nav | Gear icon                  |
+| Back Button   | Top-left (mobile)                | Arrow left icon            |
+| Primary CTA   | Prominent, above fold            | Large, contrasting button  |
 
 ### Real-World Examples
 
 **✅ Good:**
+
 - Logo in top-left that links to homepage
 - Search icon in header (users expect it there)
 - Hamburger menu on mobile (universally recognized)
 - Standard form layout (labels above inputs)
 
 **❌ Bad:**
+
 - Logo in center or bottom (unexpected placement)
 - Custom icon for search that users don't recognize
 - Unique navigation pattern requiring learning
@@ -240,12 +255,14 @@ Too many elements lead to cognitive overload and reduced usability.
 ### Real-World Examples
 
 **✅ Good:**
+
 - Navigation menu with 6 items grouped into categories
 - Phone number: (555) 123-4567 (chunked format)
 - Form with 5-7 fields per step
 - Dashboard with 4-6 main sections
 
 **❌ Bad:**
+
 - Navigation menu with 12 items in one list
 - Phone number: 5551234567 (no chunking)
 - Form with 20 fields on one page
@@ -279,12 +296,14 @@ Beautiful interfaces are often perceived as easier to use, even if functionality
 ### Real-World Examples
 
 **✅ Good:**
+
 - Clean, modern interface with thoughtful spacing
 - Consistent color palette and typography
 - High-quality icons and illustrations
 - Professional photography and imagery
 
 **❌ Bad:**
+
 - Cluttered, inconsistent visual design
 - Poor color choices and typography
 - Low-quality or mismatched icons
@@ -318,12 +337,14 @@ System response time should be under 400ms to maintain user engagement and flow.
 ### Real-World Examples
 
 **✅ Good:**
+
 - Button click shows immediate feedback (color change, animation)
 - Search results appear with loading skeleton
 - Form submissions show instant confirmation
 - Smooth animations (60fps) without lag
 
 **❌ Bad:**
+
 - Buttons that don't respond for 2+ seconds
 - Blank screens while data loads
 - No feedback during API calls
@@ -357,12 +378,14 @@ Visual boundaries create perceived groups and relationships.
 ### Real-World Examples
 
 **✅ Good:**
+
 - Dashboard cards grouping related metrics
 - Form sections with borders separating categories
 - Navigation menu with visual dividers
 - Content blocks with clear boundaries
 
 **❌ Bad:**
+
 - All content floating without clear grouping
 - Related items that look disconnected
 - No visual separation between different sections
@@ -396,12 +419,14 @@ Users prefer simple, clear designs over complex ones.
 ### Real-World Examples
 
 **✅ Good:**
+
 - Clean, minimal interface with essential elements only
 - Simple, recognizable icons
 - Clear visual hierarchy
 - Uncluttered layouts
 
 **❌ Bad:**
+
 - Overly complex designs with too many elements
 - Unclear or ambiguous icons
 - No clear visual hierarchy
@@ -435,12 +460,14 @@ Elements placed close together are perceived as related.
 ### Real-World Examples
 
 **✅ Good:**
+
 - Form fields grouped by category with spacing between groups
 - Related buttons placed side-by-side
 - Navigation items grouped logically
 - Related content blocks placed together
 
 **❌ Bad:**
+
 - Related elements scattered across the page
 - Unclear spacing creating confusion
 - No visual relationship between related items
@@ -474,12 +501,14 @@ Visual similarity creates perceived relationships.
 ### Real-World Examples
 
 **✅ Good:**
+
 - All primary buttons share the same style
 - Consistent icon style throughout interface
 - Related content uses same typography
 - Color-coded categories
 
 **❌ Bad:**
+
 - Inconsistent button styles confusing users
 - Mixed icon styles making relationships unclear
 - No visual consistency between similar elements
@@ -513,12 +542,14 @@ Visual connections create stronger perceived relationships than proximity alone.
 ### Real-World Examples
 
 **✅ Good:**
+
 - Flowcharts with connecting lines
 - Form sections with borders connecting related fields
 - Process steps connected visually
 - Related cards with connecting visual elements
 
 **❌ Bad:**
+
 - No visual connection between related elements
 - Unclear relationships between items
 - Disconnected flow in processes
@@ -552,12 +583,14 @@ Simpler solutions are preferred over complex ones.
 ### Real-World Examples
 
 **✅ Good:**
+
 - Simple, focused feature set
 - Minimal navigation structure
 - Few steps to complete tasks
 - Clean, uncluttered interface
 
 **❌ Bad:**
+
 - Over-engineered solutions
 - Too many features and options
 - Complex workflows with unnecessary steps
@@ -591,12 +624,14 @@ Focus on the features and paths that matter most.
 ### Real-World Examples
 
 **✅ Good:**
+
 - Dashboard showing most-used features prominently
 - Optimized checkout flow (most critical path)
 - Focus on core functionality over edge cases
 - Analytics-driven feature prioritization
 
 **❌ Bad:**
+
 - Equal focus on all features regardless of usage
 - Complex features that few users need
 - Neglecting optimization of critical paths
@@ -630,12 +665,14 @@ Users will take as long as you allow them, even if less time is needed.
 ### Real-World Examples
 
 **✅ Good:**
+
 - Multi-step forms with progress bars
 - Onboarding with clear completion indicators
 - Time-limited offers (used appropriately)
 - Clear task duration expectations
 
 **❌ Bad:**
+
 - Open-ended processes with no progress indication
 - Unclear how long tasks will take
 - No sense of advancement or completion
@@ -669,12 +706,14 @@ Design interfaces to be flexible and forgiving of user input.
 ### Real-World Examples
 
 **✅ Good:**
+
 - Phone number input accepts various formats
 - Date picker accepts multiple date formats
 - Clear error messages with recovery suggestions
 - Graceful degradation on older browsers
 
 **❌ Bad:**
+
 - Strict input validation rejecting valid formats
 - Unclear error messages
 - No recovery options when errors occur
@@ -708,12 +747,14 @@ Items at the beginning and end of a list are remembered better.
 ### Real-World Examples
 
 **✅ Good:**
+
 - Navigation menu with "Home" first, "Account" last
 - Form with name first, submit button last
 - Feature list with key features at top and bottom
 - Content with key points at beginning and end
 
 **❌ Bad:**
+
 - Important items buried in the middle of lists
 - No clear priority in list ordering
 - Critical information lost in the middle
@@ -747,12 +788,14 @@ Complexity doesn't disappear—it must be managed somewhere.
 ### Real-World Examples
 
 **✅ Good:**
+
 - Smart form auto-fill reducing user input
 - Intelligent recommendations based on user data
 - Automated workflows handling complexity
 - Simple interface hiding complex backend
 
 **❌ Bad:**
+
 - Users forced to handle system complexity
 - No automation of repetitive tasks
 - Complex interfaces requiring user expertise
@@ -786,12 +829,14 @@ Distinctive elements are more memorable and attention-grabbing.
 ### Real-World Examples
 
 **✅ Good:**
+
 - Large, colorful "Sign Up" button that stands out
 - Highlighted error messages
 - Prominent feature callouts
 - Distinct styling for primary actions
 
 **❌ Bad:**
+
 - Everything looks the same, no emphasis
 - Important elements blend in
 - No visual hierarchy or distinction
@@ -825,12 +870,14 @@ Users remember unfinished tasks, creating motivation to complete them.
 ### Real-World Examples
 
 **✅ Good:**
+
 - Progress bars showing incomplete profiles
 - "Continue where you left off" prompts
 - Incomplete task indicators
 - Saved draft notifications
 
 **❌ Bad:**
+
 - No indication of incomplete tasks
 - Users forget what they were doing
 - No progress tracking
@@ -868,29 +915,35 @@ When designing interfaces, consider all four laws together:
 ## References
 
 ### Core Laws
+
 - Fitt, P. M. (1954). The information capacity of the human motor system in controlling the amplitude of movement.
 - Hick, W. E. (1952). On the rate of gain of information.
 - Nielsen, J. (1999). Jakob's Law of Internet User Experience.
 - Miller, G. A. (1956). The magical number seven, plus or minus two: Some limits on our capacity for processing information.
 
 ### Gestalt Principles
+
 - Wertheimer, M. (1923). Laws of organization in perceptual forms.
 - Koffka, K. (1935). Principles of Gestalt psychology.
 
 ### Performance & Usability
+
 - Doherty, W. J., & Thadani, A. J. (1982). The economic value of rapid response time.
 - Postel, J. (1981). Transmission Control Protocol. RFC 793.
 
 ### Memory & Cognition
+
 - Von Restorff, H. (1933). Über die Wirkung von Bereichsbildungen im Spurenfeld.
 - Zeigarnik, B. (1927). Über das Behalten von erledigten und unerledigten Handlungen.
 - Murdock, B. B. (1962). The serial position effect of free recall.
 
 ### Complexity & Simplicity
+
 - Tesler, L. (1984). The law of conservation of complexity.
 - Ockham, W. (14th century). Occam's Razor principle.
 
 ### Business Principles
+
 - Pareto, V. (1896). Cours d'économie politique.
 - Parkinson, C. N. (1955). Parkinson's Law: The Pursuit of Progress.
 
@@ -901,12 +954,14 @@ When designing interfaces, consider all four laws together:
 When reviewing or designing a UI, ask:
 
 ### Core Interaction Laws
+
 - [ ] **Fitt's Law**: Are primary actions large and easy to reach? (min 44px/48px)
 - [ ] **Hick's Law**: Are there too many choices presented at once? (max 7)
 - [ ] **Jakob's Law**: Do users need to learn new patterns, or are familiar ones used?
 - [ ] **Miller's Law**: Is information grouped into chunks of 5-9 items?
 
 ### Visual Design Laws
+
 - [ ] **Law of Proximity**: Are related elements grouped together spatially?
 - [ ] **Law of Similarity**: Do similar elements have consistent styling?
 - [ ] **Law of Common Region**: Are related items contained within clear boundaries?
@@ -915,20 +970,24 @@ When reviewing or designing a UI, ask:
 - [ ] **Aesthetic Usability Effect**: Is the interface visually appealing?
 
 ### Performance & Response
+
 - [ ] **Doherty Threshold**: Is system response time under 400ms?
 - [ ] **Postel's Law**: Does the interface accept various input formats gracefully?
 
 ### User Memory & Attention
+
 - [ ] **Serial Position Effect**: Are important items at the beginning and end of lists?
 - [ ] **Von Restorff Effect**: Do primary actions stand out visually?
 - [ ] **Zeigarnik Effect**: Are incomplete tasks shown to encourage completion?
 
 ### Complexity & Simplicity
+
 - [ ] **Occam's Razor**: Is the simplest solution being used?
 - [ ] **Tesler's Law**: Is complexity handled by the system, not the user?
 - [ ] **Parkinson's Law**: Are progress indicators showing task completion?
 
 ### Prioritization
+
 - [ ] **Pareto Principle**: Are efforts focused on the 20% that provides 80% of value?
 
 ---
@@ -942,7 +1001,7 @@ When reviewing or designing a UI, ask:
 const Navigation = () => {
   const mainItems = menuItems.slice(0, 6); // Max 7 items (Miller's Law)
   const moreItems = menuItems.slice(6);
-  
+
   return (
     <nav className="flex items-center gap-4">
       {mainItems.map(item => (
@@ -969,7 +1028,7 @@ const MultiStepForm = () => {
     { id: 2, fields: fields.slice(5, 10), title: "Contact Details" },
     { id: 3, fields: fields.slice(10, 15), title: "Preferences" }
   ];
-  
+
   return (
     <form>
       <StepIndicator current={step} total={steps.length} />
@@ -1003,7 +1062,7 @@ const MultiStepForm = () => {
     min-height: 48px;
     min-width: 48px;
   }
-  
+
   /* Large tap targets */
   .mobile-button {
     min-height: 48px;
@@ -1030,4 +1089,3 @@ const MultiStepForm = () => {
 - **Error Rate**: Number of accidental clicks or wrong selections
 - **Cognitive Load**: User feedback on interface complexity
 - **Learnability**: First-time user success rate
-

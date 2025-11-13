@@ -74,4 +74,3 @@ export async function PATCH(request, { params }) {
     return NextResponse.json({ success: false, error: 'Unable to update agency' }, { status: 500 });
   }
 }
-

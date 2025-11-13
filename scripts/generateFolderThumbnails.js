@@ -5,14 +5,15 @@ const fs = require('fs');
 const path = require('path');
 const pdf = require('pdf-parse');
 let pdfjsLib;
-try { pdfjsLib = require('pdfjs-dist/legacy/build/pdf.js'); } catch {}
+try {
+  pdfjsLib = require('pdfjs-dist/legacy/build/pdf.js');
+} catch {}
 let sharp = null;
-try { sharp = require('sharp'); } catch {}
+try {
+  sharp = require('sharp');
+} catch {}
 
-const ROOTS = [
-  path.join(process.cwd(), 'public', 'pitch-decks'),
-  '/data/pitch-decks',
-];
+const ROOTS = [path.join(process.cwd(), 'public', 'pitch-decks'), '/data/pitch-decks'];
 
 function listCandidateDirs() {
   const dirs = [];
@@ -31,10 +32,16 @@ function listCandidateDirs() {
 function deriveNameFromText(text, fallbackBase) {
   const base = fallbackBase.replace(/\.(pdf)$/i, '');
   if (!text) return base;
-  const lines = text.split('\n').map(s => s.trim()).filter(Boolean);
+  const lines = text
+    .split('\n')
+    .map(s => s.trim())
+    .filter(Boolean);
   const top = lines.slice(0, 8);
   const title = top.find(l => !/^pitch\s*deck$/i.test(l)) || top[0] || base;
-  return title.replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '').slice(0, 100);
+  return title
+    .replace(/[^a-z0-9]+/gi, '_')
+    .replace(/^_+|_+$/g, '')
+    .slice(0, 100);
 }
 
 async function renderFirstPageToPNG(absPdfPath) {
@@ -60,7 +67,9 @@ async function firstPageText(absPdfPath) {
     const data = await pdf(buf);
     const text = data.text || '';
     return text.split('\f')[0] || text;
-  } catch { return ''; }
+  } catch {
+    return '';
+  }
 }
 
 async function processPdf(absPdfPath) {
@@ -78,11 +87,11 @@ async function processPdf(absPdfPath) {
   let jpgBuf = pngBuf;
   if (sharp) {
     jpgBuf = await sharp(pngBuf)
-      .resize(targetW, targetH, { 
+      .resize(targetW, targetH, {
         fit: 'inside', // Preserve aspect, fit within bounds (better for text readability)
         withoutEnlargement: false,
       })
-      .jpeg({ 
+      .jpeg({
         quality: 95, // Higher quality for crisp text
         mozjpeg: true,
         progressive: true, // Progressive JPEG for better loading
@@ -99,14 +108,21 @@ async function processPdf(absPdfPath) {
 
 async function run() {
   const dirs = listCandidateDirs();
-  let made = 0, skipped = 0, errors = 0;
+  let made = 0,
+    skipped = 0,
+    errors = 0;
   for (const dir of dirs) {
     let pdfs = [];
     try {
       const items = fs.readdirSync(dir);
       pdfs = items.filter(f => f.toLowerCase().endsWith('.pdf') && !f.startsWith('._'));
-    } catch { continue; }
-    if (pdfs.length === 0) { skipped++; continue; }
+    } catch {
+      continue;
+    }
+    if (pdfs.length === 0) {
+      skipped++;
+      continue;
+    }
     // pick main PDF (heuristic: name includes 'pitch' else first)
     const main = pdfs.find(f => /pitch/i.test(f)) || pdfs[0];
     const abs = path.join(dir, main);
@@ -122,6 +138,7 @@ async function run() {
   console.log('Result:', { made, skipped, errors });
 }
 
-run().catch(e => { console.error(e); process.exit(1); });
-
-
+run().catch(e => {
+  console.error(e);
+  process.exit(1);
+});

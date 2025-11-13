@@ -23,8 +23,8 @@ export default function InfographicWidget({
     changeTone === 'negative'
       ? 'text-red-400'
       : changeTone === 'neutral'
-      ? 'text-[var(--tertiary-label)]'
-      : 'text-emerald-400';
+        ? 'text-[var(--tertiary-label)]'
+        : 'text-emerald-400';
 
   return (
     <article
@@ -36,7 +36,10 @@ export default function InfographicWidget({
     >
       <header className="space-y-1">
         {title && (
-          <h3 className="text-sm uppercase tracking-wide" style={{ color: 'var(--tertiary-label)' }}>
+          <h3
+            className="text-sm uppercase tracking-wide"
+            style={{ color: 'var(--tertiary-label)' }}
+          >
             {title}
           </h3>
         )}
@@ -52,7 +55,10 @@ export default function InfographicWidget({
           <span className="text-3xl font-semibold" style={{ color: 'var(--label)' }}>
             {metric}
             {metricSuffix && (
-              <span className="ml-1 text-base font-medium" style={{ color: 'var(--secondary-label)' }}>
+              <span
+                className="ml-1 text-base font-medium"
+                style={{ color: 'var(--secondary-label)' }}
+              >
                 {metricSuffix}
               </span>
             )}
@@ -64,11 +70,13 @@ export default function InfographicWidget({
       {children && <div className="mt-6 space-y-3">{children}</div>}
 
       {footer && (
-        <footer className="mt-6 pt-4 border-t border-white/10 text-sm" style={{ color: 'var(--secondary-label)' }}>
+        <footer
+          className="mt-6 pt-4 border-t border-white/10 text-sm"
+          style={{ color: 'var(--secondary-label)' }}
+        >
           {footer}
         </footer>
       )}
     </article>
   );
 }
-

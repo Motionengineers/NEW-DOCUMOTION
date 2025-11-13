@@ -2,7 +2,7 @@
 
 /**
  * Improved Request Form - Applying UX Laws
- * 
+ *
  * Applied Laws:
  * - Miller's Law: Multi-step form with 5-7 fields per step
  * - Hick's Law: Progressive disclosure
@@ -53,7 +53,7 @@ export default function RequestFormUX({ agencyId, startupId, onSubmitted }) {
   useEffect(() => {
     const hasData = Object.values(formData).some(value => value !== '');
     setHasUnsavedChanges(hasData && currentStep < formSteps.length);
-    
+
     // Save to localStorage as draft
     if (hasData) {
       localStorage.setItem('requestFormDraft', JSON.stringify(formData));
@@ -92,7 +92,7 @@ export default function RequestFormUX({ agencyId, startupId, onSubmitted }) {
   };
 
   // Apply Postel's Law: Flexible input validation
-  const normalizeBudget = (value) => {
+  const normalizeBudget = value => {
     // Remove non-numeric characters except for currency symbols
     return value.replace(/[^\d]/g, '');
   };
@@ -117,7 +117,7 @@ export default function RequestFormUX({ agencyId, startupId, onSubmitted }) {
       });
       const json = await res.json();
       if (!json.success) throw new Error(json.error || 'Failed to submit');
-      
+
       // Clear draft on success
       localStorage.removeItem('requestFormDraft');
       onSubmitted?.(json.request);
@@ -296,33 +296,21 @@ export default function RequestFormUX({ agencyId, startupId, onSubmitted }) {
       )}
 
       {/* Navigation Buttons - Apply Fitt's Law: Large buttons */}
-      <div className="flex items-center justify-between pt-4 border-t" style={{ borderColor: 'var(--separator)' }}>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={handleBack}
-          disabled={currentStep === 1}
-        >
+      <div
+        className="flex items-center justify-between pt-4 border-t"
+        style={{ borderColor: 'var(--separator)' }}
+      >
+        <Button type="button" variant="outline" onClick={handleBack} disabled={currentStep === 1}>
           ← Back
         </Button>
 
         <div className="flex items-center space-x-3">
           {!isLastStep ? (
-            <Button
-              type="button"
-              variant="primary"
-              onClick={handleNext}
-              disabled={!canProceed}
-            >
+            <Button type="button" variant="primary" onClick={handleNext} disabled={!canProceed}>
               Next →
             </Button>
           ) : (
-            <Button
-              type="submit"
-              variant="primary"
-              loading={loading}
-              disabled={!canProceed}
-            >
+            <Button type="submit" variant="primary" loading={loading} disabled={!canProceed}>
               Submit Request
             </Button>
           )}
@@ -331,4 +319,3 @@ export default function RequestFormUX({ agencyId, startupId, onSubmitted }) {
     </form>
   );
 }
-

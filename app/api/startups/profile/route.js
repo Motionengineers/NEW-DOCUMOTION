@@ -127,7 +127,9 @@ export async function PATCH(request) {
       location: payload.location ?? undefined,
       servicesNeeded: payload.servicesNeeded ? serialiseList(payload.servicesNeeded) : undefined,
       specialCriteria: payload.specialCriteria ? serialiseList(payload.specialCriteria) : undefined,
-      preferredBankTypes: payload.preferredBankTypes ? serialiseList(payload.preferredBankTypes) : undefined,
+      preferredBankTypes: payload.preferredBankTypes
+        ? serialiseList(payload.preferredBankTypes)
+        : undefined,
       preferredLoanMin: payload.preferredLoanMin ?? undefined,
       preferredLoanMax: payload.preferredLoanMax ?? undefined,
     };
@@ -153,10 +155,15 @@ export async function PATCH(request) {
     return NextResponse.json({ success: true, data: shapeStartupPayload(updated) });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ success: false, error: 'Invalid payload', details: error.flatten() }, { status: 422 });
+      return NextResponse.json(
+        { success: false, error: 'Invalid payload', details: error.flatten() },
+        { status: 422 }
+      );
     }
     console.error('PATCH /api/startups/profile failed:', error);
-    return NextResponse.json({ success: false, error: 'Unable to update profile' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: 'Unable to update profile' },
+      { status: 500 }
+    );
   }
 }
-

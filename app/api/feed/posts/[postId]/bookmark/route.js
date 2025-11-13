@@ -44,6 +44,9 @@ export async function POST(request, { params }) {
     return NextResponse.json({ success: true, data: { bookmarked: true } });
   } catch (error) {
     console.error('POST /api/feed/posts/[postId]/bookmark failed:', error);
-    return NextResponse.json({ success: false, error: 'Unable to update bookmark' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: 'Unable to update bookmark' },
+      { status: 500 }
+    );
   }
 }

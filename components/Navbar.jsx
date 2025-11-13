@@ -25,6 +25,7 @@ export default function Navbar() {
   // Miller's Law: Group related items
   const primaryNav = [
     { href: '/dashboard', label: 'Dashboard', priority: 'high' },
+    { href: '/feed', label: 'Startup Feed', priority: 'high' },
     { href: '/schemes', label: 'Schemes', priority: 'high' },
   ];
 
@@ -34,6 +35,9 @@ export default function Navbar() {
   ];
 
   const moreNav = [
+    { href: '/banking', label: 'Startup Banking', priority: 'high' },
+    { href: '/funding/apply', label: 'Apply for Funding', priority: 'high' },
+    { href: '/settings/team', label: 'Team', priority: 'high' },
     { href: '/services/registration', label: 'Services', priority: 'high' },
     { href: '/pitch-decks', label: 'Pitch Decks', priority: 'low' },
     { href: '/ma', label: 'M&A', priority: 'low' },
@@ -102,7 +106,10 @@ export default function Navbar() {
 
           {/* Desktop Navigation - Apply Law of Common Region: Visual grouping */}
           <div className="hidden md:flex items-center">
-            <div className="flex items-center space-x-1 border-r pr-4 mr-4" style={{ borderColor: 'var(--separator)' }}>
+            <div
+              className="flex items-center space-x-1 border-r pr-4 mr-4"
+              style={{ borderColor: 'var(--separator)' }}
+            >
               {/* Apply Fitt's Law: 48px tap targets */}
               {visibleNav.map(link => (
                 <Link
@@ -152,7 +159,9 @@ export default function Navbar() {
                   }}
                 >
                   More
-                  <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${showMoreMenu ? 'rotate-180' : ''}`} />
+                  <ChevronDown
+                    className={`ml-1 h-4 w-4 transition-transform ${showMoreMenu ? 'rotate-180' : ''}`}
+                  />
                 </button>
 
                 {/* Dropdown Menu */}
@@ -196,50 +205,52 @@ export default function Navbar() {
             )}
 
             {/* Action Buttons - Apply Law of Proximity: Group related controls */}
-            <div className="flex items-center space-x-2 ml-4 pl-4 border-l" style={{ borderColor: 'var(--separator)' }}>
-
+            <div
+              className="flex items-center space-x-2 ml-4 pl-4 border-l"
+              style={{ borderColor: 'var(--separator)' }}
+            >
               {/* Theme Toggle - Apply Fitt's Law: 48px tap target */}
               <button
                 onClick={toggle}
                 className="h-12 w-12 flex items-center justify-center rounded-full transition-all shadow-sm"
-              style={{
-                color: 'var(--label)',
-                backgroundColor: 'var(--system-secondary-background)',
-                border: '1px solid var(--separator)',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.backgroundColor = 'var(--muted)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.backgroundColor = 'var(--system-secondary-background)';
-              }}
-              aria-label="Toggle theme"
-            >
-              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
+                style={{
+                  color: 'var(--label)',
+                  backgroundColor: 'var(--system-secondary-background)',
+                  border: '1px solid var(--separator)',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.backgroundColor = 'var(--muted)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.backgroundColor = 'var(--system-secondary-background)';
+                }}
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              </button>
 
               {/* Notifications - Apply Fitt's Law: 48px tap target */}
               <button
                 onClick={() => setOpenNoti(v => !v)}
                 className="h-12 w-12 flex items-center justify-center rounded-lg transition-all"
-              style={{ color: 'var(--label)' }}
-              aria-expanded={openNoti}
-              aria-controls="notifications-panel"
-              aria-label="Toggle notifications"
-            >
-              🔔
-            </button>
-
-            {openNoti && (
-              <div
-                id="notifications-panel"
-                className="absolute right-8 top-16 z-50"
-                role="region"
-                aria-live="polite"
+                style={{ color: 'var(--label)' }}
+                aria-expanded={openNoti}
+                aria-controls="notifications-panel"
+                aria-label="Toggle notifications"
               >
-                <NotificationsWidget />
-              </div>
-            )}
+                🔔
+              </button>
+
+              {openNoti && (
+                <div
+                  id="notifications-panel"
+                  className="absolute right-8 top-16 z-50"
+                  role="region"
+                  aria-live="polite"
+                >
+                  <NotificationsWidget />
+                </div>
+              )}
             </div>
           </div>
 
@@ -262,7 +273,10 @@ export default function Navbar() {
           >
             {/* Apply Law of Common Region: Group primary navigation */}
             <div className="mb-4">
-              <h3 className="px-4 text-xs font-semibold uppercase mb-2" style={{ color: 'var(--tertiary-label)' }}>
+              <h3
+                className="px-4 text-xs font-semibold uppercase mb-2"
+                style={{ color: 'var(--tertiary-label)' }}
+              >
                 Main
               </h3>
               {visibleNav.map(link => (
@@ -285,7 +299,10 @@ export default function Navbar() {
             {/* Apply Law of Common Region: Group more options */}
             {moreNav.length > 0 && (
               <div className="mb-4">
-                <h3 className="px-4 text-xs font-semibold uppercase mb-2" style={{ color: 'var(--tertiary-label)' }}>
+                <h3
+                  className="px-4 text-xs font-semibold uppercase mb-2"
+                  style={{ color: 'var(--tertiary-label)' }}
+                >
                   More
                 </h3>
                 {moreNav.map(link => (
@@ -312,16 +329,16 @@ export default function Navbar() {
                 className="w-full flex items-center space-x-3 px-4 py-3 min-h-[48px] rounded-lg text-base font-medium"
                 style={{ color: 'var(--label)' }}
               >
-              {theme === 'dark' ? (
-                <>
-                  <Sun className="h-5 w-5" />
-                  <span>Light Mode</span>
-                </>
-              ) : (
-                <>
-                  <Moon className="h-5 w-5" />
-                  <span>Dark Mode</span>
-                </>
+                {theme === 'dark' ? (
+                  <>
+                    <Sun className="h-5 w-5" />
+                    <span>Light Mode</span>
+                  </>
+                ) : (
+                  <>
+                    <Moon className="h-5 w-5" />
+                    <span>Dark Mode</span>
+                  </>
                 )}
               </button>
             </div>

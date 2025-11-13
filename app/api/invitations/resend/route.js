@@ -8,7 +8,11 @@ import {
 } from '@/lib/invitations';
 import { rateLimitFromRequest } from '@/lib/rate-limit';
 
-const APP_URL = process.env.APP_URL || 'http://localhost:3000';
+const APP_URL = process.env.APP_URL || process.env.NEXTAUTH_URL;
+
+if (!APP_URL) {
+  throw new Error('APP_URL or NEXTAUTH_URL must be configured for invitation emails.');
+}
 
 export async function POST(request) {
   try {
@@ -69,4 +73,3 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Failed to resend invitation' }, { status: 500 });
   }
 }
-

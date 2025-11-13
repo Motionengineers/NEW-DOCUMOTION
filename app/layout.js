@@ -11,7 +11,8 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-body' });
 
 export const metadata = {
   title: 'Documotion',
-  description: 'The AI operating system that brings clarity to registrations, compliance, and funding.',
+  description:
+    'The AI operating system that brings clarity to registrations, compliance, and funding.',
 };
 
 export default function RootLayout({ children }) {
@@ -34,4 +35,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-

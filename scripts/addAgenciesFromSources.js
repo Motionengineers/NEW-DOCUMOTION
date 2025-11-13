@@ -20,7 +20,9 @@ async function upsertAgency(a) {
   let slug = slugify(a.slug || name);
 
   // Deduplicate by slug or name
-  const existingBySlug = slug ? await prisma.agency.findUnique({ where: { slug } }).catch(() => null) : null;
+  const existingBySlug = slug
+    ? await prisma.agency.findUnique({ where: { slug } }).catch(() => null)
+    : null;
   if (existingBySlug) return { status: 'exists', id: existingBySlug.id };
 
   const existingByName = await prisma.agency
@@ -88,7 +90,9 @@ async function run() {
       }
     }
 
-    console.log(`Agencies — created: ${created}, existing: ${exists}, skipped: ${skipped}, total: ${items.length}`);
+    console.log(
+      `Agencies — created: ${created}, existing: ${exists}, skipped: ${skipped}, total: ${items.length}`
+    );
   } finally {
     await prisma.$disconnect();
   }
@@ -99,5 +103,3 @@ run().catch(async e => {
   await prisma.$disconnect();
   process.exit(1);
 });
-
-

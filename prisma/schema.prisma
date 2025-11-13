@@ -171,6 +171,9 @@ model User {
   name              String?
   passwordHash      String?
   role              String             @default("founder")
+  teamRole          String             @default("VIEWER")
+  status            String             @default("ACTIVE")
+  agencyId          Int?
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   emailVerified     DateTime?
@@ -181,6 +184,21 @@ model User {
   sessions          Session[]
   startups          Startup[]
   talents           Talent[]
+  agency            Agency?            @relation("AgencyMembers", fields: [agencyId], references: [id], onDelete: SetNull)
+  invitationsCreated TeamInvitation[]  @relation("InvitesCreated")
+  invitationsAccepted TeamInvitation[] @relation("InvitesAccepted")
+  feedPosts         FeedPost[]
+  feedInteractions  FeedInteraction[]
+  feedComments      FeedComment[]
+  feedFollowing     FeedFollow[]        @relation("FeedFollowFollower")
+  feedFollowers     FeedFollow[]        @relation("FeedFollowTargetUser")
+  feedBookmarks     FeedBookmark[]
+  feedNotifications FeedNotification[]
+  feedTopicPreferences FeedTopicPreference[]
+  fundingApplications FundingApplication[] @relation("ApplicantApplications")
+  fundingReviews    FundingApplication[] @relation("ReviewerApplications")
+  fundingActivities FundingApplicationActivity[]
+  fundingApplicationDraft FundingApplicationDraft?
 }
 
 model Startup {
@@ -195,6 +213,12 @@ model Startup {
   foundingYear       Int?
   teamSize           Int?
   revenue            Float?
+  revenueBand        String?
+  servicesNeeded     String?
+  specialCriteria    String?
+  preferredBankTypes String?
+  preferredLoanMin   Float?
+  preferredLoanMax   Float?
   registeredAs       String?
   website            String?
   linkedin           String?
@@ -208,6 +232,9 @@ model Startup {
   marketingRequests  MarketingRequest[]
   serviceRequests    ServiceRequest[]
   agencyRequests     AgencyRequest[]
+  feedPosts          FeedPost[]
+  feedFollowers      FeedFollow[]        @relation("FeedFollowTargetStartup")
+  brandingSettings   BrandingSettings[]
   user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -304,6 +331,200 @@ model BrandingSettings {
   status        String?  @default("in_progress") // in_progress | completed
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  startup       Startup? @relation(fields: [startupId], references: [id], onDelete: SetNull)
+}
+
+model FundingApplication {
+  id                 Int       @id @default(autoincrement())
+  userId             Int
+  assignedReviewerId Int?
+  status             String    @default("draft") // draft | submitted | in-review | approved | rejected
+  progress           Int       @default(0)
+
+  fullName           String
+  email              String
+  phone              String?
+  city               String?
+  state              String?
+
+  startupName        String?
+  website            String?
+  socialLinks        String?   // JSON string or comma separated links
+  industry           String?
+  stage              String?
+
+  problem            String?
+  solution           String?
+  targetAudience     String?
+
+  revenue            String?
+  profit             String?
+  customers          String?
+  fundingRaised      String?
+  growthMetrics      String?
+
+  amountRequested    Float?
+  equityOffered      Float?
+  useOfFunds         String?
+
+  pitchVideoUrl      String?
+  pitchDeckUrl       String?
+
+  submittedAt        DateTime?
+  reviewedAt         DateTime?
+  reviewNotes        String?
+
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  user               User      @relation("ApplicantApplications", fields: [userId], references: [id], onDelete: Cascade)
+  assignedReviewer   User?     @relation("ReviewerApplications", fields: [assignedReviewerId], references: [id], onDelete: SetNull)
+  activities         FundingApplicationActivity[]
+
+  @@index([userId])
+  @@index([assignedReviewerId])
+  @@index([status])
+  @@index([industry])
+  @@index([stage])
+}
+
+model FundingApplicationDraft {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  data      String   // JSON string containing draft payload
+  updatedAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+}
+
+model FundingApplicationActivity {
+  id            Int       @id @default(autoincrement())
+  applicationId Int
+  actorUserId   Int?
+  activityType  String
+  message       String?
+  createdAt     DateTime  @default(now())
+
+  application   FundingApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  actor         User?              @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([applicationId])
+  @@index([actorUserId])
+  @@index([activityType])
+}
+
+model FeedPost {
+  id              Int               @id @default(autoincrement())
+  authorUserId    Int
+  startupId       Int?
+  body            String?
+  embedUrl        String?
+  mediaType       String?
+  mediaUrl        String?
+  linkUrl         String?
+  linkTitle       String?
+  linkDescription String?
+  professional    Boolean          @default(false)
+  tagList         String?
+  stage           String?
+  industry        String?
+  location        String?
+  visibility      String           @default("public")
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  author          User             @relation(fields: [authorUserId], references: [id], onDelete: Cascade)
+  startup         Startup?         @relation(fields: [startupId], references: [id], onDelete: SetNull)
+
+  media           FeedPostMedia[]
+  tags            FeedPostTag[]
+  interactions    FeedInteraction[]
+  comments        FeedComment[]
+  bookmarks       FeedBookmark[]
+  notifications   FeedNotification[]
+}
+
+model FeedPostMedia {
+  id           Int      @id @default(autoincrement())
+  postId       Int
+  type         String
+  url          String
+  thumbnailUrl String?
+
+  post         FeedPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model FeedPostTag {
+  postId Int
+  tag    String
+
+  post   FeedPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tag])
+}
+
+model FeedInteraction {
+  id        Int       @id @default(autoincrement())
+  postId    Int
+  userId    Int
+  type      String
+  metadata  String?
+  createdAt DateTime  @default(now())
+
+  post      FeedPost  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+  @@index([userId])
+  @@unique([postId, userId, type])
+}
+
+model FeedComment {
+  id               Int            @id @default(autoincrement())
+  postId           Int
+  authorUserId     Int
+  body             String
+  parentCommentId  Int?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  post             FeedPost       @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author           User           @relation(fields: [authorUserId], references: [id], onDelete: Cascade)
+  parent           FeedComment?   @relation("FeedCommentReplies", fields: [parentCommentId], references: [id], onDelete: Cascade)
+  replies          FeedComment[]  @relation("FeedCommentReplies")
+
+  @@index([postId])
+  @@index([parentCommentId])
+}
+
+model FeedFollow {
+  id               Int        @id @default(autoincrement())
+  followerUserId   Int
+  targetUserId     Int?
+  targetStartupId  Int?
+  tag              String?
+  createdAt        DateTime   @default(now())
+
+  follower         User       @relation("FeedFollowFollower", fields: [followerUserId], references: [id], onDelete: Cascade)
+  targetUser       User?      @relation("FeedFollowTargetUser", fields: [targetUserId], references: [id], onDelete: Cascade)
+  targetStartup    Startup?   @relation("FeedFollowTargetStartup", fields: [targetStartupId], references: [id], onDelete: Cascade)
+
+  @@index([targetUserId])
+  @@index([targetStartupId])
+  @@index([tag])
+}
+
+model FeedBookmark {
+  userId    Int
+  postId    Int
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      FeedPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@id([userId, postId])
 }
 
 model FounderProfile {
@@ -324,6 +545,35 @@ model FounderProfile {
   specializations String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+}
+
+model FeedNotification {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  postId    Int?
+  type      String
+  payload   String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      FeedPost? @relation(fields: [postId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([postId])
+}
+
+model FeedTopicPreference {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  tags       String?
+  stages     String?
+  industries String?
+  locations  String?
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 // Recently Funded Startups (M&A module)
@@ -476,28 +726,171 @@ model Agency {
   location        String?
   city            String?
   state           String?
+  country         String?           @default("India")
+  logoUrl         String?
+  bannerUrl       String?
   website         String?
   instagram       String?
+  linkedin        String?
+  youtube         String?
+  twitter         String?
+  contactEmail    String?
+  contactPhone    String?
   services        String?           // JSON string or comma list
   description     String?
   rating          Float?            @default(4.0)
   minBudget       Int?              @default(5000)
+  maxBudget       Int?
+  currency        String?           @default("INR")
   portfolio       String?           // JSON string: list of {title,coverUrl,year}
   // legacy fields maintained for backward-compatibility
   category        String?
   portfolioUrls   String?
-  contactEmail    String?
-  maxBudget       Int?
   verified        Boolean           @default(false)
+  verifiedAt      DateTime?
+  verifiedBy      String?
+  featured        Boolean           @default(false)
   expertiseTags   String?
   industries      String?
   teamSize        Int?
   yearsExperience Int?
   responseTime    String?
+  foundedYear     Int?
+  employees       Int?
+  categories      String?           // comma separated categories for quick filters
+  serviceBadges   String?           // cached service badges for cards
+  ratingCount     Int               @default(0)
+  reviewCount     Int               @default(0)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   proposals       AgencyProposal[]
   requests        AgencyRequest[]
+  servicesOffered AgencyService[]
+  portfolios      AgencyPortfolio[]
+  reviews         AgencyReview[]
+  leads           AgencyLead[]
+  members         User[]            @relation("AgencyMembers")
+  invitations     TeamInvitation[]
+
+  @@index([city])
+  @@index([state])
+  @@index([verified])
+  @@index([rating])
+  @@index([minBudget])
+  @@index([teamSize])
+}
+
+model AgencyService {
+  id            Int      @id @default(autoincrement())
+  agencyId      Int
+  name          String
+  category      String?
+  description   String?
+  deliveryType  String?  // project | retainer | hourly
+  minTimeline   String?
+  maxTimeline   String?
+  startingPrice Int?
+  currency      String?  @default("INR")
+  isPrimary     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  agency        Agency   @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+
+  @@unique([agencyId, name])
+  @@index([agencyId])
+}
+
+model AgencyPortfolio {
+  id           Int      @id @default(autoincrement())
+  agencyId     Int
+  title        String
+  slug         String?  @unique
+  description  String?
+  mediaType    String?  // image | video | pdf | link
+  mediaUrl     String
+  thumbnailUrl String?
+  caseStudyUrl String?
+  clientName   String?
+  industry     String?
+  year         Int?
+  tags         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  agency       Agency   @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+
+  @@index([agencyId])
+}
+
+model AgencyReview {
+  id             Int      @id @default(autoincrement())
+  agencyId       Int
+  authorName     String
+  authorRole     String?
+  company        String?
+  projectType    String?
+  rating         Int
+  headline       String?
+  comment        String?
+  response       String?
+  respondedAt    DateTime?
+  status         String   @default("published") // published | flagged | hidden
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  agency         Agency   @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+
+  @@index([agencyId])
+  @@index([rating])
+}
+
+model AgencyLead {
+  id            Int      @id @default(autoincrement())
+  agencyId      Int
+  projectType   String
+  projectScope  String?
+  budgetMin     Int?
+  budgetMax     Int?
+  currency      String?  @default("INR")
+  timeline      String?
+  startDate     DateTime?
+  description   String?
+  contactName   String
+  contactEmail  String
+  contactPhone  String?
+  companyName   String?
+  designation   String?
+  source        String?  @default("portal")
+  status        String   @default("new") // new | contacted | in_progress | closed | rejected
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  agency        Agency   @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+
+  @@index([agencyId])
+  @@index([status])
+}
+
+model TeamInvitation {
+  id           Int      @id @default(autoincrement())
+  email        String
+  name         String?
+  role         String   @default("VIEWER")
+  agencyId     Int
+  token        String   @unique
+  tokenHash    String
+  createdById  Int
+  createdAt    DateTime @default(now())
+  expiresAt    DateTime
+  acceptedAt   DateTime?
+  acceptedById Int?
+  status       String   @default("PENDING")
+  metadata     String?
+
+  agency       Agency   @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  createdBy    User     @relation("InvitesCreated", fields: [createdById], references: [id], onDelete: Cascade)
+  acceptedBy   User?    @relation("InvitesAccepted", fields: [acceptedById], references: [id], onDelete: SetNull)
+
+  @@index([email])
+  @@unique([tokenHash])
 }
 
 model Investor {

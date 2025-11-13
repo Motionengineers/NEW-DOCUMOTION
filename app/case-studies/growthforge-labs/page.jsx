@@ -22,16 +22,23 @@ const milestones = [
   },
   {
     label: 'Month 14',
-    detail:
-      'Scaled ARR to ₹1.7Cr with 0 SLA breaches and 132% net revenue retention.',
+    detail: 'Scaled ARR to ₹1.7Cr with 0 SLA breaches and 132% net revenue retention.',
   },
 ];
 
 const metrics = [
   { label: 'ARR growth', value: '₹1.7Cr', caption: 'Up from ₹12L in 14 months' },
   { label: 'Net revenue retention', value: '132%', caption: 'Driven by Documotion renewal nudges' },
-  { label: 'Onboarding queue reduction', value: '47%', caption: 'Concierge workflows + Talent pods' },
-  { label: 'State grants approved', value: '9', caption: 'Auto-applied via grant intelligence hub' },
+  {
+    label: 'Onboarding queue reduction',
+    value: '47%',
+    caption: 'Concierge workflows + Talent pods',
+  },
+  {
+    label: 'State grants approved',
+    value: '9',
+    caption: 'Auto-applied via grant intelligence hub',
+  },
 ];
 
 const stack = [
@@ -79,19 +86,21 @@ export default function GrowthForgeCaseStudyPage() {
           <div className="space-y-4 rounded-3xl border border-white/10 bg-white/[0.03] p-6 shadow-lg backdrop-blur">
             <h2 className="text-xl font-semibold text-white">The challenge</h2>
             <p className="text-sm text-slate-300">
-              GrowthForge managed compliance, grant filings, and investor readiness for 60+ founders.
-              Data lived in spreadsheets, onboarding had inconsistent owners, and deadlines slipped when
-              partners switched between marketing and legal workflows. Grants also required manual audits,
-              which slowed down cash-flow positive deals.
+              GrowthForge managed compliance, grant filings, and investor readiness for 60+
+              founders. Data lived in spreadsheets, onboarding had inconsistent owners, and
+              deadlines slipped when partners switched between marketing and legal workflows. Grants
+              also required manual audits, which slowed down cash-flow positive deals.
             </p>
             <p className="text-sm text-slate-300">
-              They needed a unified operating system that kept pods aligned, automated eligibility checks,
-              and made it easy to spin up white-labeled client workspaces.
+              They needed a unified operating system that kept pods aligned, automated eligibility
+              checks, and made it easy to spin up white-labeled client workspaces.
             </p>
           </div>
 
           <div className="space-y-6 rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.05] via-white/[0.02] to-transparent p-6 shadow-lg backdrop-blur">
-            <h3 className="text-sm uppercase tracking-[0.3em] text-cyan-200">Implementation timeline</h3>
+            <h3 className="text-sm uppercase tracking-[0.3em] text-cyan-200">
+              Implementation timeline
+            </h3>
             <ul className="space-y-4">
               {milestones.map(milestone => (
                 <li key={milestone.label} className="flex items-start gap-3">
@@ -135,7 +144,10 @@ export default function GrowthForgeCaseStudyPage() {
                 </span>
                 <div>
                   <p className="font-semibold text-white">Grant acceleration pod</p>
-                  <p>Documotion auto-generated task boards for each grant with built-in compliance checks.</p>
+                  <p>
+                    Documotion auto-generated task boards for each grant with built-in compliance
+                    checks.
+                  </p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
@@ -144,7 +156,10 @@ export default function GrowthForgeCaseStudyPage() {
                 </span>
                 <div>
                   <p className="font-semibold text-white">Founder-ready workspace</p>
-                  <p>Branding Studio deployed GrowthForge’s visual system across client portals and PDFs.</p>
+                  <p>
+                    Branding Studio deployed GrowthForge’s visual system across client portals and
+                    PDFs.
+                  </p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
@@ -153,7 +168,10 @@ export default function GrowthForgeCaseStudyPage() {
                 </span>
                 <div>
                   <p className="font-semibold text-white">Revenue health dashboard</p>
-                  <p>Live insight cards aggregated retention, cohort, and pipeline data for weekly exec reviews.</p>
+                  <p>
+                    Live insight cards aggregated retention, cohort, and pipeline data for weekly
+                    exec reviews.
+                  </p>
                 </div>
               </li>
             </ul>
@@ -166,29 +184,32 @@ export default function GrowthForgeCaseStudyPage() {
             <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5 text-sm text-emerald-100">
               <p className="font-semibold text-white">Zero SLA breaches</p>
               <p className="mt-2">
-                Concierge workflows surfaced risks in real-time and escalated to owners automatically,
-                keeping client pods within promised response windows for five consecutive months.
+                Concierge workflows surfaced risks in real-time and escalated to owners
+                automatically, keeping client pods within promised response windows for five
+                consecutive months.
               </p>
             </div>
             <div className="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5 text-sm text-blue-100">
               <p className="font-semibold text-white">Investor-ready data rooms in hours</p>
               <p className="mt-2">
-                Compliance Vault kept all ROC, GST, and vendor files notarised and searchable. GrowthForge
-                now spins up investor audit rooms in under four hours (down from 3.5 days).
+                Compliance Vault kept all ROC, GST, and vendor files notarised and searchable.
+                GrowthForge now spins up investor audit rooms in under four hours (down from 3.5
+                days).
               </p>
             </div>
             <div className="rounded-2xl border border-purple-500/30 bg-purple-500/10 p-5 text-sm text-purple-100">
               <p className="font-semibold text-white">Pod visibility for leadership</p>
               <p className="mt-2">
-                Live dashboards highlighted which pods were at risk, the grants pipeline, and expansion
-                opportunities by region—steering leadership into proactive planning rather than fire-fighting.
+                Live dashboards highlighted which pods were at risk, the grants pipeline, and
+                expansion opportunities by region—steering leadership into proactive planning rather
+                than fire-fighting.
               </p>
             </div>
             <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-5 text-sm text-amber-100">
               <p className="font-semibold text-white">Higher founder satisfaction</p>
               <p className="mt-2">
-                Founder NPS jumped 14 points after GrowthForge deployed white-labeled portals with automated
-                updates and AI-powered policy explainers.
+                Founder NPS jumped 14 points after GrowthForge deployed white-labeled portals with
+                automated updates and AI-powered policy explainers.
               </p>
             </div>
           </div>
@@ -199,8 +220,9 @@ export default function GrowthForgeCaseStudyPage() {
             Ready to ship concierge-grade experiences?
           </h2>
           <p className="mt-3 text-sm text-slate-300">
-            Documotion blends compliance, grant intelligence, branding, and live analytics so your team can
-            focus on shipping outcomes. Book a demo and we’ll tailor the concierge stack to your workflows.
+            Documotion blends compliance, grant intelligence, branding, and live analytics so your
+            team can focus on shipping outcomes. Book a demo and we’ll tailor the concierge stack to
+            your workflows.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
             <a
@@ -221,4 +243,3 @@ export default function GrowthForgeCaseStudyPage() {
     </div>
   );
 }
-

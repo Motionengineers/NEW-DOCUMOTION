@@ -11,7 +11,11 @@ import { getAgencyBySlug } from '@/lib/brandingHub';
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }) {
-  const agency = await getAgencyBySlug(params.slug, { includeServices: false, includePortfolio: false, includeReviews: false });
+  const agency = await getAgencyBySlug(params.slug, {
+    includeServices: false,
+    includePortfolio: false,
+    includeReviews: false,
+  });
   if (!agency) {
     return {
       title: 'Agency not found • Documotion Branding Hub',
@@ -56,7 +60,10 @@ export default async function AgencyProfilePage({ params }) {
           <div className="grid gap-2 text-sm" style={{ color: 'var(--secondary-label)' }}>
             {agency.industries?.length ? (
               <div>
-                <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--tertiary-label)' }}>
+                <p
+                  className="text-xs uppercase tracking-wide"
+                  style={{ color: 'var(--tertiary-label)' }}
+                >
                   Industries
                 </p>
                 <p>{agency.industries.join(', ')}</p>
@@ -64,7 +71,10 @@ export default async function AgencyProfilePage({ params }) {
             ) : null}
             {agency.categories?.length ? (
               <div>
-                <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--tertiary-label)' }}>
+                <p
+                  className="text-xs uppercase tracking-wide"
+                  style={{ color: 'var(--tertiary-label)' }}
+                >
                   Categories
                 </p>
                 <p>{agency.categories.join(', ')}</p>
@@ -72,7 +82,10 @@ export default async function AgencyProfilePage({ params }) {
             ) : null}
             {agency.teamSize ? (
               <div>
-                <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--tertiary-label)' }}>
+                <p
+                  className="text-xs uppercase tracking-wide"
+                  style={{ color: 'var(--tertiary-label)' }}
+                >
                   Team
                 </p>
                 <p>{agency.teamSize}+ specialists</p>
@@ -80,7 +93,10 @@ export default async function AgencyProfilePage({ params }) {
             ) : null}
             {agency.yearsExperience ? (
               <div>
-                <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--tertiary-label)' }}>
+                <p
+                  className="text-xs uppercase tracking-wide"
+                  style={{ color: 'var(--tertiary-label)' }}
+                >
                   Years Active
                 </p>
                 <p>{agency.yearsExperience}+ years</p>
@@ -91,11 +107,15 @@ export default async function AgencyProfilePage({ params }) {
 
         <AgencyServices services={agency.services ?? []} />
         <AgencyPortfolio portfolio={agency.portfolio ?? []} />
-        <AgencyPricing services={agency.services ?? []} minBudget={agency.minBudget} maxBudget={agency.maxBudget} currency={agency.currency} />
+        <AgencyPricing
+          services={agency.services ?? []}
+          minBudget={agency.minBudget}
+          maxBudget={agency.maxBudget}
+          currency={agency.currency}
+        />
         <AgencyReviews reviews={agency.reviews ?? []} rating={agency.rating} />
         <AgencyHireForm agencyId={agency.id} agencySlug={agency.slug} />
       </main>
     </div>
   );
 }
-

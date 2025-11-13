@@ -1,34 +1,242 @@
 [
-  {"organization":"MetLife India Insurance Co. Ltd.","firstName":"Subir","lastName":"Batra","designation":"Dy. Director - Strategy","phone":"+91 124 417 9000 / 9039","email":"sbatra@metlife.com"},
-  {"organization":"MetLife India Insurance Co. Ltd.","firstName":"Arnav","lastName":"Gazi","designation":"Chief Manager","phone":"+91 124 417 9000 / 9039","email":"agazi@metlife.com"},
-  {"organization":"Novartis India Ltd.","firstName":"Anuj","lastName":"Pasrija","designation":"Country Head - Aroya","phone":"+91 22 6117 4300","email":"anuj.pasrija@novartis.com"},
-  {"organization":"PHI Seeds Ltd.","firstName":"Debashish","lastName":"Mitra","designation":"Product Manager","phone":null,"email":"debashish.mitra@pioneer.com"},
-  {"organization":"PHI Seeds Ltd.","firstName":"Pradeep","lastName":"Pattanayak","designation":"Manager - Marketing Services","phone":"+91 40 3043 4400","email":"Pradeep.Pattanayak@pioneer.com"},
-  {"organization":"Pidilite Industries Ltd.","firstName":"B. R.","lastName":"Mukhopadhyay","designation":"Trade Development Manager","phone":"+91 22 2835 7000 / 2834","email":"brmukhopadhyay@pidilite.com"},
-  {"organization":"Pidilite Industries Ltd.","firstName":"Jitendra","lastName":"Asop","designation":"Market Development Manager","phone":null,"email":"jitendra.asop@pidilite.com"},
-  {"organization":"Piramal Water (Sarvajal)","firstName":"Anuj","lastName":"Sharma","designation":"Chief Operating Officer","phone":"+91 79 2756 0485","email":"anuj@sarvajal.com"},
-  {"organization":"Planet Design India Pvt. Ltd.","firstName":"Sukanya","lastName":null,"designation":"Director","phone":"+91 22 6583 5693/94","email":"sukanya@planetdezigh.com"},
-  {"organization":"Presencing Institute","firstName":"S. R.","lastName":"Ivastava","designation":null,"phone":"+1 617 803 9683","email":"srivastava@presencing.com"},
-  {"organization":"Reuters Market Light","firstName":"Premprakash","lastName":"Sahoo","designation":"Chief Financial Officer","phone":null,"email":"premprakash.sahoo@thomsonreuters.com"},
-  {"organization":"Reuters Market Light","firstName":"Maanav","lastName":"Yashroy","designation":null,"phone":"+91 22 6743 1580","email":"maanav.yashroy@thomsonreuters.com"},
-  {"organization":"Reuters Market Light","firstName":"Amit","lastName":"Mehra","designation":"Managing Director","phone":"+91 22 6743 1583","email":null},
-  {"organization":"RSR Lemon Media Pvt. Ltd.","firstName":"Rama","lastName":"Nadhan","designation":"Director","phone":"+91 40 2355 8970/71","email":"rama@lemonmedia.in"},
-  {"organization":"RSR Lemon Media Pvt. Ltd.","firstName":"Ranga","lastName":null,"designation":"Director","phone":null,"email":"ranga@lemonmedia.in"},
-  {"organization":"Samhita","firstName":"Namit","lastName":"Agarwal","designation":"Communications Manager","phone":"+91 22 4264 6520 / 1892","email":"namit@samhita.org"},
-  {"organization":"Samhita","firstName":"Sarabjeet","lastName":null,"designation":"Associate","phone":"+91 22 4264 6520 / 1892","email":"sarabjeet@samhita.org"},
-  {"organization":"Samhita","firstName":"Priya","lastName":null,"designation":"Chief Executive Officer","phone":"+91 22 4264 6520 / 1892","email":"priya@samhita.org"},
-  {"organization":"Signal Point Partners","firstName":"Anil","lastName":"Nair","designation":"Manager - South Asia","phone":null,"email":"anair@signalpointpartners.com"},
-  {"organization":"SONG Investment Advisors","firstName":"Vishal","lastName":"Vasishth","designation":"Managing Director","phone":null,"email":"vishal@songadvisors.com"},
-  {"organization":"Swayam Shikshan Prayog","firstName":"Angelica","lastName":"Baron","designation":null,"phone":null,"email":"angelibaron@gmail.com"},
-  {"organization":"Swayam Shikshan Prayog","firstName":"Prema","lastName":"Gopalan","designation":"Director","phone":"+91 22 2621 1476","email":"premagop@gmail.com"},
-  {"organization":"Titan Industries Ltd.","firstName":"Gaurav","lastName":"Khanna","designation":null,"phone":"+91 80 6660 9556","email":"gauravkhanna@titan.co.in"},
-  {"organization":"Tractors & Farm Equipment Ltd. (TAFE)","firstName":"Cyril","lastName":"Rex","designation":"Vice President - Sales","phone":"+91 44 2827 9073","email":"cyril@tafe.co.in"},
-  {"organization":"Tractors & Farm Equipment Ltd. (TAFE)","firstName":"Anand","lastName":"Santhanam","designation":"General Manager - Marketing","phone":"+91 44 2827 9073","email":"anandsanthanam@tafe.co.in"},
-  {"organization":"UCB India Pvt. Ltd.","firstName":null,"lastName":null,"designation":"Head of Supply Chain","phone":"+91 22 4049 1181","email":null},
-  {"organization":"USV Ltd.","firstName":"Leena","lastName":"Gandhi Tewari","designation":"Chairperson","phone":"+91 22 6786 1113","email":null},
-  {"organization":"VisionSpring India","firstName":"Benjamin","lastName":"Brown","designation":"Strategy Consultant","phone":"+91 40 6515 0805 / 0809","email":"bbrown@visionspring.org"},
-  {"organization":"V-shesh Access Services","firstName":"R.","lastName":"Ramanathan","designation":"Co Founder","phone":"+91 44 6515 3506","email":"ram@v-shesh.com"},
-  {"organization":"Independent","firstName":"Rama","lastName":"Bijapurkar","designation":"Chief Executive Officer","phone":"+91 22 2282 3833","email":null}
+  {
+    "organization": "MetLife India Insurance Co. Ltd.",
+    "firstName": "Subir",
+    "lastName": "Batra",
+    "designation": "Dy. Director - Strategy",
+    "phone": "+91 124 417 9000 / 9039",
+    "email": "sbatra@metlife.com"
+  },
+  {
+    "organization": "MetLife India Insurance Co. Ltd.",
+    "firstName": "Arnav",
+    "lastName": "Gazi",
+    "designation": "Chief Manager",
+    "phone": "+91 124 417 9000 / 9039",
+    "email": "agazi@metlife.com"
+  },
+  {
+    "organization": "Novartis India Ltd.",
+    "firstName": "Anuj",
+    "lastName": "Pasrija",
+    "designation": "Country Head - Aroya",
+    "phone": "+91 22 6117 4300",
+    "email": "anuj.pasrija@novartis.com"
+  },
+  {
+    "organization": "PHI Seeds Ltd.",
+    "firstName": "Debashish",
+    "lastName": "Mitra",
+    "designation": "Product Manager",
+    "phone": null,
+    "email": "debashish.mitra@pioneer.com"
+  },
+  {
+    "organization": "PHI Seeds Ltd.",
+    "firstName": "Pradeep",
+    "lastName": "Pattanayak",
+    "designation": "Manager - Marketing Services",
+    "phone": "+91 40 3043 4400",
+    "email": "Pradeep.Pattanayak@pioneer.com"
+  },
+  {
+    "organization": "Pidilite Industries Ltd.",
+    "firstName": "B. R.",
+    "lastName": "Mukhopadhyay",
+    "designation": "Trade Development Manager",
+    "phone": "+91 22 2835 7000 / 2834",
+    "email": "brmukhopadhyay@pidilite.com"
+  },
+  {
+    "organization": "Pidilite Industries Ltd.",
+    "firstName": "Jitendra",
+    "lastName": "Asop",
+    "designation": "Market Development Manager",
+    "phone": null,
+    "email": "jitendra.asop@pidilite.com"
+  },
+  {
+    "organization": "Piramal Water (Sarvajal)",
+    "firstName": "Anuj",
+    "lastName": "Sharma",
+    "designation": "Chief Operating Officer",
+    "phone": "+91 79 2756 0485",
+    "email": "anuj@sarvajal.com"
+  },
+  {
+    "organization": "Planet Design India Pvt. Ltd.",
+    "firstName": "Sukanya",
+    "lastName": null,
+    "designation": "Director",
+    "phone": "+91 22 6583 5693/94",
+    "email": "sukanya@planetdezigh.com"
+  },
+  {
+    "organization": "Presencing Institute",
+    "firstName": "S. R.",
+    "lastName": "Ivastava",
+    "designation": null,
+    "phone": "+1 617 803 9683",
+    "email": "srivastava@presencing.com"
+  },
+  {
+    "organization": "Reuters Market Light",
+    "firstName": "Premprakash",
+    "lastName": "Sahoo",
+    "designation": "Chief Financial Officer",
+    "phone": null,
+    "email": "premprakash.sahoo@thomsonreuters.com"
+  },
+  {
+    "organization": "Reuters Market Light",
+    "firstName": "Maanav",
+    "lastName": "Yashroy",
+    "designation": null,
+    "phone": "+91 22 6743 1580",
+    "email": "maanav.yashroy@thomsonreuters.com"
+  },
+  {
+    "organization": "Reuters Market Light",
+    "firstName": "Amit",
+    "lastName": "Mehra",
+    "designation": "Managing Director",
+    "phone": "+91 22 6743 1583",
+    "email": null
+  },
+  {
+    "organization": "RSR Lemon Media Pvt. Ltd.",
+    "firstName": "Rama",
+    "lastName": "Nadhan",
+    "designation": "Director",
+    "phone": "+91 40 2355 8970/71",
+    "email": "rama@lemonmedia.in"
+  },
+  {
+    "organization": "RSR Lemon Media Pvt. Ltd.",
+    "firstName": "Ranga",
+    "lastName": null,
+    "designation": "Director",
+    "phone": null,
+    "email": "ranga@lemonmedia.in"
+  },
+  {
+    "organization": "Samhita",
+    "firstName": "Namit",
+    "lastName": "Agarwal",
+    "designation": "Communications Manager",
+    "phone": "+91 22 4264 6520 / 1892",
+    "email": "namit@samhita.org"
+  },
+  {
+    "organization": "Samhita",
+    "firstName": "Sarabjeet",
+    "lastName": null,
+    "designation": "Associate",
+    "phone": "+91 22 4264 6520 / 1892",
+    "email": "sarabjeet@samhita.org"
+  },
+  {
+    "organization": "Samhita",
+    "firstName": "Priya",
+    "lastName": null,
+    "designation": "Chief Executive Officer",
+    "phone": "+91 22 4264 6520 / 1892",
+    "email": "priya@samhita.org"
+  },
+  {
+    "organization": "Signal Point Partners",
+    "firstName": "Anil",
+    "lastName": "Nair",
+    "designation": "Manager - South Asia",
+    "phone": null,
+    "email": "anair@signalpointpartners.com"
+  },
+  {
+    "organization": "SONG Investment Advisors",
+    "firstName": "Vishal",
+    "lastName": "Vasishth",
+    "designation": "Managing Director",
+    "phone": null,
+    "email": "vishal@songadvisors.com"
+  },
+  {
+    "organization": "Swayam Shikshan Prayog",
+    "firstName": "Angelica",
+    "lastName": "Baron",
+    "designation": null,
+    "phone": null,
+    "email": "angelibaron@gmail.com"
+  },
+  {
+    "organization": "Swayam Shikshan Prayog",
+    "firstName": "Prema",
+    "lastName": "Gopalan",
+    "designation": "Director",
+    "phone": "+91 22 2621 1476",
+    "email": "premagop@gmail.com"
+  },
+  {
+    "organization": "Titan Industries Ltd.",
+    "firstName": "Gaurav",
+    "lastName": "Khanna",
+    "designation": null,
+    "phone": "+91 80 6660 9556",
+    "email": "gauravkhanna@titan.co.in"
+  },
+  {
+    "organization": "Tractors & Farm Equipment Ltd. (TAFE)",
+    "firstName": "Cyril",
+    "lastName": "Rex",
+    "designation": "Vice President - Sales",
+    "phone": "+91 44 2827 9073",
+    "email": "cyril@tafe.co.in"
+  },
+  {
+    "organization": "Tractors & Farm Equipment Ltd. (TAFE)",
+    "firstName": "Anand",
+    "lastName": "Santhanam",
+    "designation": "General Manager - Marketing",
+    "phone": "+91 44 2827 9073",
+    "email": "anandsanthanam@tafe.co.in"
+  },
+  {
+    "organization": "UCB India Pvt. Ltd.",
+    "firstName": null,
+    "lastName": null,
+    "designation": "Head of Supply Chain",
+    "phone": "+91 22 4049 1181",
+    "email": null
+  },
+  {
+    "organization": "USV Ltd.",
+    "firstName": "Leena",
+    "lastName": "Gandhi Tewari",
+    "designation": "Chairperson",
+    "phone": "+91 22 6786 1113",
+    "email": null
+  },
+  {
+    "organization": "VisionSpring India",
+    "firstName": "Benjamin",
+    "lastName": "Brown",
+    "designation": "Strategy Consultant",
+    "phone": "+91 40 6515 0805 / 0809",
+    "email": "bbrown@visionspring.org"
+  },
+  {
+    "organization": "V-shesh Access Services",
+    "firstName": "R.",
+    "lastName": "Ramanathan",
+    "designation": "Co Founder",
+    "phone": "+91 44 6515 3506",
+    "email": "ram@v-shesh.com"
+  },
+  {
+    "organization": "Independent",
+    "firstName": "Rama",
+    "lastName": "Bijapurkar",
+    "designation": "Chief Executive Officer",
+    "phone": "+91 22 2282 3833",
+    "email": null
+  }
 ]
-
-

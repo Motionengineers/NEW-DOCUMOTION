@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { Users, Target, Rocket, TrendingUp, Sparkles, ArrowRight } from 'lucide-react';
 import InfographicWidget from '@/components/infographics/InfographicWidget';
@@ -61,22 +62,26 @@ export default function BusinessCustomerInfographic({ variant: initialVariant = 
     <section className="space-y-4">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-sm uppercase tracking-widest" style={{ color: 'var(--tertiary-label)' }}>
+          <p
+            className="text-sm uppercase tracking-widest"
+            style={{ color: 'var(--tertiary-label)' }}
+          >
             Business Customer Insights
           </p>
           <h2 className="text-2xl font-semibold" style={{ color: 'var(--label)' }}>
             Infographic Overview
           </h2>
         </div>
-        <div className="flex items-center gap-2 rounded-full border px-2 py-1 text-xs" style={{ borderColor: 'var(--separator)' }}>
+        <div
+          className="flex items-center gap-2 rounded-full border px-2 py-1 text-xs"
+          style={{ borderColor: 'var(--separator)' }}
+        >
           <button
             type="button"
             onClick={() => setVariant('glass')}
             className={cn(
               'px-3 py-1 rounded-full transition-colors',
-              variant === 'glass'
-                ? 'bg-blue-500 text-white'
-                : 'hover:bg-white/5'
+              variant === 'glass' ? 'bg-blue-500 text-white' : 'hover:bg-white/5'
             )}
           >
             Glass
@@ -86,9 +91,7 @@ export default function BusinessCustomerInfographic({ variant: initialVariant = 
             onClick={() => setVariant('solid')}
             className={cn(
               'px-3 py-1 rounded-full transition-colors',
-              variant === 'solid'
-                ? 'bg-blue-500 text-white'
-                : 'hover:bg-white/5'
+              variant === 'solid' ? 'bg-blue-500 text-white' : 'hover:bg-white/5'
             )}
           >
             Solid
@@ -106,13 +109,19 @@ export default function BusinessCustomerInfographic({ variant: initialVariant = 
           changeTone="positive"
           footer="Net revenue includes GST-compliant invoices auto-issued via Documotion."
         >
-          <div className="flex items-center gap-3 text-sm" style={{ color: 'var(--secondary-label)' }}>
+          <div
+            className="flex items-center gap-3 text-sm"
+            style={{ color: 'var(--secondary-label)' }}
+          >
             <Users className="h-5 w-5 text-blue-400" />
             <span>
               Net revenue retention: <strong>{infographicData.headline.retention}</strong>
             </span>
           </div>
-          <div className="flex items-center gap-3 text-sm" style={{ color: 'var(--secondary-label)' }}>
+          <div
+            className="flex items-center gap-3 text-sm"
+            style={{ color: 'var(--secondary-label)' }}
+          >
             <Rocket className="h-5 w-5 text-emerald-400" />
             <span>
               Payback period: <strong>{infographicData.headline.payback}</strong>
@@ -129,9 +138,14 @@ export default function BusinessCustomerInfographic({ variant: initialVariant = 
           <div className="space-y-3">
             {infographicData.funnel.map(stage => (
               <div key={stage.label}>
-                <div className="flex items-center justify-between text-sm" style={{ color: 'var(--secondary-label)' }}>
+                <div
+                  className="flex items-center justify-between text-sm"
+                  style={{ color: 'var(--secondary-label)' }}
+                >
                   <span>{stage.label}</span>
-                  <span>{stage.value.toLocaleString()} • {stage.conversion}</span>
+                  <span>
+                    {stage.value.toLocaleString()} • {stage.conversion}
+                  </span>
                 </div>
                 <div className="mt-2 h-2 rounded-full bg-white/10">
                   <div
@@ -149,13 +163,13 @@ export default function BusinessCustomerInfographic({ variant: initialVariant = 
           title="Customer Spotlight"
           subtitle={infographicData.spotlight.customer}
           footer={
-            <button
-              type="button"
+            <Link
+              href="/case-studies/growthforge-labs"
               className="inline-flex items-center gap-2 text-sm font-medium hover:underline"
               style={{ color: 'var(--system-blue)' }}
             >
               View full case study <ArrowRight className="h-4 w-4" />
-            </button>
+            </Link>
           }
         >
           <p className="text-sm leading-relaxed" style={{ color: 'var(--secondary-label)' }}>
@@ -173,11 +187,7 @@ export default function BusinessCustomerInfographic({ variant: initialVariant = 
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <InfographicWidget
-          variant={variant}
-          title="Segments"
-          subtitle="Top Customer Cohorts"
-        >
+        <InfographicWidget variant={variant} title="Segments" subtitle="Top Customer Cohorts">
           <div className="space-y-2">
             {infographicData.cohorts.map((cohort, idx) => (
               <div key={cohort.label} className="flex items-center justify-between">
@@ -206,7 +216,10 @@ export default function BusinessCustomerInfographic({ variant: initialVariant = 
           <div className="space-y-3">
             {infographicData.expansion.map(region => (
               <div key={region.region}>
-                <div className="flex items-center justify-between text-sm" style={{ color: 'var(--secondary-label)' }}>
+                <div
+                  className="flex items-center justify-between text-sm"
+                  style={{ color: 'var(--secondary-label)' }}
+                >
                   <span>{region.region}</span>
                   <span>{region.score}</span>
                 </div>
@@ -221,11 +234,7 @@ export default function BusinessCustomerInfographic({ variant: initialVariant = 
           </div>
         </InfographicWidget>
 
-        <InfographicWidget
-          variant={variant}
-          title="Playbooks"
-          subtitle="Next Best Actions"
-        >
+        <InfographicWidget variant={variant} title="Playbooks" subtitle="Next Best Actions">
           <div className="space-y-3 text-sm" style={{ color: 'var(--secondary-label)' }}>
             <div className="flex items-start gap-3">
               <Target className="mt-0.5 h-4 w-4 text-purple-400" />
@@ -233,7 +242,10 @@ export default function BusinessCustomerInfographic({ variant: initialVariant = 
                 <p className="font-medium" style={{ color: 'var(--label)' }}>
                   Relaunch FinHub automation
                 </p>
-                <p>Auto-segment fintech founders into 3 grant tracks and mirror in Documotion reminders.</p>
+                <p>
+                  Auto-segment fintech founders into 3 grant tracks and mirror in Documotion
+                  reminders.
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -242,7 +254,10 @@ export default function BusinessCustomerInfographic({ variant: initialVariant = 
                 <p className="font-medium" style={{ color: 'var(--label)' }}>
                   30-day retention sprint
                 </p>
-                <p>Create concierge nudges for onboarding cohorts with <span className="font-semibold">below 70%</span> completion.</p>
+                <p>
+                  Create concierge nudges for onboarding cohorts with{' '}
+                  <span className="font-semibold">below 70%</span> completion.
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -260,4 +275,3 @@ export default function BusinessCustomerInfographic({ variant: initialVariant = 
     </section>
   );
 }
-

@@ -1,0 +1,518 @@
+[
+  {
+    "name": "Pixel Kraft Studios",
+    "slug": "pixel-kraft-studios",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "location": "Mumbai, Maharashtra",
+    "country": "India",
+    "logoUrl": "/uploads/branding/pixel-kraft-logo.png",
+    "bannerUrl": "/uploads/branding/pixel-kraft-banner.jpg",
+    "website": "https://pixelkraft.in",
+    "instagram": "https://instagram.com/pixelkraftstudios",
+    "linkedin": "https://linkedin.com/company/pixelkraft-studios",
+    "contactEmail": "hello@pixelkraft.in",
+    "contactPhone": "+91-98765-43210",
+    "teamSize": 35,
+    "employees": 35,
+    "foundedYear": 2016,
+    "yearsExperience": 9,
+    "minBudget": 150000,
+    "maxBudget": 2500000,
+    "currency": "INR",
+    "rating": 4.8,
+    "verified": true,
+    "verifiedAt": "2024-05-12",
+    "featured": true,
+    "responseTime": "Within 24 hours",
+    "description": "Award-winning creative studio crafting immersive launch campaigns, film-grade storytelling, and conversion-ready landing experiences for India’s top consumer brands.",
+    "servicesSummary": ["Brand Identity", "Launch Campaigns", "Ad Film Production"],
+    "categories": ["Ad Agencies (India)", "Branding Studios", "Video Production Houses"],
+    "industries": ["D2C", "FMCG", "Fashion"],
+    "services": [
+      {
+        "name": "Brand Identity Sprint",
+        "category": "Branding",
+        "description": "Two-week discovery sprint delivering full identity system, tone of voice playbook, and launch-ready brand kit.",
+        "deliveryType": "project",
+        "minTimeline": "2 weeks",
+        "maxTimeline": "4 weeks",
+        "startingPrice": 180000,
+        "isPrimary": true
+      },
+      {
+        "name": "Launch Campaign Retainer",
+        "category": "Advertising",
+        "description": "Integrated ATL + digital campaign production, influencer planning, and performance creative optimisation.",
+        "deliveryType": "retainer",
+        "minTimeline": "3 months",
+        "maxTimeline": "6 months",
+        "startingPrice": 250000
+      },
+      {
+        "name": "Ad Film Production",
+        "category": "Video Production",
+        "description": "End-to-end film production with storyboard, production, post, and platform-specific edits.",
+        "deliveryType": "project",
+        "minTimeline": "4 weeks",
+        "maxTimeline": "8 weeks",
+        "startingPrice": 320000
+      }
+    ],
+    "portfolio": [
+      {
+        "title": "Nyra Beauty National Launch",
+        "mediaType": "image",
+        "mediaUrl": "/uploads/branding/pixel-kraft/nyra-banner.jpg",
+        "thumbnailUrl": "/uploads/branding/pixel-kraft/nyra-thumb.jpg",
+        "caseStudyUrl": "https://pixelkraft.in/case-studies/nyra",
+        "clientName": "Nyra Beauty",
+        "industry": ["Beauty", "Consumer"],
+        "year": 2024,
+        "tags": ["ATL", "Launch"],
+        "description": "Scaled Nyra Beauty from stealth to 30M views in 6 weeks with a creator-led content engine."
+      },
+      {
+        "title": "UrbanRide Mobility GTM",
+        "mediaType": "video",
+        "mediaUrl": "https://cdn.pixelkraft.in/urbanride-showcase.mp4",
+        "thumbnailUrl": "/uploads/branding/pixel-kraft/urbanride-thumb.jpg",
+        "clientName": "UrbanRide",
+        "industry": ["Mobility", "EV"],
+        "year": 2023,
+        "tags": ["Automotive", "Product Launch"],
+        "description": "Created integrated launch for UrbanRide EV scooters with 45% lift in pre-orders."
+      }
+    ],
+    "reviews": [
+      {
+        "authorName": "Anika Sharma",
+        "authorRole": "Founder, Nyra Beauty",
+        "company": "Nyra Beauty",
+        "projectType": "Brand Launch",
+        "rating": 5,
+        "headline": "Transformed our national debut",
+        "comment": "Pixel Kraft became an extension of our founding team. From positioning to film production they drove results end-to-end.",
+        "createdAt": "2024-06-04"
+      },
+      {
+        "authorName": "Raj Mehta",
+        "authorRole": "CMO, UrbanRide",
+        "company": "UrbanRide Mobility",
+        "projectType": "GTM Campaign",
+        "rating": 5,
+        "headline": "Speed, craft, and actual conversion lift",
+        "comment": "They set up a rapid content pipeline and performance loops that took us from stealth to sold out waitlists.",
+        "createdAt": "2023-11-18"
+      }
+    ]
+  },
+  {
+    "name": "Studio Kinetiq",
+    "slug": "studio-kinetiq",
+    "city": "Bengaluru",
+    "state": "Karnataka",
+    "location": "Bengaluru, Karnataka",
+    "logoUrl": "/uploads/branding/studio-kinetiq-logo.png",
+    "bannerUrl": "/uploads/branding/studio-kinetiq-banner.jpg",
+    "website": "https://kinetiq.studio",
+    "instagram": "https://instagram.com/studiokinetiq",
+    "linkedin": "https://linkedin.com/company/studio-kinetiq",
+    "contactEmail": "newbiz@kinetiq.studio",
+    "contactPhone": "+91-80763-22119",
+    "teamSize": 24,
+    "employees": 24,
+    "foundedYear": 2018,
+    "yearsExperience": 6,
+    "minBudget": 120000,
+    "maxBudget": 1800000,
+    "rating": 4.7,
+    "verified": true,
+    "verifiedAt": "2024-04-22",
+    "featured": false,
+    "responseTime": "Same day",
+    "description": "Motion-first branding studio delivering cinematic explainer videos, product demos, and pitch motion for VC-backed startups.",
+    "servicesSummary": ["Motion Design", "Product Demo Videos", "Pitch Graphics"],
+    "categories": ["Video Production Houses", "Motion Graphics Artists", "Branding Studios"],
+    "industries": ["SaaS", "Fintech", "DeepTech"],
+    "services": [
+      {
+        "name": "Product Motion Launch Kit",
+        "category": "Motion Graphics",
+        "description": "Storyboard, design system, animation, and launch optimisations for new product or feature releases.",
+        "deliveryType": "project",
+        "minTimeline": "3 weeks",
+        "maxTimeline": "5 weeks",
+        "startingPrice": 145000,
+        "isPrimary": true
+      },
+      {
+        "name": "Founders Pitch Pack",
+        "category": "Pitch Design",
+        "description": "Investor motion intros, animated slides, and teaser micro-sites for fundraising announcements.",
+        "deliveryType": "project",
+        "startingPrice": 200000
+      },
+      {
+        "name": "Customer Story Films",
+        "category": "Video Production",
+        "description": "Hybrid live-action + motion customer testimonial films produced across India’s top startup hubs.",
+        "deliveryType": "project",
+        "startingPrice": 260000
+      }
+    ],
+    "portfolio": [
+      {
+        "title": "Finsera One Click Lending",
+        "mediaType": "video",
+        "mediaUrl": "https://cdn.kinetiq.studio/finsera-launch.mp4",
+        "thumbnailUrl": "/uploads/branding/studio-kinetiq/finsera-thumb.jpg",
+        "clientName": "Finsera",
+        "industry": ["Fintech"],
+        "year": 2023,
+        "tags": ["Launch Video", "Explainer"],
+        "description": "Animated explainer for Finsera’s embedded lending stack. Closed 50 enterprise demos post launch."
+      },
+      {
+        "title": "Orbit Edge Cloud Demo",
+        "mediaType": "image",
+        "mediaUrl": "/uploads/branding/studio-kinetiq/orbit-edge.jpg",
+        "thumbnailUrl": "/uploads/branding/studio-kinetiq/orbit-edge-thumb.jpg",
+        "clientName": "Orbit Edge",
+        "industry": ["Cloud", "DevTools"],
+        "year": 2024,
+        "description": "Sequence of animated UI walkthroughs for a developer-first edge platform."
+      }
+    ],
+    "reviews": [
+      {
+        "authorName": "Mihir Varma",
+        "authorRole": "Co-founder, Finsera",
+        "company": "Finsera",
+        "projectType": "Explainer Video",
+        "rating": 5,
+        "headline": "Helped us close enterprise deals quickly",
+        "comment": "The team understood complex fintech workflows and converted it into compelling visuals our sales team reuses every week.",
+        "createdAt": "2023-08-19"
+      },
+      {
+        "authorName": "Deepti Rao",
+        "authorRole": "Head of Marketing, Orbit Edge",
+        "company": "Orbit Edge",
+        "projectType": "Product Demo",
+        "rating": 4,
+        "headline": "Kinetiq nailed developer-first storytelling",
+        "comment": "They created a crisp visual narrative that resonated with engineers without losing business impact.",
+        "createdAt": "2024-02-09"
+      }
+    ]
+  },
+  {
+    "name": "Northstar Collective",
+    "slug": "northstar-collective",
+    "city": "New Delhi",
+    "state": "Delhi",
+    "location": "New Delhi, Delhi NCR",
+    "logoUrl": "/uploads/branding/northstar-collective-logo.png",
+    "website": "https://northstarcollective.in",
+    "instagram": "https://instagram.com/northstar.collective",
+    "linkedin": "https://linkedin.com/company/northstar-collective",
+    "contactEmail": "projects@northstarcollective.in",
+    "contactPhone": "+91-98109-11223",
+    "teamSize": 18,
+    "employees": 18,
+    "foundedYear": 2014,
+    "yearsExperience": 10,
+    "minBudget": 90000,
+    "maxBudget": 1250000,
+    "rating": 4.6,
+    "verified": true,
+    "verifiedAt": "2024-03-10",
+    "responseTime": "Within 48 hours",
+    "description": "Boutique branding collective focused on premium hospitality, lifestyle, and boutique D2C brands with deep experience in packaging.",
+    "servicesSummary": ["Brand Strategy", "Packaging Systems", "Experiential Design"],
+    "categories": ["Branding Studios", "Photographers", "Creative Directors"],
+    "industries": ["Hospitality", "Lifestyle", "Food & Beverage"],
+    "services": [
+      {
+        "name": "Hospitality Experience Playbook",
+        "category": "Strategy",
+        "description": "Brand architecture, naming, guest journey, and on-premise experience design.",
+        "deliveryType": "project",
+        "startingPrice": 200000,
+        "isPrimary": true
+      },
+      {
+        "name": "Packaging Accelerator",
+        "category": "Packaging",
+        "description": "Concept-to-production packaging system across SKUs with vendor onboarding.",
+        "deliveryType": "project",
+        "startingPrice": 160000
+      },
+      {
+        "name": "Lifestyle Content Retainer",
+        "category": "Content",
+        "description": "Monthly photo & video shoots, social rollout planning, and influencer kits.",
+        "deliveryType": "retainer",
+        "startingPrice": 140000
+      }
+    ],
+    "portfolio": [
+      {
+        "title": "Kasbah Atelier Identity",
+        "mediaType": "image",
+        "mediaUrl": "/uploads/branding/northstar/kasbah-identity.jpg",
+        "thumbnailUrl": "/uploads/branding/northstar/kasbah-thumb.jpg",
+        "clientName": "Kasbah Atelier",
+        "industry": ["Hospitality"],
+        "year": 2022,
+        "tags": ["Branding", "Experience"],
+        "description": "Reimagined Kasbah Atelier’s guest journey across 3 flagship properties."
+      },
+      {
+        "title": "Aura Botanicals Packaging",
+        "mediaType": "image",
+        "mediaUrl": "/uploads/branding/northstar/aura-packaging.jpg",
+        "clientName": "Aura Botanicals",
+        "industry": ["D2C", "Beauty"],
+        "year": 2023,
+        "tags": ["Packaging"],
+        "description": "Developed end-to-end packaging and unboxing ritual for clean beauty brand."
+      }
+    ],
+    "reviews": [
+      {
+        "authorName": "Shruti Malhotra",
+        "authorRole": "CEO, Kasbah Atelier",
+        "company": "Kasbah Atelier",
+        "projectType": "Hospitality Branding",
+        "rating": 5,
+        "headline": "Guests noticed the difference immediately",
+        "comment": "Northstar refined every touchpoint from check-in to departure and the guest feedback has been phenomenal.",
+        "createdAt": "2022-10-01"
+      }
+    ]
+  },
+  {
+    "name": "Growthloop Digital",
+    "slug": "growthloop-digital",
+    "city": "Bengaluru",
+    "state": "Karnataka",
+    "location": "Bengaluru, Karnataka",
+    "logoUrl": "/uploads/branding/growthloop-logo.png",
+    "website": "https://growthloop.co",
+    "instagram": "https://instagram.com/growthloopdigital",
+    "linkedin": "https://linkedin.com/company/growthloop-digital",
+    "contactEmail": "marketing@growthloop.co",
+    "contactPhone": "+91-73377-55411",
+    "teamSize": 42,
+    "employees": 42,
+    "foundedYear": 2019,
+    "yearsExperience": 5,
+    "minBudget": 75000,
+    "maxBudget": 950000,
+    "rating": 4.5,
+    "verified": false,
+    "responseTime": "Within 12 hours",
+    "description": "Full-funnel performance marketing agency specialised in paid acquisition, lifecycle automation, and growth experiments for SaaS & Fintech.",
+    "servicesSummary": ["Paid Ads", "Lifecycle Automation", "Analytics Setup"],
+    "categories": ["Ad Agencies (India)", "Social Media Agencies", "Media Buying Agencies"],
+    "industries": ["SaaS", "Fintech", "Marketplaces"],
+    "services": [
+      {
+        "name": "Performance Marketing Sprint",
+        "category": "Performance",
+        "description": "Campaign architecture, creative lab, and optimisation playbooks for acquisition.",
+        "deliveryType": "retainer",
+        "startingPrice": 90000,
+        "isPrimary": true
+      },
+      {
+        "name": "Lifecycle Automation Setup",
+        "category": "Lifecycle",
+        "description": "Set up email, push, and in-app journeys with experimentation frameworks.",
+        "deliveryType": "project",
+        "startingPrice": 125000
+      },
+      {
+        "name": "Analytics & Attribution Audit",
+        "category": "Analytics",
+        "deliveryType": "project",
+        "startingPrice": 65000
+      }
+    ],
+    "portfolio": [
+      {
+        "title": "Credlance Fintech Growth Engine",
+        "mediaType": "image",
+        "mediaUrl": "/uploads/branding/growthloop/cred-lance-dashboard.jpg",
+        "clientName": "Credlance",
+        "industry": ["Fintech"],
+        "year": 2024,
+        "description": "Increased qualified leads 3.2x through multi-channel journey and creative refresh."
+      },
+      {
+        "title": "SwiftSales SaaS Paid Funnel",
+        "mediaType": "image",
+        "mediaUrl": "/uploads/branding/growthloop/swiftsales-funnel.jpg",
+        "clientName": "SwiftSales",
+        "industry": ["SaaS"],
+        "year": 2023,
+        "description": "Reduced CAC by 37% with targeted vertical campaigns."
+      }
+    ],
+    "reviews": [
+      {
+        "authorName": "Devika Narayan",
+        "authorRole": "VP Growth, Credlance",
+        "company": "Credlance",
+        "projectType": "Growth Retainer",
+        "rating": 5,
+        "headline": "Always-on experimentation mindset",
+        "comment": "The team is metrics-obsessed, quick to iterate, and aligned to revenue not vanity metrics.",
+        "createdAt": "2024-07-02"
+      }
+    ]
+  },
+  {
+    "name": "Storygrid Films",
+    "slug": "storygrid-films",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "location": "Hyderabad, Telangana",
+    "logoUrl": "/uploads/branding/storygrid-films-logo.png",
+    "website": "https://storygridfilms.com",
+    "instagram": "https://instagram.com/storygridfilms",
+    "linkedin": "https://linkedin.com/company/storygrid-films",
+    "contactEmail": "hi@storygridfilms.com",
+    "contactPhone": "+91-90000-22011",
+    "teamSize": 16,
+    "employees": 16,
+    "foundedYear": 2015,
+    "yearsExperience": 8,
+    "minBudget": 110000,
+    "maxBudget": 1800000,
+    "rating": 4.9,
+    "verified": true,
+    "verifiedAt": "2024-01-15",
+    "description": "Film production house creating cinematic ads, founder stories, product reveal films, and docu-style brand narratives.",
+    "servicesSummary": ["Ad Films", "Docu Stories", "Animations"],
+    "categories": [
+      "Video Production Houses",
+      "Influencer Marketing Agencies",
+      "Motion Graphics Artists"
+    ],
+    "industries": ["Technology", "Education", "Healthcare"],
+    "services": [
+      {
+        "name": "30-Second Film Pack",
+        "category": "Advertising",
+        "description": "Script, storyboard, production, and platform cuts for hero brand films.",
+        "deliveryType": "project",
+        "startingPrice": 240000,
+        "isPrimary": true
+      },
+      {
+        "name": "Founder Story Series",
+        "category": "Content",
+        "startingPrice": 300000
+      },
+      {
+        "name": "Hybrid Animation Film",
+        "category": "Motion",
+        "startingPrice": 180000
+      }
+    ],
+    "portfolio": [
+      {
+        "title": "EduLeap Future Classroom",
+        "mediaType": "video",
+        "mediaUrl": "https://cdn.storygridfilms.com/eduleap.mp4",
+        "clientName": "EduLeap",
+        "industry": ["Edtech"],
+        "year": 2023,
+        "description": "Docu-narrative featuring 4 classrooms across India with a 65% rise in demo signups."
+      }
+    ],
+    "reviews": [
+      {
+        "authorName": "Pranav Shekhar",
+        "authorRole": "CEO, EduLeap",
+        "company": "EduLeap",
+        "projectType": "Ad Film",
+        "rating": 5,
+        "headline": "They understand brand emotion",
+        "comment": "Storygrid captured our impact like an award-winning documentary. The film became our primary sales asset.",
+        "createdAt": "2023-12-11"
+      }
+    ]
+  },
+  {
+    "name": "Collective Wave",
+    "slug": "collective-wave",
+    "city": "Pune",
+    "state": "Maharashtra",
+    "location": "Pune, Maharashtra",
+    "logoUrl": "/uploads/branding/collective-wave-logo.png",
+    "website": "https://collectivewave.in",
+    "instagram": "https://instagram.com/collectivewave",
+    "linkedin": "https://linkedin.com/company/collective-wave",
+    "contactEmail": "contact@collectivewave.in",
+    "contactPhone": "+91-98989-44112",
+    "teamSize": 12,
+    "employees": 12,
+    "foundedYear": 2020,
+    "yearsExperience": 4,
+    "minBudget": 45000,
+    "maxBudget": 650000,
+    "rating": 4.4,
+    "verified": false,
+    "description": "Remote-first collective of designers, strategists, and social specialists available as an on-demand brand pod for startups.",
+    "servicesSummary": ["Brand Pods", "Social Retainers", "Design Systems"],
+    "categories": ["Freelance Designers", "Social Media Agencies", "Creative Directors"],
+    "industries": ["Startups", "SaaS", "Education"],
+    "services": [
+      {
+        "name": "Fractional Brand Pod",
+        "category": "Retainer",
+        "description": "Cross-functional pod (designer + strategist + motion) working embedded with founders.",
+        "deliveryType": "retainer",
+        "startingPrice": 65000,
+        "isPrimary": true
+      },
+      {
+        "name": "Social Media Accelerator",
+        "category": "Social Media",
+        "startingPrice": 55000
+      },
+      {
+        "name": "Design System Intensive",
+        "category": "Design",
+        "startingPrice": 80000
+      }
+    ],
+    "portfolio": [
+      {
+        "title": "Classly Academy Brand Pod",
+        "mediaType": "image",
+        "mediaUrl": "/uploads/branding/collectivewave/classly-case.jpg",
+        "clientName": "Classly Academy",
+        "industry": ["Edtech"],
+        "year": 2024,
+        "description": "Brand pod scaled Classly’s creative ops alongside Series A growth."
+      }
+    ],
+    "reviews": [
+      {
+        "authorName": "Richa Talwar",
+        "authorRole": "Founder, Classly Academy",
+        "company": "Classly Academy",
+        "projectType": "Embedded Pod",
+        "rating": 4,
+        "headline": "Feels like an in-house team",
+        "comment": "Collective Wave is flexible, fast, and has a reliable design QA process.",
+        "createdAt": "2024-05-26"
+      }
+    ]
+  }
+]

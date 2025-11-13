@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
@@ -63,8 +63,14 @@ function formatRelative(date) {
 function RoleBadge({ role }) {
   const classes = ROLE_BADGE[role] ?? ROLE_BADGE.VIEWER;
   return (
-    <span className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs ${classes}`}>
-      {role === 'OWNER' ? <Crown className="h-3.5 w-3.5" /> : role === 'ADMIN' ? <ShieldCheck className="h-3.5 w-3.5" /> : null}
+    <span
+      className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs ${classes}`}
+    >
+      {role === 'OWNER' ? (
+        <Crown className="h-3.5 w-3.5" />
+      ) : role === 'ADMIN' ? (
+        <ShieldCheck className="h-3.5 w-3.5" />
+      ) : null}
       {ROLE_LABEL[role] ?? role}
     </span>
   );
@@ -82,8 +88,17 @@ function Avatar({ name, email, image, size = 40 }) {
   }, [name, email]);
 
   if (image) {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={image} alt={name ?? email ?? 'Member avatar'} className="rounded-full object-cover" style={{ width: size, height: size }} />;
+    return (
+      <Image
+        src={image}
+        alt={name ?? email ?? 'Member avatar'}
+        width={size}
+        height={size}
+        className="rounded-full object-cover"
+        style={{ width: size, height: size }}
+        sizes={`${size}px`}
+      />
+    );
   }
 
   return (
@@ -303,7 +318,11 @@ function InviteMemberModal({ open, onClose, onSubmit, submitting, form, setForm 
               disabled={submitting}
               className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Mail className="h-4 w-4" />}
+              {submitting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Mail className="h-4 w-4" />
+              )}
               {submitting ? 'Sending invite…' : 'Send invite'}
             </button>
           </div>
@@ -313,7 +332,7 @@ function InviteMemberModal({ open, onClose, onSubmit, submitting, form, setForm 
   );
 }
 
-export default function TeamSettingsPage() {
+function TeamSettingsContent() {
   const searchParams = useSearchParams();
   const [agencyId, setAgencyId] = useState(() => {
     const fromQuery = Number(searchParams.get('agencyId') ?? '1');
@@ -340,7 +359,7 @@ export default function TeamSettingsPage() {
     return () => clearTimeout(timer);
   }, [toast]);
 
-  async function loadTeam() {
+  const loadTeam = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch(`/api/invitations?agencyId=${agencyId}`);
@@ -356,11 +375,11 @@ export default function TeamSettingsPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [agencyId]);
 
   useEffect(() => {
     loadTeam();
-  }, [agencyId]);
+  }, [loadTeam]);
 
   const handleInvite = async () => {
     setSubmitting(true);
@@ -394,7 +413,11 @@ export default function TeamSettingsPage() {
       } else {
         setToast({ variant: 'success', message: 'Invitation sent successfully.' });
         setActivityFeed(current => [
-          { id: Date.now(), text: `${inviteForm.email} invited`, timestamp: new Date().toISOString() },
+          {
+            id: Date.now(),
+            text: `${inviteForm.email} invited`,
+            timestamp: new Date().toISOString(),
+          },
           ...current,
         ]);
       }
@@ -457,254 +480,274 @@ export default function TeamSettingsPage() {
     <>
       <Navbar />
       <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(30,64,175,0.25),_transparent_55%),#07090f] px-6 py-10 text-white">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8">
-        <div className="rounded-3xl border border-white/5 bg-white/[0.04] p-8 shadow-xl backdrop-blur">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-xs uppercase tracking-wide text-blue-200">
-                <Users className="h-3.5 w-3.5" />
-                Settings → Team
-              </div>
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold text-white md:text-4xl">Team Management</h1>
-                <p className="max-w-xl text-sm text-slate-300">
-                  Keep owners and managers in control while designers, client success, and finance stay in sync.
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="flex -space-x-3">
-                  {headerAvatars.map(member => (
-                    <div key={member.id} className="relative">
-                      <Avatar name={member.name} email={member.email} image={member.image} size={40} />
-                    </div>
-                  ))}
-                  {overflowCount > 0 && (
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/10 text-sm text-white/80">
-                      +{overflowCount}
-                    </div>
-                  )}
+        <div className="mx-auto flex max-w-6xl flex-col gap-8">
+          <div className="rounded-3xl border border-white/5 bg-white/[0.04] p-8 shadow-xl backdrop-blur">
+            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-xs uppercase tracking-wide text-blue-200">
+                  <Users className="h-3.5 w-3.5" />
+                  Settings → Team
                 </div>
-                <span className="text-xs text-slate-400">
-                  {members.length} active · {invites.length} pending
-                </span>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setModalOpen(true)}
-                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:from-blue-400 hover:to-blue-500"
-                >
-                  <UserPlus className="h-4 w-4" />
-                  Invite New Member
-                </button>
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:border-white/25 hover:bg-white/5"
-                >
-                  <ArrowUpRight className="h-4 w-4" />
-                  Bulk invite (CSV soon)
-                </button>
-              </div>
-            </div>
-            <Image
-              src="/illustrations/team-empty.svg"
-              alt="Team collaboration illustration"
-              width={200}
-              height={140}
-              className="hidden md:block"
-            />
-          </div>
-
-          <div className="mt-6 flex items-center gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
-            <ShieldCheck className="h-4 w-4" />
-            <span>
-              Owners can manage roles and billing inside{' '}
-              <a href="/settings/account" className="underline decoration-dotted underline-offset-2">
-                Team settings
-              </a>
-              . Only invite colleagues you trust with client data.
-            </span>
-          </div>
-        </div>
-
-        {toast && (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`inline-flex items-center gap-2 self-start rounded-full px-4 py-2 text-xs ${
-              toast.variant === 'error'
-                ? 'bg-rose-500/15 text-rose-200'
-                : toast.variant === 'success'
-                  ? 'bg-emerald-500/15 text-emerald-200'
-                  : 'bg-slate-500/15 text-slate-200'
-            }`}
-          >
-            <CheckCircle2 className="h-3.5 w-3.5" />
-            {toast.message}
-          </motion.div>
-        )}
-
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="space-y-4 lg:col-span-2">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-white">Active members</h2>
-              <span className="text-xs text-slate-500">Click role badge to update permissions.</span>
-            </div>
-            <div className="space-y-3">
-              <AnimatePresence>
-                {loading ? (
-                  <div className="flex h-40 items-center justify-center rounded-2xl border border-white/5 bg-white/[0.02]">
-                    <Loader2 className="h-6 w-6 animate-spin text-blue-400" />
+                <div className="space-y-2">
+                  <h1 className="text-3xl font-bold text-white md:text-4xl">Team Management</h1>
+                  <p className="max-w-xl text-sm text-slate-300">
+                    Keep owners and managers in control while designers, client success, and finance
+                    stay in sync.
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex -space-x-3">
+                    {headerAvatars.map(member => (
+                      <div key={member.id} className="relative">
+                        <Avatar
+                          name={member.name}
+                          email={member.email}
+                          image={member.image}
+                          size={40}
+                        />
+                      </div>
+                    ))}
+                    {overflowCount > 0 && (
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/10 text-sm text-white/80">
+                        +{overflowCount}
+                      </div>
+                    )}
                   </div>
-                ) : members.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center gap-4 rounded-3xl border border-white/5 bg-white/[0.03] p-12 text-center">
-                    <Image
-                      src="/illustrations/team-empty.svg"
-                      alt="Empty team illustration"
-                      width={220}
-                      height={140}
-                    />
-                    <div className="space-y-2">
-                      <h3 className="text-lg font-semibold text-white">No teammates yet</h3>
-                      <p className="text-sm text-slate-400">
-                        Send them an invite to start collaborating seamlessly.
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setModalOpen(true)}
-                      className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:from-blue-400 hover:to-blue-500"
-                    >
-                      <UserPlus className="h-4 w-4" />
-                      Invite Team Member
-                    </button>
-                  </div>
-                ) : (
-                  members.map(member => (
-                    <MemberCard
-                      key={member.id}
-                      member={member}
-                      onChangeRole={handleRoleChange}
-                      onRemove={handleRemoveMember}
-                    />
-                  ))
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <div className="rounded-3xl border border-white/5 bg-white/[0.02] p-6 shadow-lg backdrop-blur">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <h2 className="text-lg font-semibold text-white">Pending invites</h2>
-                  <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-slate-200">
-                    {invites.length} Pending
+                  <span className="text-xs text-slate-400">
+                    {members.length} active · {invites.length} pending
                   </span>
                 </div>
-                <span className="flex items-center gap-1 text-xs text-slate-400">
-                  <Mail className="h-3.5 w-3.5" />
-                  Auto-reminders in 48h
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setModalOpen(true)}
+                    className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:from-blue-400 hover:to-blue-500"
+                  >
+                    <UserPlus className="h-4 w-4" />
+                    Invite New Member
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:border-white/25 hover:bg-white/5"
+                  >
+                    <ArrowUpRight className="h-4 w-4" />
+                    Bulk invite (CSV soon)
+                  </button>
+                </div>
+              </div>
+              <Image
+                src="/illustrations/team-empty.svg"
+                alt="Team collaboration illustration"
+                width={200}
+                height={140}
+                className="hidden md:block"
+              />
+            </div>
+
+            <div className="mt-6 flex items-center gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
+              <ShieldCheck className="h-4 w-4" />
+              <span>
+                Owners can manage roles and billing inside{' '}
+                <a
+                  href="/settings/account"
+                  className="underline decoration-dotted underline-offset-2"
+                >
+                  Team settings
+                </a>
+                . Only invite colleagues you trust with client data.
+              </span>
+            </div>
+          </div>
+
+          {toast && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`inline-flex items-center gap-2 self-start rounded-full px-4 py-2 text-xs ${
+                toast.variant === 'error'
+                  ? 'bg-rose-500/15 text-rose-200'
+                  : toast.variant === 'success'
+                    ? 'bg-emerald-500/15 text-emerald-200'
+                    : 'bg-slate-500/15 text-slate-200'
+              }`}
+            >
+              <CheckCircle2 className="h-3.5 w-3.5" />
+              {toast.message}
+            </motion.div>
+          )}
+
+          <div className="grid gap-6 lg:grid-cols-3">
+            <div className="space-y-4 lg:col-span-2">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-white">Active members</h2>
+                <span className="text-xs text-slate-500">
+                  Click role badge to update permissions.
                 </span>
               </div>
-              <div className="mt-4 overflow-hidden rounded-xl border border-white/5">
-                <table className="min-w-full divide-y divide-white/5 text-left">
-                  <thead className="bg-white/[0.03] text-xs uppercase tracking-wide text-slate-400">
-                    <tr>
-                      <th className="px-4 py-2">Email</th>
-                      <th className="px-4 py-2">Role</th>
-                      <th className="px-4 py-2">Sent</th>
-                      <th className="px-4 py-2">Expires</th>
-                      <th className="px-4 py-2 text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <AnimatePresence>
-                      {invites.length === 0 ? (
-                        <tr>
-                          <td colSpan={5} className="px-4 py-6 text-center text-xs text-slate-500">
-                            You have no pending invites — everyone is up-to-date! ✨
-                          </td>
-                        </tr>
-                      ) : (
-                        invites.map(invite => (
-                          <PendingInviteRow
-                            key={invite.id}
-                            invite={invite}
-                            onResend={handleResend}
-                            onRevoke={handleRevoke}
-                          />
-                        ))
-                      )}
-                    </AnimatePresence>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div className="rounded-3xl border border-white/5 bg-gradient-to-br from-white/[0.06] to-white/[0.03] p-6 shadow-lg">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-white">Recent activity</h3>
-                <button type="button" className="text-xs text-blue-300 hover:text-blue-200">
-                  View all
-                </button>
-              </div>
-              <div className="mt-4 space-y-3 text-sm text-slate-300">
-                {activityFeed.length === 0 ? (
-                  <p className="text-xs text-slate-500">Invites and approvals will appear here.</p>
-                ) : (
-                  activityFeed.slice(0, 5).map(item => (
-                    <div key={item.id} className="flex items-start gap-3 rounded-2xl border border-white/5 bg-white/[0.02] p-3">
-                      <div className="mt-0.5 flex h-6 w-6 flex-none items-center justify-center rounded-full bg-blue-500/20 text-blue-200">
-                        <Sparkles className="h-3.5 w-3.5" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-white">{item.text}</p>
-                        <span className="text-xs text-slate-500">{formatRelative(item.timestamp)}</span>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-
-            <div className="space-y-3 rounded-3xl border border-white/5 bg-white/[0.02] p-6 text-sm text-slate-300">
-              <h3 className="text-sm font-semibold text-white">Best practices</h3>
               <div className="space-y-3">
-                <div className="flex items-start gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-3">
-                  <ShieldCheck className="h-4 w-4 text-emerald-300" />
-                  <p>Keep at least two owners for redundancy.</p>
-                </div>
-                <div className="flex items-start gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-3">
-                  <Users className="h-4 w-4 text-blue-300" />
-                  <p>Assign editors to client delivery pods for faster follow-through.</p>
-                </div>
-                <div className="flex items-start gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-3">
-                  <CheckCircle2 className="h-4 w-4 text-amber-300" />
-                  <p>Give viewers to finance or legal stakeholders for oversight.</p>
-                </div>
+                <AnimatePresence>
+                  {loading ? (
+                    <div className="flex h-40 items-center justify-center rounded-2xl border border-white/5 bg-white/[0.02]">
+                      <Loader2 className="h-6 w-6 animate-spin text-blue-400" />
+                    </div>
+                  ) : members.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center gap-4 rounded-3xl border border-white/5 bg-white/[0.03] p-12 text-center">
+                      <Image
+                        src="/illustrations/team-empty.svg"
+                        alt="Empty team illustration"
+                        width={220}
+                        height={140}
+                      />
+                      <div className="space-y-2">
+                        <h3 className="text-lg font-semibold text-white">No teammates yet</h3>
+                        <p className="text-sm text-slate-400">
+                          Send them an invite to start collaborating seamlessly.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setModalOpen(true)}
+                        className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:from-blue-400 hover:to-blue-500"
+                      >
+                        <UserPlus className="h-4 w-4" />
+                        Invite Team Member
+                      </button>
+                    </div>
+                  ) : (
+                    members.map(member => (
+                      <MemberCard
+                        key={member.id}
+                        member={member}
+                        onChangeRole={handleRoleChange}
+                        onRemove={handleRemoveMember}
+                      />
+                    ))
+                  )}
+                </AnimatePresence>
               </div>
-              <a
-                href="/guides/team-access"
-                className="inline-flex items-center gap-1 text-xs text-blue-300 hover:text-blue-200"
-              >
-                Team access playbook
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </a>
-            </div>
-            <div className="rounded-3xl border border-white/5 bg-white/[0.02] p-5 text-xs text-slate-400">
-              <p className="font-semibold text-white">Pro roadmap</p>
-              <ul className="mt-2 list-disc space-y-1 pl-4">
-                <li>Search & filter team members (coming soon)</li>
-                <li>Invite via email link & bulk CSV upload</li>
-                <li>Advanced role-based permissions</li>
-                <li>Activity timeline filters</li>
-              </ul>
             </div>
 
+            <div className="space-y-4">
+              <div className="rounded-3xl border border-white/5 bg-white/[0.02] p-6 shadow-lg backdrop-blur">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <h2 className="text-lg font-semibold text-white">Pending invites</h2>
+                    <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-slate-200">
+                      {invites.length} Pending
+                    </span>
+                  </div>
+                  <span className="flex items-center gap-1 text-xs text-slate-400">
+                    <Mail className="h-3.5 w-3.5" />
+                    Auto-reminders in 48h
+                  </span>
+                </div>
+                <div className="mt-4 overflow-hidden rounded-xl border border-white/5">
+                  <table className="min-w-full divide-y divide-white/5 text-left">
+                    <thead className="bg-white/[0.03] text-xs uppercase tracking-wide text-slate-400">
+                      <tr>
+                        <th className="px-4 py-2">Email</th>
+                        <th className="px-4 py-2">Role</th>
+                        <th className="px-4 py-2">Sent</th>
+                        <th className="px-4 py-2">Expires</th>
+                        <th className="px-4 py-2 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <AnimatePresence>
+                        {invites.length === 0 ? (
+                          <tr>
+                            <td
+                              colSpan={5}
+                              className="px-4 py-6 text-center text-xs text-slate-500"
+                            >
+                              You have no pending invites — everyone is up-to-date! ✨
+                            </td>
+                          </tr>
+                        ) : (
+                          invites.map(invite => (
+                            <PendingInviteRow
+                              key={invite.id}
+                              invite={invite}
+                              onResend={handleResend}
+                              onRevoke={handleRevoke}
+                            />
+                          ))
+                        )}
+                      </AnimatePresence>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="rounded-3xl border border-white/5 bg-gradient-to-br from-white/[0.06] to-white/[0.03] p-6 shadow-lg">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-semibold text-white">Recent activity</h3>
+                  <button type="button" className="text-xs text-blue-300 hover:text-blue-200">
+                    View all
+                  </button>
+                </div>
+                <div className="mt-4 space-y-3 text-sm text-slate-300">
+                  {activityFeed.length === 0 ? (
+                    <p className="text-xs text-slate-500">
+                      Invites and approvals will appear here.
+                    </p>
+                  ) : (
+                    activityFeed.slice(0, 5).map(item => (
+                      <div
+                        key={item.id}
+                        className="flex items-start gap-3 rounded-2xl border border-white/5 bg-white/[0.02] p-3"
+                      >
+                        <div className="mt-0.5 flex h-6 w-6 flex-none items-center justify-center rounded-full bg-blue-500/20 text-blue-200">
+                          <Sparkles className="h-3.5 w-3.5" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-white">{item.text}</p>
+                          <span className="text-xs text-slate-500">
+                            {formatRelative(item.timestamp)}
+                          </span>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-3 rounded-3xl border border-white/5 bg-white/[0.02] p-6 text-sm text-slate-300">
+                <h3 className="text-sm font-semibold text-white">Best practices</h3>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-3">
+                    <ShieldCheck className="h-4 w-4 text-emerald-300" />
+                    <p>Keep at least two owners for redundancy.</p>
+                  </div>
+                  <div className="flex items-start gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-3">
+                    <Users className="h-4 w-4 text-blue-300" />
+                    <p>Assign editors to client delivery pods for faster follow-through.</p>
+                  </div>
+                  <div className="flex items-start gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-3">
+                    <CheckCircle2 className="h-4 w-4 text-amber-300" />
+                    <p>Give viewers to finance or legal stakeholders for oversight.</p>
+                  </div>
+                </div>
+                <a
+                  href="/guides/team-access"
+                  className="inline-flex items-center gap-1 text-xs text-blue-300 hover:text-blue-200"
+                >
+                  Team access playbook
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              </div>
+              <div className="rounded-3xl border border-white/5 bg-white/[0.02] p-5 text-xs text-slate-400">
+                <p className="font-semibold text-white">Pro roadmap</p>
+                <ul className="mt-2 list-disc space-y-1 pl-4">
+                  <li>Search & filter team members (coming soon)</li>
+                  <li>Invite via email link & bulk CSV upload</li>
+                  <li>Advanced role-based permissions</li>
+                  <li>Activity timeline filters</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
         <AnimatePresence>
           <InviteMemberModal
@@ -721,3 +764,23 @@ export default function TeamSettingsPage() {
   );
 }
 
+function TeamSettingsFallback() {
+  return (
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(30,64,175,0.25),_transparent_55%),#07090f] px-6 py-10 text-white">
+        <div className="mx-auto flex max-w-6xl items-center justify-center rounded-3xl border border-white/5 bg-white/[0.02] p-12 text-sm text-slate-400">
+          Loading team settings…
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default function TeamSettingsPage() {
+  return (
+    <Suspense fallback={<TeamSettingsFallback />}>
+      <TeamSettingsContent />
+    </Suspense>
+  );
+}

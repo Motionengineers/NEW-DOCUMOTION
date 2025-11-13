@@ -19,7 +19,7 @@ const grants = [
     applicationProcess: 'Apply via participating NIDHI incubators',
     officialLink: 'https://nidhi.dst.gov.in/',
     status: 'Active',
-    description: 'Seed support to bridge the gap between development and commercialization.'
+    description: 'Seed support to bridge the gap between development and commercialization.',
   },
   {
     schemeName: 'Startup India Seed Fund Scheme (SISFS)',
@@ -32,7 +32,8 @@ const grants = [
     applicationProcess: 'Apply through SISFS-supported incubators on Startup India portal',
     officialLink: 'https://www.startupindia.gov.in/',
     status: 'Active',
-    description: 'Supports startups for proof of concept, prototype development, product trials, market entry and commercialization.'
+    description:
+      'Supports startups for proof of concept, prototype development, product trials, market entry and commercialization.',
   },
   {
     schemeName: 'Karnataka Elevate / Startup Karnataka Grants',
@@ -45,7 +46,7 @@ const grants = [
     applicationProcess: 'Apply via Startup Karnataka portal during active windows',
     officialLink: 'https://startupkarnataka.gov.in/',
     status: 'Active',
-    description: 'State grant programs for Karnataka-based startups.'
+    description: 'State grant programs for Karnataka-based startups.',
   },
   {
     schemeName: 'Maharashtra State – Startup Assistance Programs',
@@ -58,8 +59,8 @@ const grants = [
     applicationProcess: 'Apply via state portal during active windows',
     officialLink: 'https://maharashtra.gov.in/',
     status: 'Active',
-    description: 'State startup grants and assistance programs in Maharashtra.'
-  }
+    description: 'State startup grants and assistance programs in Maharashtra.',
+  },
 ];
 
 async function upsertGrant(g) {
@@ -86,5 +87,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
-

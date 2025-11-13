@@ -16,6 +16,7 @@ public/uploads/**/*.pdf
 # Node
 node_modules
 npm-audit-report.json
+trufflehog.report.json
 # Dependencies
 node_modules
 .pnp

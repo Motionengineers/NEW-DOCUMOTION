@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -51,4 +53,3 @@ export async function GET(request) {
     return NextResponse.json({ error: 'Failed to load invitations' }, { status: 500 });
   }
 }
-

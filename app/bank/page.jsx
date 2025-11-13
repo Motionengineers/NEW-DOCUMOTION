@@ -32,15 +32,15 @@ function summariseEligibility(eligibility = {}) {
   if (eligibility.specialCriteria?.length) {
     items.push(`Special: ${eligibility.specialCriteria.join(', ')}`);
   }
-  return items.length ? items.join(' • ') : 'Available nationally; confirm with relationship manager';
+  return items.length
+    ? items.join(' • ')
+    : 'Available nationally; confirm with relationship manager';
 }
 
 function summariseServices(program) {
   const list = program.services || program.programType || [];
   if (!list.length) return 'See programme details';
-  return list
-    .map(token => token.replace(/-/g, ' '))
-    .join(', ');
+  return list.map(token => token.replace(/-/g, ' ')).join(', ');
 }
 
 export default async function BankProgramsPage() {
@@ -55,9 +55,9 @@ export default async function BankProgramsPage() {
             Startup Banking Programmes
           </h1>
           <p className="text-base" style={{ color: 'var(--secondary-label)' }}>
-            We track {programmes.length} bank and fintech offers tailored to Indian startups. Explore their focus areas,
-            eligibility, and benefits before speaking to a relationship manager. For personalised matches, continue to use the
-            Startup Banking Directory.
+            We track {programmes.length} bank and fintech offers tailored to Indian startups.
+            Explore their focus areas, eligibility, and benefits before speaking to a relationship
+            manager. For personalised matches, continue to use the Startup Banking Directory.
           </p>
         </header>
 
@@ -65,7 +65,10 @@ export default async function BankProgramsPage() {
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
               <thead>
-                <tr className="text-left uppercase text-xs tracking-wide" style={{ color: 'var(--tertiary-label)' }}>
+                <tr
+                  className="text-left uppercase text-xs tracking-wide"
+                  style={{ color: 'var(--tertiary-label)' }}
+                >
                   <th className="px-4 py-3">Bank / Fintech</th>
                   <th className="px-4 py-3">Programme</th>
                   <th className="px-4 py-3">Services</th>
@@ -77,7 +80,10 @@ export default async function BankProgramsPage() {
               </thead>
               <tbody>
                 {programmes.map(program => (
-                  <tr key={program.id} className="border-t border-white/5 hover:bg-white/5 transition-colors">
+                  <tr
+                    key={program.id}
+                    className="border-t border-white/5 hover:bg-white/5 transition-colors"
+                  >
                     <td className="px-4 py-4 align-top">
                       <div className="font-semibold" style={{ color: 'var(--label)' }}>
                         {program.bankName}
@@ -89,7 +95,9 @@ export default async function BankProgramsPage() {
                     <td className="px-4 py-4 align-top" style={{ color: 'var(--secondary-label)' }}>
                       <div className="font-medium text-white/90">{program.programName}</div>
                       {program.programType?.length ? (
-                        <div className="mt-1 text-xs text-blue-200/70">{program.programType.join(', ')}</div>
+                        <div className="mt-1 text-xs text-blue-200/70">
+                          {program.programType.join(', ')}
+                        </div>
                       ) : null}
                     </td>
                     <td className="px-4 py-4 align-top" style={{ color: 'var(--secondary-label)' }}>
@@ -126,7 +134,11 @@ export default async function BankProgramsPage() {
                           Apply →
                         </a>
                       ) : program.contact?.email ? (
-                        <a href={`mailto:${program.contact.email}`} className="text-sm" style={{ color: 'var(--system-blue)' }}>
+                        <a
+                          href={`mailto:${program.contact.email}`}
+                          className="text-sm"
+                          style={{ color: 'var(--system-blue)' }}
+                        >
                           Email RM
                         </a>
                       ) : (
@@ -143,4 +155,3 @@ export default async function BankProgramsPage() {
     </div>
   );
 }
-

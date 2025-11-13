@@ -34,7 +34,7 @@ async function startOnPort(port) {
       validateStatus: s => s >= 200,
     });
     const preview = process.env.PREVIEW_URL || url;
-    
+
     // Always open in Google Chrome
     if (os.platform() === 'darwin') {
       // macOS - use open command with Chrome app
@@ -53,10 +53,10 @@ async function startOnPort(port) {
         open(preview);
       });
     }
-    
+
     console.log(`\n✅ Server ready at ${url}`);
     console.log(`🌐 Opening in Google Chrome...\n`);
-    
+
     return child; // keep running
   } catch (e) {
     // give child a moment; if exited, throw to try next port

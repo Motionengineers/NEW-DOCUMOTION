@@ -56,8 +56,8 @@ export default function PDFThumbnail({ fileUrl, width = 600, height = 450 }) {
   return (
     <div className="w-full h-full flex items-center justify-center bg-white dark:bg-gray-900">
       {!failed ? (
-        <canvas 
-          ref={canvasRef} 
+        <canvas
+          ref={canvasRef}
           className="w-full h-full object-contain"
           style={{ imageRendering: 'high-quality' }}
         />

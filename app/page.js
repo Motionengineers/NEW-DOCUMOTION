@@ -162,8 +162,8 @@ export default function HomePage() {
                 Make it yours with Branding Studio
               </h3>
               <p className="text-base md:text-lg" style={{ color: 'var(--secondary-label)' }}>
-                Upload your logo, pick brand colors, and white-label the entire portal. Your team and
-                clients will see your brand across the dashboard, emails, and PDFs.
+                Upload your logo, pick brand colors, and white-label the entire portal. Your team
+                and clients will see your brand across the dashboard, emails, and PDFs.
               </p>
             </div>
             <Link
@@ -213,7 +213,10 @@ export default function HomePage() {
                   >
                     {feature.title}
                   </h3>
-                  <p className="text-sm leading-relaxed" style={{ color: 'var(--secondary-label)' }}>
+                  <p
+                    className="text-sm leading-relaxed"
+                    style={{ color: 'var(--secondary-label)' }}
+                  >
                     {feature.description}
                   </p>
                 </motion.div>
@@ -457,7 +460,11 @@ export default function HomePage() {
                   className="px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                   style={{ backgroundColor: 'var(--system-blue)', color: '#ffffff' }}
                 >
-                  {submitted ? 'Application Received' : submitting ? 'Submitting…' : 'Submit Application'}
+                  {submitted
+                    ? 'Application Received'
+                    : submitting
+                      ? 'Submitting…'
+                      : 'Submit Application'}
                   {!submitted && <ArrowRight className="h-4 w-4" />}
                 </button>
               </div>
@@ -555,4 +562,3 @@ const features = [
     href: '/ma',
   },
 ];
-

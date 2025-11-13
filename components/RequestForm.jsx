@@ -113,8 +113,8 @@ export default function RequestForm({ agencyId, startupId, onSubmitted }) {
         type="submit"
         disabled={loading}
         className="px-6 py-3 min-h-[48px] rounded-lg font-medium transition-all"
-        style={{ 
-          backgroundColor: 'var(--system-blue)', 
+        style={{
+          backgroundColor: 'var(--system-blue)',
           color: '#fff',
           opacity: loading ? 0.7 : 1,
         }}

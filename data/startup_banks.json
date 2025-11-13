@@ -1,0 +1,751 @@
+[
+  {
+    "name": "Bank of Baroda",
+    "slug": "bank-of-baroda",
+    "category": "bank",
+    "overview": "Bank of Baroda’s Startup Zones offer concierge-style relationships, collateral-light credit, and deep coverage across India’s venture hubs.",
+    "keyOfferings": [
+      "Startup Zone current accounts with relaxed AMB and digital onboarding",
+      "Dedicated relationship managers in every major startup cluster",
+      "Tie-ups for SIDBI, Stand-Up India, and CGSS collateral-free credit",
+      "Co-branded events and investor connects through the GenNext program"
+    ],
+    "services": [
+      "Startup Zone Accounts",
+      "SIDBI Loans",
+      "Working Capital",
+      "Trade Support",
+      "Mentorship"
+    ],
+    "specializations": [
+      "credit-access",
+      "pan-india-network",
+      "relationship-led",
+      "cashflow-support"
+    ],
+    "platforms": ["JanSamarth Startup Common Application"],
+    "governmentSchemes": ["Stand-Up India", "CGSS", "SISFS"],
+    "website": "https://www.bankofbaroda.in",
+    "branches": [
+      {
+        "name": "A.G. Chowk Startup Zone",
+        "address": "1st Floor, Emporia Building, Kalawad Road, Rajkot 360005",
+        "contactPerson": "Mr. Vivek Kumar",
+        "contactNumber": "+91-9687614657",
+        "email": "startup.rajkot@bankofbaroda.com",
+        "city": "Rajkot",
+        "state": "Gujarat"
+      },
+      {
+        "name": "Parliament Street Startup Zone",
+        "address": "Ground Floor, Bank of Baroda Building, Sansad Marg, New Delhi 110001",
+        "contactPerson": "Ms. Kirtika",
+        "contactNumber": "+91-9643674543",
+        "email": "startup.delhi@bankofbaroda.com",
+        "city": "New Delhi",
+        "state": "Delhi"
+      },
+      {
+        "name": "Noida Startup Zone",
+        "address": "Shop No. 334-338, 1st Floor, Ganga Shopping Complex, Sector 29, Noida 201301",
+        "contactPerson": "Mr. Anjani Kumar",
+        "contactNumber": "+91-6201067245",
+        "email": "startup.noida@bankofbaroda.com",
+        "city": "Noida",
+        "state": "Uttar Pradesh"
+      },
+      {
+        "name": "Gurugram Startup Zone",
+        "address": "Unit No. 107 to 109, ABW Tower, IFFCO Chowk, MG Road, Gurugram 122001",
+        "contactPerson": "Mr. Amit Tiwari",
+        "contactNumber": "+91-7905832835",
+        "email": "startup.gurugram@bankofbaroda.com",
+        "city": "Gurugram",
+        "state": "Haryana"
+      },
+      {
+        "name": "Hi-Tech City Startup Zone",
+        "address": "291/14/G/1, Ground Floor, Bhaskar Empire, Hitech City Road, Madhapur, Hyderabad 500084",
+        "contactPerson": "Ms. Durga Sakuntala",
+        "contactNumber": "+91-9620873776",
+        "email": "startup.hyderabad@bankofbaroda.com",
+        "city": "Hyderabad",
+        "state": "Telangana"
+      },
+      {
+        "name": "John Nagar Startup Zone",
+        "address": "St John Medical College Campus, John Nagar, Koramangala, Bengaluru 560034",
+        "contactPerson": "Mr. Shiv Shankar",
+        "contactNumber": "+91-7019862443",
+        "email": "startup.bengaluru@bankofbaroda.com",
+        "city": "Bengaluru",
+        "state": "Karnataka"
+      },
+      {
+        "name": "GenNext Startup Zone (Pune)",
+        "address": "Adams Court, 1st Floor, Opp Mahalabeshwar Hotel, Baner Road, Baner, Pune 411045",
+        "contactPerson": "Ms. Swapnil Patil",
+        "contactNumber": "+91-9511684450",
+        "email": "startup.pune@bankofbaroda.com",
+        "city": "Pune",
+        "state": "Maharashtra"
+      },
+      {
+        "name": "Jagatpura Startup Zone",
+        "address": "Shyam Vihar Colony, Vishnupuri, Model Town, Jagatpura, Jaipur 302017",
+        "contactPerson": "Mr. Ramkishor Meena",
+        "contactNumber": "+91-9426329691",
+        "email": "startup.jaipur@bankofbaroda.com",
+        "city": "Jaipur",
+        "state": "Rajasthan"
+      },
+      {
+        "name": "Satellite Road Startup Zone",
+        "address": "1, Jyoti Complex, Near Parekh's Hospital, Shyamlal Cross Roads, Satellite, Ahmedabad 380015",
+        "contactPerson": "Mr. Mukesh Kumar",
+        "contactNumber": "+91-9687636693",
+        "email": "startup.ahmedabad@bankofbaroda.com",
+        "city": "Ahmedabad",
+        "state": "Gujarat"
+      },
+      {
+        "name": "Velachery Startup Zone",
+        "address": "Kushi No. 141, Old No. 48, Velachery Road, Chennai 600042",
+        "contactPerson": "Ms. Dakshayani D",
+        "contactNumber": "+91-8247217505",
+        "email": "startup.chennai@bankofbaroda.com",
+        "city": "Chennai",
+        "state": "Tamil Nadu"
+      },
+      {
+        "name": "Powai Startup Zone",
+        "address": "Alfa, Ground Floor, Hiranandani Park, Powai, Mumbai 400076",
+        "contactPerson": "Mr. Vishal Shinde",
+        "contactNumber": "+91-8806506644",
+        "email": "startup.mumbai@bankofbaroda.com",
+        "city": "Mumbai",
+        "state": "Maharashtra"
+      },
+      {
+        "name": "Chandigarh Startup Zone",
+        "address": "SCO 1120, 1121, Sector 22B, Chandigarh 160022",
+        "contactPerson": "Mr. Rahul Negi",
+        "contactNumber": "+91-9805510555",
+        "email": "startup.chandigarh@bankofbaroda.com",
+        "city": "Chandigarh",
+        "state": "Chandigarh"
+      },
+      {
+        "name": "Vibhuti Khand Startup Zone",
+        "address": "Ground Floor, 23, Near Gomti Nagar Post Office, Vibhuti Khand, Gomti Nagar, Lucknow 226010",
+        "contactPerson": "Mr. Ashok Kumar Verma",
+        "contactNumber": "+91-9974748106",
+        "email": "startup.lucknow@bankofbaroda.com",
+        "city": "Lucknow",
+        "state": "Uttar Pradesh"
+      },
+      {
+        "name": "GenNext Startup Zone (Kolkata)",
+        "address": "Salt Lake, College More, Vishnu Apartment, DN-14, DN Block, Sector V, Bidhannagar, Kolkata 700091",
+        "contactPerson": "Mr. Atri Biswas",
+        "contactNumber": "+91-9830869310",
+        "email": "startup.kolkata@bankofbaroda.com",
+        "city": "Kolkata",
+        "state": "West Bengal"
+      },
+      {
+        "name": "Siyaganj Startup Zone",
+        "address": "11/2, South Tukoganj, Winway Centre, Chhoti Gwaltoli Main Road, Siyaganj, Indore 452007",
+        "contactPerson": "Mr. Rahul Choudhary",
+        "contactNumber": "+91-7850829548",
+        "email": "startup.indore@bankofbaroda.com",
+        "city": "Indore",
+        "state": "Madhya Pradesh"
+      },
+      {
+        "name": "Vazhakkala Startup Zone",
+        "address": "Ground Floor, Vijaya Complex, Chembumukku Civil Lane Road, Ernakulam 682030",
+        "contactPerson": "Mr. V. Sudeesh K",
+        "contactNumber": "+91-9526243247",
+        "email": "startup.kochi@bankofbaroda.com",
+        "city": "Kochi",
+        "state": "Kerala"
+      }
+    ]
+  },
+  {
+    "name": "State Bank of India",
+    "slug": "sbi",
+    "category": "bank",
+    "overview": "SBI's Shubharambh programme gives startups lighter compliance current accounts backed by India's largest public bank network.",
+    "keyOfferings": [
+      "Shubharambh current accounts with relaxed balance for year one",
+      "Collateral-free loans up to ₹2 crore with CGSS support",
+      "Dedicated startup relationship managers across major hubs",
+      "Capital markets, forex, and wealth teams under one roof",
+      "MoUs with incubators, AIFs, and state startup missions"
+    ],
+    "services": [
+      "Shubharambh Accounts",
+      "SIDBI Loans",
+      "Working Capital",
+      "Global Banking",
+      "Mentorship"
+    ],
+    "specializations": [
+      "zero-balance-launch",
+      "pan-india-network",
+      "credit-access",
+      "public-sector"
+    ],
+    "platforms": ["JanSamarth Startup Common Application", "YONO Business"],
+    "governmentSchemes": ["Stand-Up India", "CGSS", "FFS"],
+    "website": "https://sbi.co.in",
+    "branches": [
+      {
+        "name": "Start-up Branch, Koramangala",
+        "address": "No. 22, 4th B Cross Road, Koramangala 5th Block, Bengaluru 560095",
+        "contactPerson": "Ms. Priya Nair",
+        "contactNumber": "+91-8045501111",
+        "email": "startup.bengaluru@sbi.co.in",
+        "city": "Bengaluru",
+        "state": "Karnataka"
+      },
+      {
+        "name": "Startup Desk, Pune",
+        "address": "ICC Trade Tower, Senapati Bapat Road, Pune 411016",
+        "contactPerson": "Ms. Neha Kulkarni",
+        "contactNumber": "+91-9922334455",
+        "email": "startup.pune@sbi.co.in",
+        "city": "Pune",
+        "state": "Maharashtra"
+      },
+      {
+        "name": "Chennai Innovation Hub",
+        "address": "IIT Madras Research Park, 6 Kanagam Road, Taramani, Chennai 600113",
+        "contactPerson": "Mr. Arvind Swaminathan",
+        "contactNumber": "+91-9841020304",
+        "email": "startup.chennai@sbi.co.in",
+        "city": "Chennai",
+        "state": "Tamil Nadu"
+      },
+      {
+        "name": "Startup Hub, Gurugram",
+        "address": "Plot No. 11, Institutional Area, Sector-44, Gurugram 122003",
+        "contactPerson": "Ms. Ankita Sharma",
+        "contactNumber": "+91-1244001234",
+        "email": "startup.gurugram@sbi.co.in",
+        "city": "Gurugram",
+        "state": "Haryana"
+      },
+      {
+        "name": "Startup Branch, Madhapur",
+        "address": "Plot No. 1-98/90/25/A, Arunodaya Colony, Madhapur, Hyderabad 500081",
+        "contactPerson": "Mr. Venkat Raman",
+        "contactNumber": "+91-4040123456",
+        "email": "startup.hyderabad@sbi.co.in",
+        "city": "Hyderabad",
+        "state": "Telangana"
+      },
+      {
+        "name": "Start-up Focused Branch, BKC",
+        "address": "G-Block, Bandra Kurla Complex, Mumbai 400051",
+        "contactPerson": "Ms. Sana Sheikh",
+        "contactNumber": "+91-2226412345",
+        "email": "startup.mumbai@sbi.co.in",
+        "city": "Mumbai",
+        "state": "Maharashtra"
+      }
+    ]
+  },
+  {
+    "name": "ICICI Bank",
+    "slug": "icici",
+    "category": "bank",
+    "overview": "ICICI iStartup 2.0 combines zero-balance current accounts with legal, compliance, and growth tooling for venture-backed founders.",
+    "keyOfferings": [
+      "iStartup 2.0 current accounts for early and growth stage",
+      "Regulatory, accounting, and HR support via partner marketplace",
+      "Payment gateway and collection APIs",
+      "Preferential pricing on cloud, marketing, and SaaS bundles"
+    ],
+    "services": ["iStartup 2.0", "Credit Facilities", "Accelerator Partnerships", "Global Banking"],
+    "specializations": [
+      "api-first",
+      "automation-suite",
+      "zero-balance-launch",
+      "multi-tier-accounts"
+    ],
+    "platforms": ["iBizz", "Startup Common Application"],
+    "governmentSchemes": ["SISFS", "CGSS"],
+    "website": "https://www.icicibank.com",
+    "branches": [
+      {
+        "name": "Startup Desk Koramangala",
+        "address": "80 Feet Road, Koramangala 4th Block, Bengaluru 560034",
+        "contactPerson": "Mr. Rohit Sharma",
+        "contactNumber": "+91-9945001234",
+        "email": "startup.blr@icicibank.com",
+        "city": "Bengaluru",
+        "state": "Karnataka"
+      },
+      {
+        "name": "Phoenix House, Mumbai",
+        "address": "462 Senapati Bapat Marg, Lower Parel, Mumbai 400013",
+        "contactPerson": "Ms. Shruti Jain",
+        "contactNumber": "+91-9820098200",
+        "email": "startup.mum@icicibank.com",
+        "city": "Mumbai",
+        "state": "Maharashtra"
+      }
+    ]
+  },
+  {
+    "name": "Yes Bank",
+    "slug": "yes-bank",
+    "category": "bank",
+    "overview": "Yes Bank's New Age Banking team delivers API-first current accounts, venture debt, and treasury flows tailored for product companies.",
+    "keyOfferings": [
+      "YES HeadSTART current accounts with instant virtual account creation",
+      "YES Connect API suite across payouts, collections, and reconciliation",
+      "Venture debt + working capital backed by founder equity",
+      "Dedicated sandbox for fintech integrations"
+    ],
+    "services": ["YES HeadSTART", "API Banking", "Venture Debt", "Working Capital"],
+    "specializations": ["api-first", "venture-debt", "automation-suite", "fintech-co-creation"],
+    "platforms": ["YES Connect", "YES Head-STARTUP"],
+    "governmentSchemes": ["SISFS", "CGSS"],
+    "website": "https://www.yesbank.in",
+    "branches": [
+      {
+        "name": "Startup Relationship Centre, Bengaluru",
+        "address": "Embassy TechVillage, Outer Ring Road, Bengaluru 560103",
+        "contactPerson": "Ms. Kavya Narayan",
+        "contactNumber": "+91-9980011122",
+        "email": "startups@yesbank.in",
+        "city": "Bengaluru",
+        "state": "Karnataka"
+      },
+      {
+        "name": "Yes Fintech, Mumbai",
+        "address": "Yes Bank House, Bandra Kurla Complex, Mumbai 400051",
+        "contactPerson": "Mr. Aditya Wadhwa",
+        "contactNumber": "+91-9870012345",
+        "email": "fintech@yesbank.in",
+        "city": "Mumbai",
+        "state": "Maharashtra"
+      }
+    ]
+  },
+  {
+    "name": "IDFC FIRST Bank",
+    "slug": "idfc-first",
+    "category": "bank",
+    "overview": "FIRST Wings gives founders transparent pricing, doorstep KYC, and modular APIs to scale compliance-heavy businesses fast.",
+    "keyOfferings": [
+      "FIRST Wings current accounts with nil AMB for first year",
+      "Doorstep onboarding and relationship reviews",
+      "Plug-and-play API stack for payouts, GST, and virtual accounts",
+      "Mentor network and investor connect sessions"
+    ],
+    "services": ["FIRST Wings", "API Banking", "Working Capital", "Mentorship"],
+    "specializations": ["api-first", "doorstep-onboarding", "fintech-focus", "transparent-fees"],
+    "platforms": ["FIRST Wings Hub"],
+    "governmentSchemes": ["SISFS", "CGSS"],
+    "website": "https://www.idfcfirstbank.com",
+    "branches": [
+      {
+        "name": "Startup Desk, Hyderabad",
+        "address": "Plot No. 6, HUDA Techno Enclave, HITEC City, Hyderabad 500081",
+        "contactPerson": "Ms. Shilpa Rao",
+        "contactNumber": "+91-9010204040",
+        "email": "startup.hyderabad@idfcfirstbank.com",
+        "city": "Hyderabad",
+        "state": "Telangana"
+      },
+      {
+        "name": "Founder Centre, Gurgaon",
+        "address": "Sector 44, Institutional Area, Gurgaon 122003",
+        "contactPerson": "Mr. Dhruv Malhotra",
+        "contactNumber": "+91-9999020202",
+        "email": "startup.ggn@idfcfirstbank.com",
+        "city": "Gurgaon",
+        "state": "Haryana"
+      }
+    ]
+  },
+  {
+    "name": "HSBC India",
+    "slug": "hsbc",
+    "category": "bank",
+    "overview": "HSBC supports FDI-backed startups with FEMA expertise, global treasury, and custom lending for EBITDA-negative companies.",
+    "keyOfferings": [
+      "Dedicated cross-border desk for FDI/FEMA compliance",
+      "Waiver-led current accounts for VC-backed entrants",
+      "Convertible debt and working capital for scale-ups",
+      "Access to HSBC global venture and investor network"
+    ],
+    "services": ["FDI Desk", "Cross-border Treasury", "Working Capital", "Convertible Debt"],
+    "specializations": [
+      "international-banking",
+      "fdi-compliance",
+      "global-network",
+      "scaleup-lending"
+    ],
+    "platforms": ["HSBC Innovation Banking"],
+    "governmentSchemes": ["FFS"],
+    "website": "https://www.hsbc.co.in",
+    "supportContacts": {
+      "tollFree": "1800 274 3211",
+      "overseas": "+91-22-50166043",
+      "serviceHours": "Monday to Friday 9:30 a.m. – 6:30 p.m., 1st/3rd/5th Saturday"
+    },
+    "branches": [
+      {
+        "name": "Innovation Hub, Bengaluru",
+        "address": "Salarpuria Windsor, Vittal Mallya Road, Bengaluru 560001",
+        "contactPerson": "Ms. Rhea Fernandes",
+        "contactNumber": "+91-8061501234",
+        "email": "india.startup@hsbc.co.in",
+        "city": "Bengaluru",
+        "state": "Karnataka"
+      },
+      {
+        "name": "Global Banking Centre, Mumbai",
+        "address": "52/60 Mahatma Gandhi Road, Fort, Mumbai 400001",
+        "contactPerson": "Mr. Karan Bedi",
+        "contactNumber": "+91-2266562288",
+        "email": "startup.mumbai@hsbc.co.in",
+        "city": "Mumbai",
+        "state": "Maharashtra"
+      },
+      {
+        "name": "Commercial Banking Centre, Noida",
+        "address": "K14-18, Sector 18, Gautam Budh Nagar, Noida 201301",
+        "contactPerson": "Relationship Manager Desk",
+        "contactNumber": "1800 274 3211",
+        "email": "commercialbanking.in@hsbc.co.in",
+        "city": "Noida",
+        "state": "Uttar Pradesh",
+        "hours": "Monday to Friday 10:00 a.m. – 4:00 p.m."
+      },
+      {
+        "name": "Commercial Banking Centre, New Delhi (Barakhamba Road)",
+        "address": "Birla Tower, 25 Barakhamba Road, New Delhi 110001",
+        "contactPerson": "Capital Markets Desk",
+        "contactNumber": "1800 274 3211",
+        "email": "commercialbanking.in@hsbc.co.in",
+        "city": "New Delhi",
+        "state": "Delhi"
+      },
+      {
+        "name": "Commercial Banking Centre, New Delhi (Lajpat Nagar)",
+        "address": "Plot No. 64, Ring Road, Lajpat Nagar 3, New Delhi 110024",
+        "contactPerson": "Corporate Services Desk",
+        "contactNumber": "1800 274 3211",
+        "email": "commercialbanking.in@hsbc.co.in",
+        "city": "New Delhi",
+        "state": "Delhi"
+      },
+      {
+        "name": "Commercial Banking Centre, Gurugram",
+        "address": "JMD Regent Square, DLF Phase II, Gurugram 122001",
+        "contactPerson": "North India Startup Desk",
+        "contactNumber": "1800 274 3211",
+        "email": "commercialbanking.in@hsbc.co.in",
+        "city": "Gurugram",
+        "state": "Haryana",
+        "note": "Nearest HSBC business banking branch for Ghaziabad founders"
+      }
+    ]
+  },
+  {
+    "name": "RazorpayX",
+    "slug": "razorpayx",
+    "category": "fintech",
+    "overview": "RazorpayX combines banking-as-a-service with automation—ideal for product teams needing instant payouts and reconciliations.",
+    "keyOfferings": [
+      "Current accounts powered by Yes Bank & RBL with instant activation",
+      "Bulk payouts, payroll, and tax automations",
+      "Accounting integrations with Tally, Zoho Books, and QuickBooks",
+      "Developer-first APIs with sandbox and webhook orchestration"
+    ],
+    "services": [
+      "Automated Current Account",
+      "Bulk Payouts",
+      "Tax Automation",
+      "Accounting Integrations"
+    ],
+    "specializations": [
+      "automation-suite",
+      "api-first",
+      "accounting-integrations",
+      "developer-tooling"
+    ],
+    "platforms": ["RazorpayX Dashboard", "Account Aggregator"],
+    "governmentSchemes": [],
+    "website": "https://razorpay.com/x",
+    "branches": [
+      {
+        "name": "Razorpay HQ",
+        "address": "SJR Cyber Laskar, Hosur Road, Bengaluru 560030",
+        "contactPerson": "Customer Success Desk",
+        "contactNumber": "+91-8046987700",
+        "email": "care@razorpay.com",
+        "city": "Bengaluru",
+        "state": "Karnataka"
+      }
+    ]
+  },
+  {
+    "name": "HDFC Bank",
+    "slug": "hdfc",
+    "category": "bank",
+    "overview": "HDFC Startup BuildUp programme bundles current accounts, FD-backed cards, and global banking support for scaling founders.",
+    "keyOfferings": [
+      "Startup BuildUp current accounts with curated pricing tiers",
+      "FD-backed commercial cards and forex cards",
+      "Offshore banking and treasury advisory",
+      "Dedicated digital banking units across key startup corridors"
+    ],
+    "services": ["Startup BuildUp", "FD-backed Cards", "Offshore Banking", "Treasury Advisory"],
+    "specializations": [
+      "international-banking",
+      "treasury-support",
+      "digital-first-branches",
+      "credit-cards"
+    ],
+    "platforms": ["SmartHub Vyapar", "HDFC Business NetBanking"],
+    "governmentSchemes": ["CGSS", "SISFS"],
+    "website": "https://www.hdfcbank.com",
+    "branches": [
+      {
+        "name": "Startup BuildUp Desk, Bengaluru",
+        "address": "No. 29, Residency Road, Bengaluru 560025",
+        "contactPerson": "Ms. Sneha Pradhan",
+        "contactNumber": "+91-8061906161",
+        "email": "startup.blr@hdfcbank.com",
+        "city": "Bengaluru",
+        "state": "Karnataka"
+      },
+      {
+        "name": "Innovation Centre, Mumbai",
+        "address": "Ground Floor, Raheja Centre, Nariman Point, Mumbai 400021",
+        "contactPerson": "Mr. Kunal Shah",
+        "contactNumber": "+91-2222841234",
+        "email": "startup.mumbai@hdfcbank.com",
+        "city": "Mumbai",
+        "state": "Maharashtra"
+      }
+    ]
+  },
+  {
+    "name": "Axis Bank",
+    "slug": "axis",
+    "category": "bank",
+    "overview": "Axis Startup Banking blends current accounts, co-working credits, and investor connects for early and growth-stage companies.",
+    "keyOfferings": [
+      "Startup current accounts with free NEFT/RTGS slabs",
+      "Co-working credits with partner hubs",
+      "Investor connect sessions and advisory",
+      "Integrated trade and foreign remittance services"
+    ],
+    "services": [
+      "Startup Current Account",
+      "Co-working Credits",
+      "Investor Connect",
+      "Trade Services"
+    ],
+    "specializations": [
+      "ecosystem-benefits",
+      "credit-access",
+      "international-banking",
+      "trade-finance"
+    ],
+    "platforms": ["Axis Startup Banking Portal"],
+    "governmentSchemes": ["CGSS", "Stand-Up India"],
+    "website": "https://www.axisbank.com",
+    "branches": [
+      {
+        "name": "Startup Centre, Delhi",
+        "address": "Barakhamba Road, Connaught Place, New Delhi 110001",
+        "contactPerson": "Ms. Ritu Anand",
+        "contactNumber": "+91-9810012345",
+        "email": "startup.delhi@axisbank.com",
+        "city": "New Delhi",
+        "state": "Delhi"
+      },
+      {
+        "name": "Innovation Hub, Bengaluru",
+        "address": "UB City, 24 Vittal Mallya Road, Bengaluru 560001",
+        "contactPerson": "Mr. Vinay Menon",
+        "contactNumber": "+91-8055557788",
+        "email": "startup.blr@axisbank.com",
+        "city": "Bengaluru",
+        "state": "Karnataka"
+      }
+    ]
+  },
+  {
+    "name": "Kotak Mahindra Bank",
+    "slug": "kotak",
+    "category": "bank",
+    "overview": "Kotak Neo offers startups low-balance current accounts, API-ready collections, and equity-linked advisory.",
+    "keyOfferings": [
+      "Neo Current Account with low quarterly balance",
+      "811 and API collections for digital businesses",
+      "Equity-linked advisory for venture-backed firms",
+      "Integrated POS and payroll solutions"
+    ],
+    "services": ["Neo Current Account", "811 Collections", "POS Solutions", "Payroll"],
+    "specializations": ["api-first", "low-balance", "digital-onboarding", "collections"],
+    "platforms": ["Kotak Neo for Business", "Kotak 811"],
+    "governmentSchemes": ["SISFS", "CGSS"],
+    "website": "https://www.kotak.com",
+    "branches": [
+      {
+        "name": "Startup Desk, Koramangala",
+        "address": "No. 7, 1st Main, Koramangala 7th Block, Bengaluru 560095",
+        "contactPerson": "Ms. Ira Gupta",
+        "contactNumber": "+91-8046068282",
+        "email": "startup.koramangala@kotak.com",
+        "city": "Bengaluru",
+        "state": "Karnataka"
+      },
+      {
+        "name": "Startup Desk, BKC",
+        "address": "Phoenix House, Bandra Kurla Complex, Mumbai 400051",
+        "contactPerson": "Ms. Pooja Desai",
+        "contactNumber": "+91-2226508080",
+        "email": "startup.mumbai@kotak.com",
+        "city": "Mumbai",
+        "state": "Maharashtra"
+      }
+    ]
+  },
+  {
+    "name": "Federal Bank",
+    "slug": "federal",
+    "category": "bank",
+    "overview": "Federal Bank Freedom Business accounts empower SMEs and startups with low AMB, instant payouts, and AA-powered credit scoring.",
+    "keyOfferings": [
+      "Freedom Current Account with low minimum balance",
+      "Instant payout APIs via FedEx Pay",
+      "AA-backed cashflow credit assessment",
+      "Trade and export documentation support"
+    ],
+    "services": ["Freedom Current Account", "FedEx Pay", "AA Credit", "Trade Desk"],
+    "specializations": ["low-balance", "api-first", "cashflow-lending", "sme-focus"],
+    "platforms": ["Federal Bank FedEx Pay", "Account Aggregator"],
+    "governmentSchemes": ["CGSS"],
+    "website": "https://www.federalbank.co.in",
+    "branches": [
+      {
+        "name": "Startup Desk, Kochi",
+        "address": "Federal Towers, Aluva, Kochi 683101",
+        "contactPerson": "Mr. Anirudh Menon",
+        "contactNumber": "+91-4842622211",
+        "email": "startup.kochi@federalbank.co.in",
+        "city": "Kochi",
+        "state": "Kerala"
+      }
+    ]
+  },
+  {
+    "name": "Open Financial Technologies",
+    "slug": "open",
+    "category": "fintech",
+    "overview": "Open is Asia’s first SME neobank—combining invoicing, payroll, GST, and current accounts in one dashboard.",
+    "keyOfferings": [
+      "Current accounts backed by partner banks with instant onboarding",
+      "Integrated invoicing, collections, and accounting automations",
+      "Payroll, expense cards, and GST filing workflow",
+      "Embedded finance rails for SaaS and marketplaces"
+    ],
+    "services": ["Current Account", "Invoicing", "Payroll", "Embedded Finance"],
+    "specializations": ["automation-suite", "api-first", "accounting-integrations", "sme-focus"],
+    "platforms": ["Open Money OS", "Account Aggregator"],
+    "governmentSchemes": ["Startup India Hub"],
+    "website": "https://open.money",
+    "branches": [
+      {
+        "name": "Open HQ",
+        "address": "Vaishnavi Summit, 80 Feet Road, Koramangala, Bengaluru 560034",
+        "contactPerson": "Customer Growth Team",
+        "contactNumber": "+91-8047191571",
+        "email": "hello@open.money",
+        "city": "Bengaluru",
+        "state": "Karnataka"
+      }
+    ]
+  },
+  {
+    "name": "Jupiter",
+    "slug": "jupiter",
+    "category": "fintech",
+    "overview": "Jupiter for Business offers founders a mobile-first current account with spend analytics, smart alerts, and partner perks.",
+    "keyOfferings": [
+      "Zero-balance current account with instant UPI integration",
+      "Digital spend insights and financial health nudges",
+      "Partner marketplace for SaaS credits and compliance",
+      "Personalised support via in-app concierge"
+    ],
+    "services": ["Current Account", "Spend Analytics", "Partner Marketplace", "Concierge"],
+    "specializations": ["zero-balance-launch", "mobile-first", "insights", "ecosystem-benefits"],
+    "platforms": ["Jupiter Business App"],
+    "governmentSchemes": [],
+    "website": "https://jupiter.money",
+    "branches": []
+  },
+  {
+    "name": "Paytm Payments Bank",
+    "slug": "paytm-payments-bank",
+    "category": "fintech",
+    "overview": "Paytm Payments Bank powers digital-first ventures with zero-balance business accounts and integrated collection tools.",
+    "keyOfferings": [
+      "Zero-balance business current account with instant activation",
+      "Unified dashboard for collections, payouts, and GST",
+      "Paytm POS, QR, and Soundbox hardware for omnichannel",
+      "Integration with Paytm for Business Super App"
+    ],
+    "services": ["Business Current Account", "Collections", "POS Hardware", "GST Suite"],
+    "specializations": [
+      "zero-balance-launch",
+      "automation-suite",
+      "hardware-integration",
+      "merchant-focus"
+    ],
+    "platforms": ["Paytm for Business", "UPI", "Account Aggregator"],
+    "governmentSchemes": ["Startup India Hub"],
+    "website": "https://www.paytmbank.com",
+    "branches": [
+      {
+        "name": "Paytm Tower",
+        "address": "B-121, Sector 5, Noida 201301",
+        "contactPerson": "Enterprise Success Team",
+        "contactNumber": "+91-1204770770",
+        "email": "bank.support@paytmbank.com",
+        "city": "Noida",
+        "state": "Uttar Pradesh"
+      }
+    ]
+  },
+  {
+    "name": "Slice",
+    "slug": "slice",
+    "category": "fintech",
+    "overview": "Slice offers a unified banking experience with cashback debit, working capital lines, and a newly merged small finance bank platform.",
+    "keyOfferings": [
+      "Slice for Business accounts with cashflow-based underwriting",
+      "Rewards-led debit and charge cards",
+      "In-app credit management with alternative data scoring",
+      "Partnership products via North East Small Finance Bank"
+    ],
+    "services": ["Business Account", "Rewards Debit", "Working Capital", "Credit Analytics"],
+    "specializations": ["alternative-credit", "rewards", "mobile-first", "cashflow-lending"],
+    "platforms": ["Slice App", "Account Aggregator"],
+    "governmentSchemes": [],
+    "website": "https://www.sliceit.com",
+    "branches": []
+  }
+]

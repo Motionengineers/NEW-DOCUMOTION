@@ -47,7 +47,10 @@ export default function FaqSection() {
     <section className="py-20 px-4">
       <div className="container mx-auto max-w-5xl">
         <div className="text-center mb-12">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs font-medium uppercase tracking-[0.2em]" style={{ color: 'var(--tertiary-label)' }}>
+          <span
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs font-medium uppercase tracking-[0.2em]"
+            style={{ color: 'var(--tertiary-label)' }}
+          >
             FAQ
           </span>
           <h2
@@ -56,8 +59,12 @@ export default function FaqSection() {
           >
             Frequently Asked Questions
           </h2>
-          <p className="text-base md:text-lg max-w-2xl mx-auto" style={{ color: 'var(--secondary-label)' }}>
-            Answers for founders, operators, and teams considering Documotion as their AI operating system for business clarity.
+          <p
+            className="text-base md:text-lg max-w-2xl mx-auto"
+            style={{ color: 'var(--secondary-label)' }}
+          >
+            Answers for founders, operators, and teams considering Documotion as their AI operating
+            system for business clarity.
           </p>
         </div>
 
@@ -89,7 +96,10 @@ export default function FaqSection() {
                   </span>
                 </button>
                 {isOpen && (
-                  <div className="px-6 md:px-8 pb-6 md:pb-8" style={{ color: 'var(--secondary-label)' }}>
+                  <div
+                    className="px-6 md:px-8 pb-6 md:pb-8"
+                    style={{ color: 'var(--secondary-label)' }}
+                  >
                     <p className="text-sm md:text-base leading-relaxed">{item.answer}</p>
                   </div>
                 )}
@@ -101,5 +111,3 @@ export default function FaqSection() {
     </section>
   );
 }
-
-

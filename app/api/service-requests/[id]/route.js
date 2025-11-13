@@ -8,7 +8,10 @@ export async function GET(_request, { params }) {
   const serviceRequests = await readJson(STORE_FILE, []);
   const serviceRequest = serviceRequests.find(item => item.id === id);
   if (!serviceRequest) {
-    return NextResponse.json({ success: false, error: 'Service request not found' }, { status: 404 });
+    return NextResponse.json(
+      { success: false, error: 'Service request not found' },
+      { status: 404 }
+    );
   }
   return NextResponse.json({ success: true, serviceRequest });
 }
@@ -31,7 +34,10 @@ export async function PATCH(request, { params }) {
     });
 
     if (!found) {
-      return NextResponse.json({ success: false, error: 'Service request not found' }, { status: 404 });
+      return NextResponse.json(
+        { success: false, error: 'Service request not found' },
+        { status: 404 }
+      );
     }
 
     await writeJson(STORE_FILE, updatedRequests);
@@ -45,4 +51,3 @@ export async function PATCH(request, { params }) {
     );
   }
 }
-

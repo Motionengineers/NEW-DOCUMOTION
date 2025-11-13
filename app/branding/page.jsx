@@ -5,7 +5,8 @@ import { ArrowRight, Sparkles, Star } from 'lucide-react';
 const CATEGORY_CARDS = [
   {
     title: 'Ad Agencies (India)',
-    description: 'Full-service campaign partners for launch and growth across TV, digital, and OOH.',
+    description:
+      'Full-service campaign partners for launch and growth across TV, digital, and OOH.',
     href: '/branding/agencies?category=Ad%20Agencies%20(India)',
   },
   {
@@ -68,15 +69,23 @@ export default function BrandingHubLandingPage() {
 
       <main className="container mx-auto max-w-6xl px-4 py-16 space-y-16">
         <header className="text-center space-y-4">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium tracking-wide uppercase" style={{ color: 'var(--secondary-label)' }}>
+          <span
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium tracking-wide uppercase"
+            style={{ color: 'var(--secondary-label)' }}
+          >
             <Sparkles className="h-4 w-4 text-blue-400" />
             Branding Hub
           </span>
-          <h1 className="text-4xl md:text-5xl font-semibold leading-tight" style={{ color: 'var(--label)' }}>
+          <h1
+            className="text-4xl md:text-5xl font-semibold leading-tight"
+            style={{ color: 'var(--label)' }}
+          >
             Discover, Compare, and Hire India’s Best Creative Partners
           </h1>
           <p className="mx-auto max-w-3xl text-lg" style={{ color: 'var(--secondary-label)' }}>
-            A curated marketplace for founders to find ad agencies, branding studios, filmmakers, designers, and creators who understand Indian markets. Every profile is verified, scored, and mapped by budget, expertise, and category.
+            A curated marketplace for founders to find ad agencies, branding studios, filmmakers,
+            designers, and creators who understand Indian markets. Every profile is verified,
+            scored, and mapped by budget, expertise, and category.
           </p>
           <div className="flex flex-wrap justify-center gap-3 pt-4">
             <Link
@@ -104,7 +113,8 @@ export default function BrandingHubLandingPage() {
                 Categories You Can Hire
               </h2>
               <p className="text-sm" style={{ color: 'var(--secondary-label)' }}>
-                Each category opens up a curated directory with filters for city, budget, services, and verification status.
+                Each category opens up a curated directory with filters for city, budget, services,
+                and verification status.
               </p>
             </div>
             <Link
@@ -124,15 +134,27 @@ export default function BrandingHubLandingPage() {
                 href={category.href}
                 className="glass group relative overflow-hidden rounded-2xl border border-white/10 p-6 transition hover:border-blue-400/40 hover:shadow-2xl hover:shadow-blue-500/20"
               >
-                <div className="absolute inset-0 opacity-0 transition group-hover:opacity-100" style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.15), rgba(255,255,255,0))' }} />
+                <div
+                  className="absolute inset-0 opacity-0 transition group-hover:opacity-100"
+                  style={{
+                    background:
+                      'linear-gradient(135deg, rgba(59,130,246,0.15), rgba(255,255,255,0))',
+                  }}
+                />
                 <div className="relative space-y-3">
                   <h3 className="text-lg font-semibold" style={{ color: 'var(--label)' }}>
                     {category.title}
                   </h3>
-                  <p className="text-sm leading-relaxed" style={{ color: 'var(--secondary-label)' }}>
+                  <p
+                    className="text-sm leading-relaxed"
+                    style={{ color: 'var(--secondary-label)' }}
+                  >
                     {category.description}
                   </p>
-                  <span className="inline-flex items-center gap-1 text-sm font-medium" style={{ color: 'var(--system-blue)' }}>
+                  <span
+                    className="inline-flex items-center gap-1 text-sm font-medium"
+                    style={{ color: 'var(--system-blue)' }}
+                  >
                     View specialists <ArrowRight className="h-3 w-3" />
                   </span>
                 </div>
@@ -148,12 +170,20 @@ export default function BrandingHubLandingPage() {
               <h2 className="text-2xl font-semibold" style={{ color: 'var(--label)' }}>
                 How the Branding Hub Works
               </h2>
-              <ul className="space-y-3 text-sm leading-relaxed" style={{ color: 'var(--secondary-label)' }}>
+              <ul
+                className="space-y-3 text-sm leading-relaxed"
+                style={{ color: 'var(--secondary-label)' }}
+              >
                 <li>🧭 Tell us your project, budget, and timeline. We match agencies instantly.</li>
-                <li>🔍 Every partner is verified through campaigns, portfolios, and founder references.</li>
+                <li>
+                  🔍 Every partner is verified through campaigns, portfolios, and founder
+                  references.
+                </li>
                 <li>📈 Compare pricing packages, services, and case studies side-by-side.</li>
                 <li>🤝 Submit a hire brief once and share with shortlisted partners securely.</li>
-                <li>📬 Agencies respond inside Documotion with proposals, timelines, and deliverables.</li>
+                <li>
+                  📬 Agencies respond inside Documotion with proposals, timelines, and deliverables.
+                </li>
               </ul>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6 space-y-4">
@@ -161,7 +191,8 @@ export default function BrandingHubLandingPage() {
                 Need help choosing?
               </h3>
               <p className="text-sm" style={{ color: 'var(--secondary-label)' }}>
-                Documotion concierge can shortlist agencies, schedule interviews, and negotiate commercials on your behalf.
+                Documotion concierge can shortlist agencies, schedule interviews, and negotiate
+                commercials on your behalf.
               </p>
               <Link
                 href="/branding/agencies?withFilters=true"
@@ -177,4 +208,3 @@ export default function BrandingHubLandingPage() {
     </div>
   );
 }
-

@@ -45,9 +45,7 @@ export async function GET(request) {
       state: parseMultiValue(searchParams, 'state'),
       services: parseMultiValue(searchParams, 'service'),
       categories: parseMultiValue(searchParams, 'category'),
-      verified: searchParams.has('verified')
-        ? searchParams.get('verified') === 'true'
-        : undefined,
+      verified: searchParams.has('verified') ? searchParams.get('verified') === 'true' : undefined,
       minRating: parseFloatValue(searchParams.get('minRating'), undefined),
       minBudget: parseInteger(searchParams.get('minBudget'), undefined),
       maxBudget: parseInteger(searchParams.get('maxBudget'), undefined),
@@ -99,4 +97,3 @@ export async function GET(request) {
     );
   }
 }
-

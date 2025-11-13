@@ -20,10 +20,7 @@ export async function GET(_request, { params }) {
     });
 
     if (!agency) {
-      return NextResponse.json(
-        { success: false, error: 'Agency not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: 'Agency not found' }, { status: 404 });
     }
 
     return NextResponse.json({ success: true, data: agency });
@@ -38,4 +35,3 @@ export async function GET(_request, { params }) {
     );
   }
 }
-

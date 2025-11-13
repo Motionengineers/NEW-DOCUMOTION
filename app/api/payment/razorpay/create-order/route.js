@@ -63,7 +63,9 @@ export async function POST(request) {
       );
     }
     console.error('POST /api/payment/razorpay/create-order failed:', error);
-    return NextResponse.json({ success: false, error: 'Unable to create Razorpay order' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: 'Unable to create Razorpay order' },
+      { status: 500 }
+    );
   }
 }
-

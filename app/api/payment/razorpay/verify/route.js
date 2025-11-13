@@ -28,7 +28,10 @@ export async function POST(request) {
       return NextResponse.json({ success: false, error: 'Signature mismatch' }, { status: 400 });
     }
 
-    return NextResponse.json({ success: true, data: { orderId: payload.orderId, paymentId: payload.paymentId } });
+    return NextResponse.json({
+      success: true,
+      data: { orderId: payload.orderId, paymentId: payload.paymentId },
+    });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -37,7 +40,9 @@ export async function POST(request) {
       );
     }
     console.error('POST /api/payment/razorpay/verify failed:', error);
-    return NextResponse.json({ success: false, error: 'Unable to verify payment' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: 'Unable to verify payment' },
+      { status: 500 }
+    );
   }
 }
-

@@ -57,4 +57,3 @@ export async function POST(request) {
     return NextResponse.json({ success: false, error: 'Failed to save setting' }, { status: 500 });
   }
 }
-

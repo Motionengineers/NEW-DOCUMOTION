@@ -69,8 +69,8 @@ export default function TeamAccessPlaybookPage() {
             Run secure, scalable team access in Documotion
           </h1>
           <p className="mt-4 text-base text-slate-200 md:text-lg">
-            Follow this five-step framework to add teammates, keep approvals tight, and stay audit-ready
-            as your agency or startup grows.
+            Follow this five-step framework to add teammates, keep approvals tight, and stay
+            audit-ready as your agency or startup grows.
           </p>
           <div className="mt-8 flex flex-col items-center gap-4 md:flex-row md:justify-center">
             <a
@@ -118,8 +118,8 @@ export default function TeamAccessPlaybookPage() {
         <div className="mt-12 rounded-3xl border border-emerald-500/20 bg-emerald-500/10 p-8">
           <h2 className="text-xl font-semibold text-white">Need a deeper rollout plan?</h2>
           <p className="mt-3 text-sm text-emerald-100">
-            Our concierge team can help you migrate existing spreadsheets, configure the intake webhook,
-            and train managers on reviewer workflows. Drop us a line at{' '}
+            Our concierge team can help you migrate existing spreadsheets, configure the intake
+            webhook, and train managers on reviewer workflows. Drop us a line at{' '}
             <a
               href="mailto:concierge@documotion.in"
               className="font-semibold text-white underline decoration-dotted underline-offset-4"
@@ -133,4 +133,3 @@ export default function TeamAccessPlaybookPage() {
     </div>
   );
 }
-

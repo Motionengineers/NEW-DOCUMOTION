@@ -63,58 +63,64 @@ async function downloadCSV(url, outputPath) {
 }
 
 async function processBatch(rows) {
-  return prisma.$transaction(async tx => {
-    let inserted = 0;
-    let updated = 0;
+  return prisma.$transaction(
+    async tx => {
+      let inserted = 0;
+      let updated = 0;
 
-    for (const r of rows) {
-      const name = (r.Name || r.name || '').trim();
-      if (!name) continue;
+      for (const r of rows) {
+        const name = (r.Name || r.name || '').trim();
+        if (!name) continue;
 
-      const industry = (r.Industry || r.industry || '').trim() || null;
-      const location = (r.Location || r.location || '').trim() || null;
-      const companySize = parseCompanySize(r.Csize || r.csize || r['Company Size'] || '');
-      const website = (r.Website || r.website || '').trim() || null;
-      const fundingStage = (r['Funding Stage'] || r.fundingStage || r['Funding Stage'] || '').trim() || null;
-      const fundingAmount = (r['Funding Amount'] || r.fundingAmount || r['Funding Amount'] || '').trim() || null;
-      const contactInfo = (r['Contact Numbers of decision-makers'] || r.contactInfo || '').trim() || null;
+        const industry = (r.Industry || r.industry || '').trim() || null;
+        const location = (r.Location || r.location || '').trim() || null;
+        const companySize = parseCompanySize(r.Csize || r.csize || r['Company Size'] || '');
+        const website = (r.Website || r.website || '').trim() || null;
+        const fundingStage =
+          (r['Funding Stage'] || r.fundingStage || r['Funding Stage'] || '').trim() || null;
+        const fundingAmount =
+          (r['Funding Amount'] || r.fundingAmount || r['Funding Amount'] || '').trim() || null;
+        const contactInfo =
+          (r['Contact Numbers of decision-makers'] || r.contactInfo || '').trim() || null;
 
-      const fundingAmountNumeric = parseAmountToNumber(fundingAmount);
+        const fundingAmountNumeric = parseAmountToNumber(fundingAmount);
 
-      // Check if startup already exists by name (case-insensitive for SQLite)
-      const allExisting = await tx.fundedStartup.findMany({
-        where: { name: { contains: name } },
-      });
-      const existing = allExisting.find(s => s.name.toLowerCase() === name.toLowerCase());
-
-      const data = {
-        name,
-        industry,
-        location,
-        companySize,
-        website,
-        fundingStage,
-        fundingAmount,
-        fundingAmountNumeric,
-        foundedYear: extractYearFromData(r),
-        contactInfo,
-        sourceUrl: CSV_EXPORT_URL,
-      };
-
-      if (!existing) {
-        await tx.fundedStartup.create({ data });
-        inserted++;
-      } else {
-        await tx.fundedStartup.update({
-          where: { id: existing.id },
-          data,
+        // Check if startup already exists by name (case-insensitive for SQLite)
+        const allExisting = await tx.fundedStartup.findMany({
+          where: { name: { contains: name } },
         });
-        updated++;
-      }
-    }
+        const existing = allExisting.find(s => s.name.toLowerCase() === name.toLowerCase());
 
-    return { inserted, updated };
-  }, { timeout: 60000 });
+        const data = {
+          name,
+          industry,
+          location,
+          companySize,
+          website,
+          fundingStage,
+          fundingAmount,
+          fundingAmountNumeric,
+          foundedYear: extractYearFromData(r),
+          contactInfo,
+          sourceUrl: CSV_EXPORT_URL,
+        };
+
+        if (!existing) {
+          await tx.fundedStartup.create({ data });
+          inserted++;
+        } else {
+          await tx.fundedStartup.update({
+            where: { id: existing.id },
+            data,
+          });
+          updated++;
+        }
+      }
+
+      return { inserted, updated };
+    },
+    { timeout: 60000 }
+  );
 }
 
 async function main() {
@@ -152,7 +158,9 @@ async function main() {
     const { inserted, updated } = await processBatch(batch);
     totalInserted += inserted;
     totalUpdated += updated;
-    console.log(`Processed ${Math.min(i + batch.length, rows.length)}/${rows.length} (+${inserted} new, ~${updated} updated)`);
+    console.log(
+      `Processed ${Math.min(i + batch.length, rows.length)}/${rows.length} (+${inserted} new, ~${updated} updated)`
+    );
     await sleep(50);
   }
 
@@ -169,4 +177,3 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
-

@@ -24,7 +24,8 @@ export async function GET(request) {
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
     const userId = token?.sub ? Number(token.sub) : null;
 
-    const limit = Number.isFinite(limitParam) && limitParam > 0 ? Math.min(limitParam, 50) : DEFAULT_PAGE_SIZE;
+    const limit =
+      Number.isFinite(limitParam) && limitParam > 0 ? Math.min(limitParam, 50) : DEFAULT_PAGE_SIZE;
 
     const where = {};
 
@@ -68,9 +69,10 @@ export async function GET(request) {
       ];
     }
 
-    const orderBy = sort === 'trending'
-      ? [{ updatedAt: 'desc' }, { createdAt: 'desc' }]
-      : [{ createdAt: 'desc' }];
+    const orderBy =
+      sort === 'trending'
+        ? [{ updatedAt: 'desc' }, { createdAt: 'desc' }]
+        : [{ createdAt: 'desc' }];
 
     const posts = await prisma.feedPost.findMany({
       where,
@@ -158,8 +160,8 @@ export async function POST(request) {
     const tagArray = Array.isArray(body.tags)
       ? body.tags
       : body.tags
-      ? body.tags.toString().split(',')
-      : [];
+        ? body.tags.toString().split(',')
+        : [];
     const tags = Array.from(new Set(tagArray.map(normaliseTag))).filter(Boolean);
     const mediaItems = Array.isArray(body.media) ? body.media : [];
     const mediaType = mediaItems[0]?.type ?? null;

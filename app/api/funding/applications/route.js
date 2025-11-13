@@ -145,18 +145,22 @@ function buildDemoApplication() {
     socialLinks: 'https://linkedin.com/company/aurorapay\nhttps://twitter.com/aurorapay',
     industry: 'Fintech',
     stage: 'Growth',
-    problem: 'Traditional SME payment rails are fragmented, expensive, and lack working capital insights for founder-led businesses.',
+    problem:
+      'Traditional SME payment rails are fragmented, expensive, and lack working capital insights for founder-led businesses.',
     solution:
       'AuroraPay unifies collections, payouts, and credit underwriting into one API-first dashboard. We layer GST and banking data to build instant risk scores.',
-    targetAudience: 'Digital-first wholesalers and D2C brands with ₹2–10 crore annual GMV across Tier-1 and Tier-2 cities.',
+    targetAudience:
+      'Digital-first wholesalers and D2C brands with ₹2–10 crore annual GMV across Tier-1 and Tier-2 cities.',
     revenue: '₹1.8 crore ARR (FY25 run-rate)',
     profit: 'EBITDA -12% (investing in onboarding automation)',
     customers: '540 active merchants · 62K monthly transactions',
     fundingRaised: '₹4.2 crore pre-seed (July 2024)',
-    growthMetrics: '6.2x TPV growth over 9 months · 94% net revenue retention · 38% margin expansion after workflow automation.',
+    growthMetrics:
+      '6.2x TPV growth over 9 months · 94% net revenue retention · 38% margin expansion after workflow automation.',
     amountRequested: 70000000,
     equityOffered: 10,
-    useOfFunds: 'Expand credit underwriting pod, launch co-lending rails with two NBFC partners, and extend GTM to Pune & Delhi NCR.',
+    useOfFunds:
+      'Expand credit underwriting pod, launch co-lending rails with two NBFC partners, and extend GTM to Pune & Delhi NCR.',
     pitchVideoUrl: '/uploads/demo/aurorapay-pitch.mp4',
     pitchDeckUrl: '/uploads/demo/aurorapay-deck.pdf',
     submittedAt: null,
@@ -196,12 +200,17 @@ export async function GET(request) {
       success: true,
       data: {
         application: serializeFundingApplication(application),
-        draft: draft ? { ...JSON.parse(draft.data || '{}'), updatedAt: draft.updatedAt?.toISOString?.() } : null,
+        draft: draft
+          ? { ...JSON.parse(draft.data || '{}'), updatedAt: draft.updatedAt?.toISOString?.() }
+          : null,
       },
     });
   } catch (error) {
     console.error('GET /api/funding/applications failed:', error);
-    return NextResponse.json({ success: false, error: 'Unable to load funding applications' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: 'Unable to load funding applications' },
+      { status: 500 }
+    );
   }
 }
 
@@ -209,7 +218,10 @@ export async function POST(request) {
   try {
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
     if (!token?.sub) {
-      return NextResponse.json({ success: false, error: 'Please sign in to continue' }, { status: 401 });
+      return NextResponse.json(
+        { success: false, error: 'Please sign in to continue' },
+        { status: 401 }
+      );
     }
     const userId = Number(token.sub);
 
@@ -249,7 +261,10 @@ export async function POST(request) {
     const mapped = buildApplicationData(data);
     const missing = validateSubmission(mapped);
     if (missing.length) {
-      return NextResponse.json({ success: false, error: `Please complete: ${missing.join(', ')}` }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: `Please complete: ${missing.join(', ')}` },
+        { status: 400 }
+      );
     }
 
     const baseData = {
@@ -262,9 +277,14 @@ export async function POST(request) {
     let application = null;
 
     if (applicationId) {
-      application = await prisma.fundingApplication.findUnique({ where: { id: Number(applicationId) } });
+      application = await prisma.fundingApplication.findUnique({
+        where: { id: Number(applicationId) },
+      });
       if (!application || application.userId !== userId) {
-        return NextResponse.json({ success: false, error: 'Application not found' }, { status: 404 });
+        return NextResponse.json(
+          { success: false, error: 'Application not found' },
+          { status: 404 }
+        );
       }
       application = await prisma.fundingApplication.update({
         where: { id: application.id },
@@ -287,6 +307,9 @@ export async function POST(request) {
     });
   } catch (error) {
     console.error('POST /api/funding/applications failed:', error);
-    return NextResponse.json({ success: false, error: 'Unable to process funding application' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: 'Unable to process funding application' },
+      { status: 500 }
+    );
   }
 }

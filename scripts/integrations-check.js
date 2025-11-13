@@ -42,7 +42,7 @@ async function run() {
     gov_data: results.gov_data?.data?.success ? 'ok' : 'missing_key',
     newsapi: results.newsapi?.data?.success ? 'ok' : 'missing_key',
     google_places: 'missing_key',
-    razorpay: 'missing_key',
+    razorpay: process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET ? 'ok' : 'missing_key',
   };
 
   // Merge into report.json

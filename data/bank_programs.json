@@ -1,0 +1,215 @@
+[
+  {
+    "id": "sbi-startup-collateral-free",
+    "bankSlug": "sbi",
+    "bankName": "State Bank of India",
+    "programName": "SBI Startup Collateral-Free Loan",
+    "programType": ["loan", "current-account"],
+    "bankType": "public",
+    "services": ["loan", "current-account", "treasury", "forex"],
+    "minLoanAmount": 10,
+    "maxLoanAmount": 200,
+    "interestRate": "8.5% - 10.0%",
+    "tenure": "Up to 7 years",
+    "processingFees": "0.5% of sanctioned amount",
+    "eligibility": {
+      "stages": ["pre-seed", "seed", "series a", "growth"],
+      "sectors": ["saas", "fintech", "consumer", "healthcare"],
+      "minRevenue": 0.0,
+      "maxRevenue": 50.0,
+      "states": ["national"],
+      "services": ["loan"],
+      "specialCriteria": ["government-backed", "women-founder"]
+    },
+    "benefits": [
+      "Collateral-free up to ₹2 crore backed by CGSS",
+      "Dedicated relationship manager across startup hubs",
+      "Bundled treasury, forex, and capital markets desk"
+    ],
+    "documents": [
+      "DPIIT recognition certificate",
+      "Past 2 years financial statements",
+      "Updated pitch deck and projections",
+      "Promoter KYC"
+    ],
+    "contact": {
+      "email": "startup.branch@sbi.co.in",
+      "phone": "+91-8045123456"
+    },
+    "applyUrl": "https://bank.sbi/web/business/startup-branch"
+  },
+  {
+    "id": "icici-istartup",
+    "bankSlug": "icici",
+    "bankName": "ICICI Bank",
+    "programName": "iStartup 2.0 Founders Suite",
+    "programType": ["current-account", "api", "loan"],
+    "bankType": "private",
+    "services": ["current-account", "api", "credit-line", "collections"],
+    "minLoanAmount": 0,
+    "maxLoanAmount": 100,
+    "interestRate": "Starting from 9.25%",
+    "tenure": "12-48 months",
+    "processingFees": "0.75%",
+    "eligibility": {
+      "stages": ["seed", "series a", "growth"],
+      "sectors": ["saas", "consumer", "marketplace"],
+      "minRevenue": 0.5,
+      "maxRevenue": 100.0,
+      "states": ["national"],
+      "services": ["api", "current-account"],
+      "specialCriteria": []
+    },
+    "benefits": [
+      "Zero balance current account for first 12 months",
+      "Access to partner marketplace for compliance, HR, and accounting",
+      "Collection/API stack via iBizz"
+    ],
+    "documents": [
+      "Certificate of incorporation",
+      "Shareholding pattern",
+      "Last 12 months bank statements"
+    ],
+    "contact": {
+      "email": "istartupdesk@icicibank.com",
+      "phone": "+91-2224890000"
+    },
+    "applyUrl": "https://www.icicibank.com/business-banking/startup"
+  },
+  {
+    "id": "yes-headstart",
+    "bankSlug": "yes-bank",
+    "bankName": "YES Bank",
+    "programName": "YES Head-STARTUP",
+    "programType": ["api", "credit-line"],
+    "bankType": "private",
+    "services": ["api", "credit-line", "current-account"],
+    "minLoanAmount": 5,
+    "maxLoanAmount": 150,
+    "interestRate": "Linked to MCLR + 2.5%",
+    "tenure": "1-5 years",
+    "processingFees": "1%",
+    "eligibility": {
+      "stages": ["pre-seed", "seed", "series a", "growth"],
+      "sectors": ["fintech", "saas", "logistics"],
+      "minRevenue": 0.2,
+      "maxRevenue": 75.0,
+      "states": ["national"],
+      "services": ["api", "credit-line"],
+      "specialCriteria": ["women-founder"]
+    },
+    "benefits": [
+      "Instant virtual accounts and collection APIs",
+      "Sandbox access for fintech integrations",
+      "Co-lending partnerships for venture debt"
+    ],
+    "documents": ["Audited financials", "Technology architecture note", "Promoter KYC"],
+    "contact": {
+      "email": "yes.headstart@yesbank.in",
+      "phone": "+91-2261269000"
+    },
+    "applyUrl": "https://www.yesbank.in/business/startup"
+  },
+  {
+    "id": "hdfc-startup-buildup",
+    "bankSlug": "hdfc",
+    "bankName": "HDFC Bank",
+    "programName": "Startup BuildUp Programme",
+    "programType": ["current-account", "credit-card", "treasury"],
+    "bankType": "private",
+    "services": ["current-account", "treasury", "credit-card"],
+    "minLoanAmount": 0,
+    "maxLoanAmount": 80,
+    "interestRate": "On request",
+    "tenure": "Up to 60 months",
+    "processingFees": "As per sanction",
+    "eligibility": {
+      "stages": ["seed", "series a", "growth"],
+      "sectors": ["saas", "healthcare", "manufacturing"],
+      "minRevenue": 1.0,
+      "maxRevenue": 150.0,
+      "states": ["national"],
+      "services": ["treasury", "credit-card"],
+      "specialCriteria": ["export-focused"]
+    },
+    "benefits": [
+      "FD-backed corporate cards with no personal guarantee",
+      "Dedicated digital banking units for collections",
+      "Forex and offshore advisory"
+    ],
+    "documents": ["Audited statements", "Export turnover proof (if applicable)", "KYC"],
+    "contact": {
+      "email": "startup.buildup@hdfcbank.com",
+      "phone": "+91-2267606060"
+    },
+    "applyUrl": "https://www.hdfcbank.com/startup-buildup"
+  },
+  {
+    "id": "razorpayx-ignite",
+    "bankSlug": "razorpayx",
+    "bankName": "RazorpayX",
+    "programName": "RazorpayX Ignite",
+    "programType": ["api", "automation"],
+    "bankType": "fintech",
+    "services": ["api", "automation", "payroll", "tax"],
+    "minLoanAmount": 0,
+    "maxLoanAmount": 0,
+    "interestRate": "Not applicable",
+    "tenure": null,
+    "processingFees": "Pay-as-you-go",
+    "eligibility": {
+      "stages": ["idea", "pre-seed", "seed", "series a"],
+      "sectors": ["saas", "marketplace", "consumer"],
+      "minRevenue": 0.0,
+      "maxRevenue": 30.0,
+      "states": ["national"],
+      "services": ["api", "automation"],
+      "specialCriteria": []
+    },
+    "benefits": [
+      "One-click vendor payouts and payroll",
+      "Automated TDS and GST payments",
+      "Developer-first banking APIs"
+    ],
+    "documents": ["GST certificate (if registered)", "PAN", "Cancelled cheque"],
+    "contact": {
+      "email": "care@razorpay.com",
+      "phone": "+91-8046987700"
+    },
+    "applyUrl": "https://razorpay.com/x/ignite"
+  },
+  {
+    "id": "idfc-first-wings",
+    "bankSlug": "idfc-first",
+    "bankName": "IDFC FIRST Bank",
+    "programName": "FIRST Wings Startup Banking",
+    "programType": ["loan", "api", "current-account"],
+    "bankType": "private",
+    "services": ["loan", "api", "current-account", "mentorship"],
+    "minLoanAmount": 5,
+    "maxLoanAmount": 120,
+    "interestRate": "Starting 9.75%",
+    "tenure": "Up to 60 months",
+    "processingFees": "1% of limit",
+    "eligibility": {
+      "stages": ["pre-seed", "seed", "series a", "growth"],
+      "sectors": ["saas", "fintech", "cleantech"],
+      "minRevenue": 0.3,
+      "maxRevenue": 90.0,
+      "states": ["national"],
+      "services": ["loan", "api"],
+      "specialCriteria": ["minority-owned"]
+    },
+    "benefits": [
+      "Nil average balance for first year",
+      "API-ready payout and virtual account suite",
+      "Mentor network and investor connects"
+    ],
+    "documents": ["3 years financials", "Business plan", "Shareholding pattern"],
+    "contact": {
+      "email": "firstwings@idfcfirstbank.com",
+      "phone": "+91-2262260000"
+    },
+    "applyUrl": "https://www.idfcfirstbank.com/startup-banking"
+  }
+]

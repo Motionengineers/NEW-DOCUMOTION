@@ -14,13 +14,19 @@ function HeroPreview() {
 
   return (
     <section className="space-y-6 rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-white/10 to-transparent p-10">
-      <div className="flex items-center gap-3 text-sm font-semibold uppercase tracking-wide" style={{ color: 'var(--secondary-label)' }}>
+      <div
+        className="flex items-center gap-3 text-sm font-semibold uppercase tracking-wide"
+        style={{ color: 'var(--secondary-label)' }}
+      >
         <Palette className="h-5 w-5 text-blue-300" />
         Live branded workspace
       </div>
       <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
         <div className="space-y-5">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--tertiary-label)' }}>
+          <span
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-wide"
+            style={{ color: 'var(--tertiary-label)' }}
+          >
             <Star className="h-4 w-4 text-amber-400" />
             Your brand is live
           </span>
@@ -28,7 +34,8 @@ function HeroPreview() {
             {branding.companyName || 'Your Company'} workspace is ready.
           </h1>
           <p className="text-base leading-relaxed" style={{ color: 'var(--secondary-label)' }}>
-            Navigation, dashboards, and client touchpoints now carry your logo, colours, and messaging. Continue onboarding or invite your team to experience the branded workspace.
+            Navigation, dashboards, and client touchpoints now carry your logo, colours, and
+            messaging. Continue onboarding or invite your team to experience the branded workspace.
           </p>
           <div className="flex flex-wrap items-center gap-3">
             <Link
@@ -56,7 +63,14 @@ function HeroPreview() {
             <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-4">
               {branding.logoUrl ? (
                 <div className="relative h-12 w-12 overflow-hidden rounded-lg bg-white">
-                  <Image src={branding.logoUrl} alt={`${branding.companyName} logo`} fill className="object-contain p-2" sizes="48px" unoptimized />
+                  <Image
+                    src={branding.logoUrl}
+                    alt={`${branding.companyName} logo`}
+                    fill
+                    className="object-contain p-2"
+                    sizes="48px"
+                    unoptimized
+                  />
                 </div>
               ) : (
                 <div
@@ -70,12 +84,18 @@ function HeroPreview() {
                 <p className="text-lg font-semibold" style={{ color: 'var(--label)' }}>
                   {branding.companyName || 'Your Company'}
                 </p>
-                <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--secondary-label)' }}>
+                <p
+                  className="text-xs uppercase tracking-wide"
+                  style={{ color: 'var(--secondary-label)' }}
+                >
                   {branding.tagline || 'Modern workspace for founders'}
                 </p>
               </div>
             </div>
-            <div className="rounded-2xl border border-white/10 p-4" style={{ backgroundColor: primary, color: '#ffffff' }}>
+            <div
+              className="rounded-2xl border border-white/10 p-4"
+              style={{ backgroundColor: primary, color: '#ffffff' }}
+            >
               <p className="text-sm uppercase tracking-wide opacity-80">Primary CTA</p>
               <p className="text-2xl font-semibold leading-snug">
                 Delight clients with a concierge experience that looks and feels like your studio.
@@ -83,7 +103,11 @@ function HeroPreview() {
             </div>
             <div className="grid gap-3 md:grid-cols-2">
               {['Client portal', 'Deal rooms', 'AI insights', 'Onboarding flows'].map(item => (
-                <div key={item} className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium" style={{ color: 'var(--secondary-label)' }}>
+                <div
+                  key={item}
+                  className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium"
+                  style={{ color: 'var(--secondary-label)' }}
+                >
                   {item}
                 </div>
               ))}
@@ -127,4 +151,3 @@ export default function BrandingExperiencePage() {
     </div>
   );
 }
-

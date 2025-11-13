@@ -50,12 +50,13 @@ export async function POST(request) {
     let agencyId = parsed.agencyId ?? null;
 
     if (!agencyId && parsed.agencySlug) {
-      const agency = await getAgencyBySlug(parsed.agencySlug, { includeServices: false, includePortfolio: false, includeReviews: false });
+      const agency = await getAgencyBySlug(parsed.agencySlug, {
+        includeServices: false,
+        includePortfolio: false,
+        includeReviews: false,
+      });
       if (!agency) {
-        return NextResponse.json(
-          { success: false, error: 'Agency not found' },
-          { status: 404 }
-        );
+        return NextResponse.json({ success: false, error: 'Agency not found' }, { status: 404 });
       }
       agencyId = agency.id;
     }
@@ -134,4 +135,3 @@ export async function POST(request) {
     );
   }
 }
-

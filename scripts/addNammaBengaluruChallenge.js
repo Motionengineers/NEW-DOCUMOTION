@@ -12,7 +12,7 @@ async function main() {
 
   const data = {
     slug,
-    title: "Namma Bengaluru Challenge ‘26",
+    title: 'Namma Bengaluru Challenge ‘26',
     shortDesc:
       'City-scale climate resilience challenge for Bengaluru across construction, water & sanitation, air pollution and waste management.',
     longDesc: `
@@ -42,7 +42,11 @@ async function main() {
     status: 'open',
     incentives:
       'Pilot grants up to ₹25L; market access & validation; showcase opportunities; access to seed capital up to ~₹1 Cr (subject to due diligence).',
-    eligibilityJson: JSON.stringify(['Registered in India; 51% Indian owned', 'TRL6+ pilot/market-ready', 'Deployable in Bengaluru']),
+    eligibilityJson: JSON.stringify([
+      'Registered in India; 51% Indian owned',
+      'TRL6+ pilot/market-ready',
+      'Deployable in Bengaluru',
+    ]),
     evaluationJson: JSON.stringify({ criteria: ['innovation', 'impact', 'scalability', 'team'] }),
   };
 

@@ -41,7 +41,10 @@ export async function GET(_request, { params }) {
       },
     });
 
-    return NextResponse.json({ success: true, data: comments.map(comment => serializeComment(comment)) });
+    return NextResponse.json({
+      success: true,
+      data: comments.map(comment => serializeComment(comment)),
+    });
   } catch (error) {
     console.error('GET /api/feed/posts/[postId]/comments failed:', error);
     return NextResponse.json({ success: false, error: 'Unable to load comments' }, { status: 500 });
@@ -64,7 +67,10 @@ export async function POST(request, { params }) {
     const body = await request.json();
     const text = body.body?.toString().trim();
     if (!text) {
-      return NextResponse.json({ success: false, error: 'Comment cannot be empty' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: 'Comment cannot be empty' },
+        { status: 400 }
+      );
     }
 
     const parentCommentId = body.parentCommentId ? Number(body.parentCommentId) : null;

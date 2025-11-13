@@ -2,6 +2,8 @@ import crypto from 'crypto';
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 function hashToken(token) {
   return crypto.createHash('sha256').update(token).digest('hex');
 }
@@ -44,4 +46,3 @@ export async function GET(request) {
     return NextResponse.json({ error: 'Failed to validate token' }, { status: 500 });
   }
 }
-

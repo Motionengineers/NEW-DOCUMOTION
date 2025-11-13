@@ -62,7 +62,8 @@ export default async function AgenciesDirectoryPage({ searchParams }) {
             Ad Agency & Branding Directory
           </h1>
           <p className="text-base" style={{ color: 'var(--secondary-label)' }}>
-            Filter verified partners by city, services, budget, rating, and team size. Click into a profile to explore services, pricing, case studies, and client reviews.
+            Filter verified partners by city, services, budget, rating, and team size. Click into a
+            profile to explore services, pricing, case studies, and client reviews.
           </p>
         </header>
 
@@ -76,4 +77,3 @@ export default async function AgenciesDirectoryPage({ searchParams }) {
     </div>
   );
 }
-

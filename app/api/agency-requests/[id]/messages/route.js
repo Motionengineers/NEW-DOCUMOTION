@@ -44,10 +44,6 @@ export async function POST(request, { params }) {
     return NextResponse.json({ success: true, message: newMessage });
   } catch (error) {
     console.error('POST /api/agency-requests/[id]/messages failed:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to send message' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Failed to send message' }, { status: 500 });
   }
 }
-

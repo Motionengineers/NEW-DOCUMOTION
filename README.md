@@ -132,6 +132,40 @@ documotion/
 
 - `npm run auto-fix` - Run automated checks, build/start, and open Chrome at `http://localhost:3001`.
 
+## Payments (Razorpay UPI)
+
+Documotion uses Razorpay to collect onboarding and concierge retainers via UPI. Keys are required even in staging to exercise the payment flow.
+
+1. Create a Razorpay account and generate sandbox keys.
+2. Populate `.env` (or your deployment env) with:
+
+   ```
+   RAZORPAY_KEY_ID="rzp_test_xxx"
+   RAZORPAY_KEY_SECRET="test_secret"
+   ```
+
+3. Create a payment order:
+
+   ```bash
+   curl -X POST http://localhost:3000/api/payment/razorpay/create-order \
+     -H 'Content-Type: application/json' \
+     -d '{"amount":4999,"currency":"INR","receipt":"demo_001"}'
+   ```
+
+   The response includes the public `key` and the `order.id` required by the Checkout SDK. UPI is the preferred method; Razorpay will present UPI collect/intent flows automatically.
+
+4. After payment, verify the signature:
+
+   ```bash
+   curl -X POST http://localhost:3000/api/payment/razorpay/verify \
+     -H 'Content-Type: application/json' \
+     -d '{"orderId":"order_xxx","paymentId":"pay_xxx","signature":"generated_signature"}'
+   ```
+
+5. Optional: wire up Razorpay webhooks to `/api/payment/razorpay/webhook` (to be implemented) for asynchronous capture events.
+
+If keys are missing, API routes will return `500` with a descriptive `Missing Razorpay configuration` error so you can detect misconfiguration early.
+
 ## Testing & QA
 
 1. Install dependencies via `npm ci`.

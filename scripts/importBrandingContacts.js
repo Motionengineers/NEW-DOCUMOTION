@@ -32,8 +32,12 @@ function dedupe(list) {
 }
 
 async function main() {
-  const base = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/branding-contacts.json'), 'utf8'));
-  const extra = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/branding-contacts-extra.json'), 'utf8'));
+  const base = JSON.parse(
+    fs.readFileSync(path.join(process.cwd(), 'data/branding-contacts.json'), 'utf8')
+  );
+  const extra = JSON.parse(
+    fs.readFileSync(path.join(process.cwd(), 'data/branding-contacts-extra.json'), 'utf8')
+  );
   const merged = dedupe([...base.map(toRecord), ...extra.map(toRecord)]);
   let upserts = 0;
   for (const c of merged) {
@@ -72,5 +76,3 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
-
-

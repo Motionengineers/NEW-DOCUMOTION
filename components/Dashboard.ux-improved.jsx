@@ -2,7 +2,7 @@
 
 /**
  * Improved Dashboard Component - Applying UX Laws
- * 
+ *
  * Applied Laws:
  * - Miller's Law: Limit visible cards to 5-7
  * - Pareto Principle: Prioritize most-used features
@@ -24,6 +24,7 @@ import SkeletonLoader from '@/components/SkeletonLoader';
 import Button from './Button';
 import { FileText, Shield, Palette, TrendingUp, Trophy } from 'lucide-react';
 import BusinessCustomerInfographic from '@/components/BusinessCustomerInfographic';
+import BankMatchesSummary from '@/components/dashboard/BankMatchesSummary';
 
 export default function DashboardUX() {
   const [loading, setLoading] = useState(true);
@@ -62,7 +63,7 @@ export default function DashboardUX() {
       id: 'schemes',
       href: '/schemes',
       label: 'Browse Schemes',
-      description: 'Find government schemes you\'re eligible for',
+      description: "Find government schemes you're eligible for",
       icon: TrendingUp,
       priority: 'high',
       usage: featureUsage.schemes,
@@ -160,6 +161,7 @@ export default function DashboardUX() {
         <div className="grid lg:grid-cols-3 gap-6 mb-8">
           {/* Main Content - Apply Miller's Law: Limit visible sections */}
           <div className="lg:col-span-2 space-y-6">
+            <BankMatchesSummary />
             {/* Apply Law of Common Region: Group recommendations */}
             <div
               className="p-6 rounded-xl border"
@@ -281,7 +283,10 @@ export default function DashboardUX() {
 
                     {/* Usage indicator (optional) */}
                     {action.usage > 70 && (
-                      <p className="text-xs mt-2 text-center" style={{ color: 'var(--tertiary-label)' }}>
+                      <p
+                        className="text-xs mt-2 text-center"
+                        style={{ color: 'var(--tertiary-label)' }}
+                      >
                         Used by {action.usage}% of users
                       </p>
                     )}
@@ -304,4 +309,3 @@ export default function DashboardUX() {
     </div>
   );
 }
-

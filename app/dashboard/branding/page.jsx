@@ -1,9 +1,9 @@
-import Navbar from "@/components/Navbar";
-import BrandingStudio from "@/components/branding-studio/BrandingStudio";
+import Navbar from '@/components/Navbar';
+import BrandingStudio from '@/components/branding-studio/BrandingStudio';
 
 export const metadata = {
-  title: "Branding Studio • Documotion",
-  description: "Customize logos, colors, and white-label options for your Documotion workspace.",
+  title: 'Branding Studio • Documotion',
+  description: 'Customize logos, colors, and white-label options for your Documotion workspace.',
 };
 
 export default function BrandingStudioPage() {
@@ -14,4 +14,3 @@ export default function BrandingStudioPage() {
     </div>
   );
 }
-

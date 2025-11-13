@@ -63,7 +63,10 @@ export async function PATCH(request) {
     const body = await request.json();
     const { id, ...updates } = body;
     if (!id) {
-      return NextResponse.json({ success: false, error: 'Request id is required' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: 'Request id is required' },
+        { status: 400 }
+      );
     }
 
     const requests = await readJson(STORE_FILE, []);
@@ -87,4 +90,3 @@ export async function PATCH(request) {
     );
   }
 }
-

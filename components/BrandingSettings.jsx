@@ -1,105 +1,76 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { Palette, Loader2, Eye, Save } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Palette, Loader2, Eye, Save, RotateCcw } from 'lucide-react';
+import { useBranding } from '@/components/BrandingProvider.jsx';
+
+const FIELDS = [
+  'companyName',
+  'logoUrl',
+  'primaryColor',
+  'secondaryColor',
+  'faviconUrl',
+  'tagline',
+];
+const DEFAULT_SETTINGS = {
+  companyName: 'Documotion',
+  logoUrl: '',
+  primaryColor: '#0066cc',
+  secondaryColor: '#28a745',
+  faviconUrl: '',
+  tagline: 'The New Standard for Indian Startups',
+};
 
 export default function BrandingSettings() {
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { branding, updateBranding } = useBranding();
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [preview, setPreview] = useState(false);
-  const [settings, setSettings] = useState({
-    companyName: 'Documotion',
-    logoUrl: '',
-    primaryColor: '#0066cc',
-    secondaryColor: '#28a745',
-    faviconUrl: '',
-    tagline: 'The New Standard for Indian Startups',
-  });
+  const [settings, setSettings] = useState(() => ({ ...DEFAULT_SETTINGS }));
+  const [initialSettings, setInitialSettings] = useState(() => ({ ...DEFAULT_SETTINGS }));
   const [logoPreviewError, setLogoPreviewError] = useState(false);
 
   useEffect(() => {
-    loadSettings();
-  }, []);
+    if (branding?.loaded) {
+      const next = { ...DEFAULT_SETTINGS };
+      FIELDS.forEach(field => {
+        if (branding[field]) {
+          next[field] = branding[field];
+        }
+      });
+      setInitialSettings(next);
+      setSettings({ ...next });
+      setLoading(false);
+    }
+  }, [branding]);
 
   useEffect(() => {
     setLogoPreviewError(false);
   }, [settings.logoUrl]);
 
-  const loadSettings = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/settings?category=branding');
-      if (!response.ok) {
-        throw new Error(`Failed to load settings (${response.status})`);
-      }
-      const data = await response.json();
-
-      if (data.success && data.settings) {
-        setSettings(prev => ({ ...prev, ...data.settings }));
-      }
-    } catch (error) {
-      console.error('Error loading settings:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const payload = useMemo(
+    () => ({
+      companyName: settings.companyName?.trim() || 'Your Company',
+      logoUrl: settings.logoUrl?.trim() || '',
+      primaryColor: settings.primaryColor || '#0066cc',
+      secondaryColor: settings.secondaryColor || '#28a745',
+      faviconUrl: settings.faviconUrl || '',
+      tagline: settings.tagline?.trim() || '',
+    }),
+    [settings]
+  );
 
   const saveSettings = async () => {
     setSaving(true);
     try {
-      // Save each setting
-      await Promise.all([
-        fetch('/api/settings', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            key: 'companyName',
-            value: settings.companyName,
-            category: 'branding',
-            type: 'string',
-            description: 'Company/App name displayed in navbar',
-          }),
-        }),
-        fetch('/api/settings', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            key: 'logoUrl',
-            value: settings.logoUrl,
-            category: 'branding',
-            type: 'url',
-            description: 'Logo image URL',
-          }),
-        }),
-        fetch('/api/settings', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            key: 'primaryColor',
-            value: settings.primaryColor,
-            category: 'branding',
-            type: 'color',
-            description: 'Primary brand color',
-          }),
-        }),
-        fetch('/api/settings', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            key: 'tagline',
-            value: settings.tagline,
-            category: 'branding',
-            type: 'string',
-            description: 'Company tagline',
-          }),
-        }),
-      ]);
-
-      alert('Branding settings saved successfully!');
+      await updateBranding(payload);
+      setPreview(true);
+      router.push('/dashboard/branding/experience');
     } catch (error) {
       console.error('Error saving settings:', error);
-      alert('Error saving settings');
     } finally {
       setSaving(false);
     }
@@ -157,7 +128,7 @@ export default function BrandingSettings() {
             style={{ color: 'var(--label)' }}
             placeholder="https://example.com/logo.png"
           />
-            {settings.logoUrl && !logoPreviewError && (
+          {settings.logoUrl && !logoPreviewError && (
             <div className="mt-4 flex items-center space-x-4">
               <div className="relative h-16 w-16 rounded-lg bg-white p-2">
                 <Image
@@ -236,33 +207,54 @@ export default function BrandingSettings() {
 
       {/* Actions */}
       <div className="flex items-center justify-between glass rounded-xl p-6">
-        <button
-          onClick={() => setPreview(!preview)}
-          className="px-6 py-3 rounded-lg font-medium inline-flex items-center space-x-2 glass hover:bg-white/10 transition-colors"
-          style={{ color: 'var(--label)' }}
-        >
-          <Eye className="h-5 w-5" />
-          <span>Preview</span>
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setPreview(!preview)}
+            className="px-6 py-3 rounded-lg font-medium inline-flex items-center space-x-2 glass hover:bg-white/10 transition-colors"
+            style={{ color: 'var(--label)' }}
+          >
+            <Eye className="h-5 w-5" />
+            <span>Preview</span>
+          </button>
+          <span className="text-xs" style={{ color: 'var(--tertiary-label)' }}>
+            Saving will instantly apply your branding theme across the workspace.
+          </span>
+        </div>
 
-        <button
-          onClick={saveSettings}
-          disabled={saving}
-          className="px-8 py-3 rounded-lg font-semibold inline-flex items-center space-x-2 transition-all shadow-lg disabled:opacity-50"
-          style={{ backgroundColor: settings.primaryColor, color: '#ffffff' }}
-        >
-          {saving ? (
-            <>
-              <Loader2 className="h-5 w-5 animate-spin" />
-              <span>Saving...</span>
-            </>
-          ) : (
-            <>
-              <Save className="h-5 w-5" />
-              <span>Save Changes</span>
-            </>
-          )}
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              setSettings({ ...initialSettings });
+              setPreview(false);
+              setLogoPreviewError(false);
+            }}
+            disabled={saving}
+            className="px-6 py-3 rounded-lg font-medium inline-flex items-center space-x-2 transition-all glass hover:bg-white/10 disabled:opacity-50"
+            style={{ color: 'var(--label)' }}
+          >
+            <RotateCcw className="h-5 w-5" />
+            <span>Reset</span>
+          </button>
+          <button
+            onClick={saveSettings}
+            disabled={saving}
+            className="px-8 py-3 rounded-lg font-semibold inline-flex items-center space-x-2 transition-all shadow-lg disabled:opacity-50"
+            style={{ backgroundColor: settings.primaryColor, color: '#ffffff' }}
+          >
+            {saving ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                <span>Saving...</span>
+              </>
+            ) : (
+              <>
+                <Save className="h-5 w-5" />
+                <span>Save Changes</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Preview */}

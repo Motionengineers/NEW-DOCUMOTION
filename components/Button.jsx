@@ -2,7 +2,7 @@
 
 /**
  * Improved Button Component - Applying UX Laws
- * 
+ *
  * Applied Laws:
  * - Fitt's Law: Minimum 48px tap targets
  * - Von Restorff Effect: Primary actions stand out
@@ -36,19 +36,20 @@ export default function Button({
   const variantClasses = {
     primary: 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg ring-2 ring-blue-200',
     secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200',
-    outline: 'border-2 border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300',
+    outline:
+      'border-2 border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300',
     danger: 'bg-red-600 text-white hover:bg-red-700 shadow-lg',
     ghost: 'bg-transparent text-gray-700 hover:bg-gray-100 dark:text-gray-300',
   };
 
   // Apply Doherty Threshold: Immediate visual feedback
-  const handleClick = (e) => {
+  const handleClick = e => {
     if (disabled || loading) return;
-    
+
     // Immediate feedback
     setIsPressed(true);
     setTimeout(() => setIsPressed(false), 150);
-    
+
     if (onClick) {
       onClick(e);
     }
@@ -107,4 +108,3 @@ export default function Button({
     </button>
   );
 }
-

@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import prisma from '@/lib/prisma';
-import { matchBankPrograms, normaliseStartupProfileForMatching, normaliseProfile as normaliseInlineProfile } from '@/lib/bankMatching';
+import {
+  matchBankPrograms,
+  normaliseStartupProfileForMatching,
+  normaliseProfile as normaliseInlineProfile,
+} from '@/lib/bankMatching';
 
 export const dynamic = 'force-dynamic';
 
@@ -94,4 +98,3 @@ export async function POST(request) {
     );
   }
 }
-

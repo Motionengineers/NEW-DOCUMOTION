@@ -42,4 +42,3 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Failed to remove member' }, { status: 500 });
   }
 }
-

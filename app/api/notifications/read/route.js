@@ -7,7 +7,10 @@ export async function POST(request) {
   try {
     const { id } = await request.json();
     if (!id) {
-      return NextResponse.json({ success: false, error: 'Notification id required' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: 'Notification id required' },
+        { status: 400 }
+      );
     }
 
     const notifications = await readJson(STORE_FILE, []);
@@ -25,4 +28,3 @@ export async function POST(request) {
     );
   }
 }
-

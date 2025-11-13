@@ -6,13 +6,7 @@ export const dynamic = 'force-dynamic';
 export async function POST(request) {
   try {
     const body = await request.json();
-    const {
-      page = 1,
-      limit = 36,
-      query = '',
-      filters = {},
-      sort = 'relevance',
-    } = body || {};
+    const { page = 1, limit = 36, query = '', filters = {}, sort = 'relevance' } = body || {};
 
     const result = await loadTalentProfilesSlice({
       page: Number.parseInt(page, 10) || 1,

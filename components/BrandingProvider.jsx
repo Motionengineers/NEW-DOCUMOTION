@@ -121,38 +121,41 @@ export function BrandingProvider({ children }) {
     loadBranding();
   }, [loadBranding]);
 
-  const updateBranding = useCallback(async newSettings => {
-    setBranding(prev => ({ ...prev, ...newSettings }));
-    applyBranding(newSettings);
+  const updateBranding = useCallback(
+    async newSettings => {
+      setBranding(prev => ({ ...prev, ...newSettings }));
+      applyBranding(newSettings);
 
-    // Save to database
-    try {
-      await Promise.all(
-        Object.entries(newSettings).map(([key, value]) =>
-          fetch('/api/settings', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              key,
-              value,
-              category: 'branding',
-              type:
-                typeof value === 'object'
-                  ? 'json'
-                  : key.includes('Color')
-                    ? 'color'
-                    : typeof value === 'number'
-                      ? 'number'
-                      : 'string',
-              description: `Branding ${key}`,
-            }),
-          })
-        )
-      );
-    } catch (error) {
-      console.error('Error saving branding:', error);
-    }
-  }, [applyBranding]);
+      // Save to database
+      try {
+        await Promise.all(
+          Object.entries(newSettings).map(([key, value]) =>
+            fetch('/api/settings', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                key,
+                value,
+                category: 'branding',
+                type:
+                  typeof value === 'object'
+                    ? 'json'
+                    : key.includes('Color')
+                      ? 'color'
+                      : typeof value === 'number'
+                        ? 'number'
+                        : 'string',
+                description: `Branding ${key}`,
+              }),
+            })
+          )
+        );
+      } catch (error) {
+        console.error('Error saving branding:', error);
+      }
+    },
+    [applyBranding]
+  );
 
   const resetBranding = useCallback(() => {
     const defaults = {

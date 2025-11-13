@@ -22,5 +22,3 @@ async function run() {
 }
 
 run();
-
-

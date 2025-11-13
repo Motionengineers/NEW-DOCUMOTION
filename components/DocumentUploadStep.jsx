@@ -7,9 +7,24 @@ import GlassCard from './GlassCard';
 
 const REQUIRED_DOCUMENTS = [
   { id: 'identity', label: 'Identity Proof', description: 'Aadhaar/PAN/Passport', required: true },
-  { id: 'address', label: 'Address Proof', description: 'Utility bill, rental agreement, etc.', required: true },
-  { id: 'dsc', label: 'Digital Signature Certificate (DSC)', description: 'If available', required: false },
-  { id: 'photo', label: 'Passport Size Photos', description: 'Recent passport size photos', required: true },
+  {
+    id: 'address',
+    label: 'Address Proof',
+    description: 'Utility bill, rental agreement, etc.',
+    required: true,
+  },
+  {
+    id: 'dsc',
+    label: 'Digital Signature Certificate (DSC)',
+    description: 'If available',
+    required: false,
+  },
+  {
+    id: 'photo',
+    label: 'Passport Size Photos',
+    description: 'Recent passport size photos',
+    required: true,
+  },
 ];
 
 export default function DocumentUploadStep({ serviceRequest, onComplete }) {
@@ -22,25 +37,25 @@ export default function DocumentUploadStep({ serviceRequest, onComplete }) {
     const uploadedRequired = requiredDocs.filter(req => {
       return uploadedDocs.some(doc => {
         const docName = (doc.name || '').toLowerCase();
-        return docName.includes(req.id) || 
-               docName.includes(req.label.toLowerCase().split(' ')[0]);
+        return docName.includes(req.id) || docName.includes(req.label.toLowerCase().split(' ')[0]);
       });
     });
-    
+
     // At least 2 required documents should be uploaded (Identity + Address are critical)
     setDocumentsReady(uploadedRequired.length >= 2);
   }, [uploadedDocs]);
 
-  const handleDocumentsUploaded = (docs) => {
+  const handleDocumentsUploaded = docs => {
     setUploadedDocs(docs || []);
   };
 
-  const getDocumentStatus = (docId) => {
+  const getDocumentStatus = docId => {
     const found = uploadedDocs.find(doc => {
       const docName = (doc.name || '').toLowerCase();
       const docInfo = REQUIRED_DOCUMENTS.find(d => d.id === docId);
-      return docName.includes(docId) || 
-             docName.includes(docInfo?.label.toLowerCase().split(' ')[0]);
+      return (
+        docName.includes(docId) || docName.includes(docInfo?.label.toLowerCase().split(' ')[0])
+      );
     });
     return found ? 'uploaded' : 'pending';
   };
@@ -63,25 +78,26 @@ export default function DocumentUploadStep({ serviceRequest, onComplete }) {
           {REQUIRED_DOCUMENTS.map(doc => {
             const status = getDocumentStatus(doc.id);
             const isUploaded = status === 'uploaded';
-            
+
             return (
               <div
                 key={doc.id}
                 className="flex items-start gap-3 p-3 rounded-lg border transition-all"
                 style={{
-                  backgroundColor: isUploaded 
-                    ? 'rgba(40, 167, 69, 0.1)' 
+                  backgroundColor: isUploaded
+                    ? 'rgba(40, 167, 69, 0.1)'
                     : 'var(--system-secondary-background)',
-                  borderColor: isUploaded 
-                    ? 'rgba(40, 167, 69, 0.3)' 
-                    : 'var(--separator)',
+                  borderColor: isUploaded ? 'rgba(40, 167, 69, 0.3)' : 'var(--separator)',
                 }}
               >
                 <div className="mt-0.5">
                   {isUploaded ? (
                     <CheckCircle2 className="h-5 w-5" style={{ color: 'var(--system-green)' }} />
                   ) : (
-                    <div className="h-5 w-5 rounded-full border-2" style={{ borderColor: 'var(--separator)' }} />
+                    <div
+                      className="h-5 w-5 rounded-full border-2"
+                      style={{ borderColor: 'var(--separator)' }}
+                    />
                   )}
                 </div>
                 <div className="flex-1">
@@ -90,10 +106,13 @@ export default function DocumentUploadStep({ serviceRequest, onComplete }) {
                       {doc.label}
                     </span>
                     {doc.required && (
-                      <span className="text-xs px-2 py-0.5 rounded" style={{ 
-                        backgroundColor: 'rgba(255, 59, 48, 0.1)', 
-                        color: 'var(--system-red)' 
-                      }}>
+                      <span
+                        className="text-xs px-2 py-0.5 rounded"
+                        style={{
+                          backgroundColor: 'rgba(255, 59, 48, 0.1)',
+                          color: 'var(--system-red)',
+                        }}
+                      >
                         Required
                       </span>
                     )}
@@ -122,10 +141,13 @@ export default function DocumentUploadStep({ serviceRequest, onComplete }) {
 
       {/* Status Message */}
       {documentsReady && (
-        <GlassCard className="p-4 mt-6 border" style={{ 
-          backgroundColor: 'rgba(40, 167, 69, 0.1)', 
-          borderColor: 'rgba(40, 167, 69, 0.3)' 
-        }}>
+        <GlassCard
+          className="p-4 mt-6 border"
+          style={{
+            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+            borderColor: 'rgba(40, 167, 69, 0.3)',
+          }}
+        >
           <div className="flex items-center gap-3">
             <CheckCircle2 className="h-5 w-5" style={{ color: 'var(--system-green)' }} />
             <div className="flex-1">
@@ -141,10 +163,13 @@ export default function DocumentUploadStep({ serviceRequest, onComplete }) {
       )}
 
       {!documentsReady && uploadedDocs.length > 0 && (
-        <GlassCard className="p-4 mt-6 border" style={{ 
-          backgroundColor: 'rgba(255, 193, 7, 0.1)', 
-          borderColor: 'rgba(255, 193, 7, 0.3)' 
-        }}>
+        <GlassCard
+          className="p-4 mt-6 border"
+          style={{
+            backgroundColor: 'rgba(255, 193, 7, 0.1)',
+            borderColor: 'rgba(255, 193, 7, 0.3)',
+          }}
+        >
           <div className="flex items-center gap-3">
             <AlertCircle className="h-5 w-5" style={{ color: 'var(--system-yellow)' }} />
             <div className="flex-1">
@@ -200,4 +225,3 @@ export default function DocumentUploadStep({ serviceRequest, onComplete }) {
     </div>
   );
 }
-
