@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import prisma from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 function serializeComment(comment) {
   return {
     id: comment.id,
