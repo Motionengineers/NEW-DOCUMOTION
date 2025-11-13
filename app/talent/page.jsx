@@ -9,7 +9,19 @@ export const metadata = {
 
 export default async function TalentPage() {
   const PAGE_SIZE = 36;
-  const { profiles: initialProfiles, total } = await loadTalentProfilesSlice({ page: 1, limit: PAGE_SIZE });
+  const {
+    profiles: initialProfiles,
+    total,
+    facets,
+    query,
+    filters,
+    sort,
+  } = await loadTalentProfilesSlice({
+    page: 1,
+    limit: PAGE_SIZE,
+    includeFacets: true,
+    sort: 'relevance',
+  });
 
   return (
     <div className="min-h-screen bg-[var(--system-background)]">
@@ -25,7 +37,15 @@ export default async function TalentPage() {
           </p>
         </header>
 
-        <TalentGrid initialProfiles={initialProfiles} total={total} pageSize={PAGE_SIZE} />
+        <TalentGrid
+          initialProfiles={initialProfiles}
+          total={total}
+          pageSize={PAGE_SIZE}
+          initialFacets={facets}
+          initialFilters={filters}
+          initialSort={sort}
+          initialQuery={query}
+        />
       </main>
     </div>
   );

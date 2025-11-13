@@ -1,5 +1,5 @@
-import BrandingSettings from "@/components/BrandingSettings";
 import Navbar from "@/components/Navbar";
+import BrandingStudio from "@/components/branding-studio/BrandingStudio";
 
 export const metadata = {
   title: "Branding Studio • Documotion",
@@ -10,9 +10,7 @@ export default function BrandingStudioPage() {
   return (
     <div className="min-h-screen bg-[var(--system-background)]">
       <Navbar />
-      <main className="container mx-auto px-4 py-10 max-w-5xl">
-        <BrandingSettings />
-      </main>
+      <BrandingStudio />
     </div>
   );
 }
