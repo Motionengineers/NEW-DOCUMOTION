@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node scripts/dev-smart.js",
     "dev:preview": "concurrently \"next dev\" \"wait-on http://localhost:3000 && open -a 'Google Chrome' ${PREVIEW_URL:-http://localhost:3000/challenges}\"",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "auto-fix": "node auto-fix-agent.js",
