@@ -3,13 +3,16 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { Loader2, RefreshCcw, ShieldAlert } from 'lucide-react';
+import { Loader2, RefreshCcw, ShieldAlert, BadgeCheck, UserPlus } from 'lucide-react';
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();
   const [agencies, setAgencies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [partners, setPartners] = useState([]);
+  const [partnerLoading, setPartnerLoading] = useState(false);
+  const [partnerError, setPartnerError] = useState(null);
 
   const fetchAgencies = async () => {
     setLoading(true);
@@ -31,9 +34,106 @@ export default function AdminDashboard() {
     }
   };
 
+  const fetchPartners = async () => {
+    setPartnerLoading(true);
+    setPartnerError(null);
+    try {
+      const res = await fetch('/api/branding/partners?limit=100', { cache: 'no-store' });
+      const payload = await res.json();
+      if (!res.ok || !payload.success) {
+        throw new Error(payload.error || `Failed with status ${res.status}`);
+      }
+      setPartners(payload.data ?? []);
+    } catch (err) {
+      console.error('Admin partners fetch failed:', err);
+      setPartnerError(err.message);
+    } finally {
+      setPartnerLoading(false);
+    }
+  };
+
+  const handleTogglePartner = async (partnerId, verified) => {
+    try {
+      const res = await fetch(`/api/branding/partners/${partnerId}/verify`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ verified }),
+      });
+      const payload = await res.json();
+      if (!res.ok || !payload.success) {
+        throw new Error(payload.error || `Failed with status ${res.status}`);
+      }
+      await fetchPartners();
+    } catch (err) {
+      console.error('Toggle partner verify failed:', err);
+      window.alert(err.message || 'Unable to update verification status.');
+    }
+  };
+
+  const handleAddPartner = async () => {
+    const name = window.prompt('Partner or agency name');
+    if (!name) return;
+    const type = window.prompt('Type (AGENCY, PHOTOGRAPHER, MEDIA)', 'AGENCY');
+    if (!type) return;
+    const email = window.prompt('Primary contact email (optional)') || undefined;
+    const city = window.prompt('City (optional)') || undefined;
+    const portfolioUrl = window.prompt('Portfolio URL (optional)') || undefined;
+
+    try {
+      const res = await fetch('/api/branding/partners', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          type: type.toUpperCase(),
+          contactEmail: email || undefined,
+          city: city || undefined,
+          portfolioUrl: portfolioUrl || undefined,
+        }),
+      });
+      const payload = await res.json();
+      if (!res.ok || !payload.success) {
+        throw new Error(payload.error || `Failed with status ${res.status}`);
+      }
+      await fetchPartners();
+    } catch (err) {
+      console.error('Create partner failed:', err);
+      window.alert(err.message || 'Unable to add partner.');
+    }
+  };
+
+  const handleViewBookings = async partnerId => {
+    try {
+      const res = await fetch(`/api/branding/partners/${partnerId}/bookings`, {
+        cache: 'no-store',
+      });
+      const payload = await res.json();
+      if (!res.ok || !payload.success) {
+        throw new Error(payload.error || `Failed with status ${res.status}`);
+      }
+      if (!payload.data?.length) {
+        window.alert('No booking requests yet.');
+        return;
+      }
+      const summary = payload.data
+        .map(
+          item =>
+            `${item.requesterName} • ${item.requesterEmail} • ${item.status} • ${new Date(
+              item.createdAt
+            ).toLocaleString()}\n${item.requestNotes ?? ''}`
+        )
+        .join('\n\n');
+      window.alert(summary);
+    } catch (err) {
+      console.error('Fetch partner bookings failed:', err);
+      window.alert(err.message || 'Unable to load bookings.');
+    }
+  };
+
   useEffect(() => {
     if (status === 'authenticated') {
       fetchAgencies();
+      fetchPartners();
     }
   }, [status]);
 
@@ -91,15 +191,35 @@ export default function AdminDashboard() {
             </p>
           ) : null}
         </div>
-        <button
-          type="button"
-          onClick={fetchAgencies}
-          className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-semibold transition hover:bg-white/10"
-          style={{ color: 'var(--label)' }}
-        >
-          <RefreshCcw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-          Refresh
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={fetchPartners}
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-semibold transition hover:bg-white/10"
+            style={{ color: 'var(--label)' }}
+          >
+            <BadgeCheck className={`h-4 w-4 ${partnerLoading ? 'animate-spin' : ''}`} />
+            Refresh partners
+          </button>
+          <button
+            type="button"
+            onClick={handleAddPartner}
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-semibold transition hover:bg-white/10"
+            style={{ color: 'var(--label)' }}
+          >
+            <UserPlus className="h-4 w-4" />
+            Add partner
+          </button>
+          <button
+            type="button"
+            onClick={fetchAgencies}
+            className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-semibold transition hover:bg-white/10"
+            style={{ color: 'var(--label)' }}
+          >
+            <RefreshCcw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            Refresh agencies
+          </button>
+        </div>
       </div>
 
       {error ? (
@@ -176,6 +296,89 @@ export default function AdminDashboard() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="space-y-3">
+        <h2 className="text-xl font-semibold" style={{ color: 'var(--label)' }}>
+          Verified branding partners
+        </h2>
+        {partnerError ? (
+          <div
+            className="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm"
+            style={{ color: 'var(--label)' }}
+          >
+            {partnerError}
+          </div>
+        ) : null}
+        <div className="overflow-hidden rounded-2xl border border-white/10">
+          <table className="min-w-full divide-y divide-white/10 text-sm">
+            <thead className="bg-white/5" style={{ color: 'var(--tertiary-label)' }}>
+              <tr>
+                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">Partner</th>
+                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">Type</th>
+                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">City</th>
+                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">Verified</th>
+                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">Contact</th>
+                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {partners.map(partner => (
+                <tr
+                  key={partner.id}
+                  className="border-b border-white/5"
+                  style={{ color: 'var(--secondary-label)' }}
+                >
+                  <td className="px-4 py-3">
+                    <div className="flex flex-col">
+                      <span className="font-semibold" style={{ color: 'var(--label)' }}>
+                        {partner.name}
+                      </span>
+                      <span className="text-xs text-slate-400">
+                        Added {new Date(partner.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3">{partner.type}</td>
+                  <td className="px-4 py-3">{partner.city ?? '—'}</td>
+                  <td className="px-4 py-3">{partner.verified ? 'Yes' : 'No'}</td>
+                  <td className="px-4 py-3">{partner.contactEmail ?? '—'}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleTogglePartner(partner.id, !partner.verified)}
+                        className="inline-flex items-center gap-1 rounded-lg border border-white/10 px-3 py-1.5 text-xs font-semibold transition hover:bg-white/10"
+                        style={{ color: 'var(--label)' }}
+                      >
+                        {partner.verified ? 'Unverify' : 'Verify'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleViewBookings(partner.id)}
+                        className="inline-flex items-center gap-1 rounded-lg border border-white/10 px-3 py-1.5 text-xs font-semibold transition hover:bg-white/10"
+                        style={{ color: 'var(--secondary-label)' }}
+                      >
+                        View bookings
+                      </button>
+                      {partner.portfolioUrl ? (
+                        <a
+                          href={partner.portfolioUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 rounded-lg border border-white/10 px-3 py-1.5 text-xs font-semibold transition hover:bg-white/10"
+                          style={{ color: 'var(--secondary-label)' }}
+                        >
+                          Portfolio
+                        </a>
+                      ) : null}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div

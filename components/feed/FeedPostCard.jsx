@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import {
   Heart,
@@ -9,8 +10,11 @@ import {
   MoreVertical,
   Bookmark,
   PlayCircle,
+  UserPlus,
+  UserCheck,
 } from 'lucide-react';
 import clsx from 'clsx';
+import ReactionButton from '@/components/feed/ReactionButton';
 
 export default function FeedPostCard({
   post,
@@ -18,8 +22,43 @@ export default function FeedPostCard({
   onToggleBookmark,
   onOpenComments,
   onShare,
+  onFollow,
   showAnalytics = false,
 }) {
+  const [reactionCounts, setReactionCounts] = useState(post.reactionCounts || {});
+  const [userReactions, setUserReactions] = useState(post.userReactions || []);
+  const [following, setFollowing] = useState(post.following || false);
+  const [loadingReactions, setLoadingReactions] = useState(false);
+
+  useEffect(() => {
+    // Fetch reactions on mount
+    if (post?.id) {
+      fetch(`/api/feed/posts/${post.id}/reactions`)
+        .then(res => res.json())
+        .then(json => {
+          if (json.success) {
+            setReactionCounts(json.data.reactionCounts || {});
+            setUserReactions(json.data.userReactions || []);
+          }
+        })
+        .catch(console.error);
+    }
+  }, [post?.id]);
+
+  useEffect(() => {
+    // Check follow status
+    if (post?.author?.id) {
+      fetch(`/api/feed/follow?targetUserId=${post.author.id}`)
+        .then(res => res.json())
+        .then(json => {
+          if (json.success) {
+            setFollowing(json.data.following || false);
+          }
+        })
+        .catch(console.error);
+    }
+  }, [post?.author?.id]);
+
   if (!post) return null;
 
   const author = post.author || {
@@ -71,13 +110,46 @@ export default function FeedPostCard({
             <p className="text-xs text-slate-500">{timestamp}</p>
           </div>
         </div>
-        <button
-          type="button"
-          className="rounded-full border border-white/10 bg-white/5 p-2 text-slate-300 transition hover:bg-white/10 hover:text-white"
-          aria-label="Post options"
-        >
-          <MoreVertical className="h-4 w-4" />
-        </button>
+        <div className="flex items-center gap-2">
+          {onFollow && post.author?.id && (
+            <button
+              type="button"
+              onClick={async () => {
+                try {
+                  const action = following ? 'unfollow' : 'follow';
+                  const res = await fetch('/api/feed/follow', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ targetUserId: post.author.id, action }),
+                  });
+                  const json = await res.json();
+                  if (json.success) {
+                    setFollowing(json.data.following);
+                    onFollow?.(post.author.id, json.data.following);
+                  }
+                } catch (err) {
+                  console.error('Follow toggle failed', err);
+                }
+              }}
+              className={clsx(
+                'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition',
+                following
+                  ? 'border-blue-400/50 bg-blue-500/20 text-blue-100'
+                  : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white'
+              )}
+            >
+              {following ? <UserCheck className="h-3.5 w-3.5" /> : <UserPlus className="h-3.5 w-3.5" />}
+              {following ? 'Following' : 'Follow'}
+            </button>
+          )}
+          <button
+            type="button"
+            className="rounded-full border border-white/10 bg-white/5 p-2 text-slate-300 transition hover:bg-white/10 hover:text-white"
+            aria-label="Post options"
+          >
+            <MoreVertical className="h-4 w-4" />
+          </button>
+        </div>
       </header>
 
       <div className="flex flex-col gap-4 px-6 pt-5 text-sm text-slate-200">
@@ -150,13 +222,45 @@ export default function FeedPostCard({
           <span className="text-[11px] text-slate-500">Documotion Startup Feed</span>
         </div>
 
-        <div className="mt-4 grid grid-cols-4 gap-3 text-sm">
-          <ActionButton
-            icon={Heart}
-            label="Like"
-            active={post.liked}
-            onClick={() => onToggleLike?.(post)}
-          />
+        {/* Reactions */}
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          {['like', 'celebrate', 'support', 'insightful', 'question'].map(type => (
+            <ReactionButton
+              key={type}
+              type={type}
+              count={reactionCounts[type] || 0}
+              active={userReactions.includes(type)}
+              onClick={async () => {
+                if (loadingReactions) return;
+                setLoadingReactions(true);
+                try {
+                  const action = userReactions.includes(type) ? 'remove' : 'add';
+                  const res = await fetch(`/api/feed/posts/${post.id}/reactions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type, action }),
+                  });
+                  const json = await res.json();
+                  if (json.success) {
+                    setReactionCounts(json.data.reactionCounts || {});
+                    setUserReactions(json.data.userReactions || []);
+                    // Legacy support
+                    if (type === 'like' && onToggleLike) {
+                      onToggleLike(post);
+                    }
+                  }
+                } catch (err) {
+                  console.error('Reaction toggle failed', err);
+                } finally {
+                  setLoadingReactions(false);
+                }
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Action buttons */}
+        <div className="mt-4 grid grid-cols-3 gap-3 text-sm">
           <ActionButton
             icon={MessageCircle}
             label="Comment"

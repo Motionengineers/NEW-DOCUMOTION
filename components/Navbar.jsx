@@ -25,20 +25,20 @@ export default function Navbar() {
   // Miller's Law: Group related items
   const primaryNav = [
     { href: '/dashboard', label: 'Dashboard', priority: 'high' },
-    { href: '/feed', label: 'Startup Feed', priority: 'high' },
+    { href: '/funding/apply', label: 'Funding', priority: 'high' },
     { href: '/schemes', label: 'Schemes', priority: 'high' },
+    { href: '/bank', label: 'Banks', priority: 'medium' },
+    { href: '/feed', label: 'Startup Feed', priority: 'medium' },
   ];
 
-  const secondaryNav = [
-    { href: '/bank', label: 'Banks', priority: 'medium' },
-    { href: '/talent', label: 'Talent', priority: 'medium' },
-  ];
+  const secondaryNav = [];
 
   const moreNav = [
-    { href: '/banking', label: 'Startup Banking', priority: 'high' },
-    { href: '/funding/apply', label: 'Apply for Funding', priority: 'high' },
-    { href: '/settings/team', label: 'Team', priority: 'high' },
     { href: '/services/registration', label: 'Services', priority: 'high' },
+    { href: '/banking', label: 'Startup Banking', priority: 'high' },
+    { href: '/schemes/state-explorer', label: 'State Funding Explorer', priority: 'high' },
+    { href: '/talent', label: 'Talent', priority: 'medium' },
+    { href: '/settings/team', label: 'Team', priority: 'medium' },
     { href: '/pitch-decks', label: 'Pitch Decks', priority: 'low' },
     { href: '/ma', label: 'M&A', priority: 'low' },
   ];

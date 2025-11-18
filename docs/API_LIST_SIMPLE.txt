@@ -1,0 +1,202 @@
+DOCUMOTION - COMPLETE API LIST
+================================
+
+Total: 80 API Endpoints
+
+================================
+STATE FUNDING EXPLORER (5)
+================================
+GET    /api/states
+GET    /api/funding/state
+POST   /api/funding/match
+GET    /api/funding/[schemeId]
+GET    /api/funding/applications
+
+================================
+DASHBOARD & ANALYTICS (1)
+================================
+GET    /api/dashboard
+
+================================
+BANK SCHEMES (1)
+================================
+POST   /api/banks/match
+
+================================
+TALENT & FOUNDERS (3)
+================================
+GET    /api/talent
+GET    /api/talent/search
+GET    /api/talent/suggest
+
+================================
+ELIGIBILITY & MATCHING (2)
+================================
+POST   /api/eligibility
+POST   /api/schemes/recommend
+
+================================
+DOCUMENTS (1)
+================================
+POST   /api/documents/upload
+
+================================
+FEED & SOCIAL (7)
+================================
+GET    /api/feed/posts
+POST   /api/feed/posts
+GET    /api/feed/posts/[postId]
+POST   /api/feed/posts/[postId]/like
+POST   /api/feed/posts/[postId]/bookmark
+GET    /api/feed/posts/[postId]/comments
+POST   /api/feed/posts/[postId]/comments
+POST   /api/feed/posts/[postId]/reactions
+POST   /api/feed/follow
+GET    /api/feed/link-preview
+POST   /api/feed/media/upload
+
+================================
+BRANDING STUDIO (20+)
+================================
+GET    /api/branding/tokens
+GET    /api/branding/workspace
+POST   /api/branding/workspace/[id]/upload
+GET    /api/branding/drafts
+POST   /api/branding/drafts
+GET    /api/branding/drafts/[id]
+POST   /api/branding/drafts/[id]/submit
+POST   /api/branding/drafts/[id]/approve
+POST   /api/branding/drafts/[id]/publish
+GET    /api/branding/drafts/[id]/comments
+POST   /api/branding/drafts/[id]/comments
+GET    /api/branding/assets
+POST   /api/branding/assets/generate
+POST   /api/branding/generate
+POST   /api/branding/parse
+POST   /api/branding/kit/export
+GET    /api/branding/kit/[jobId]
+GET    /api/branding/partners
+GET    /api/branding/partners/[id]
+POST   /api/branding/partners/[id]/book
+GET    /api/branding/partners/[id]/bookings
+GET    /api/branding/partners/[id]/bookings/[bookingId]
+GET    /api/branding/partners/[id]/availability
+POST   /api/branding/partners/[id]/verify
+GET    /api/branding/agencies
+GET    /api/branding/agencies/[slug]
+POST   /api/branding/agencies/lead
+GET    /api/branding/admin/agencies/[id]
+GET    /api/branding/roles
+
+================================
+AGENCIES & PARTNERS (5)
+================================
+GET    /api/agency-requests
+POST   /api/agency-requests
+GET    /api/agency-requests/[id]
+PATCH  /api/agency-requests/[id]
+GET    /api/agency-requests/[id]/messages
+POST   /api/agency-requests/[id]/messages
+
+================================
+SUBSCRIPTIONS & PAYMENTS (8)
+================================
+GET    /api/subscription
+POST   /api/subscription/upgrade
+POST   /api/subscription/cancel
+POST   /api/subscription/addon
+GET    /api/subscription/invoices
+GET    /api/subscription/invoices/[id]
+GET    /api/subscription/usage
+POST   /api/subscription/usage/record
+POST   /api/payment/razorpay/create-order
+POST   /api/payment/razorpay/verify
+POST   /api/payment/razorpay/webhook
+
+================================
+TEAM & INVITATIONS (9)
+================================
+GET    /api/invitations
+POST   /api/invitations/create
+POST   /api/invitations/accept
+POST   /api/invitations/revoke
+POST   /api/invitations/resend
+POST   /api/invitations/change-role
+POST   /api/invitations/remove-member
+POST   /api/invitations/manual
+GET    /api/invitations/validate
+
+================================
+SETTINGS (1)
+================================
+GET    /api/settings
+POST   /api/settings
+
+================================
+SERVICE REQUESTS (3)
+================================
+GET    /api/service-requests
+POST   /api/service-requests
+GET    /api/service-requests/[id]
+PATCH  /api/service-requests/[id]
+
+================================
+STARTUPS (1)
+================================
+GET    /api/startups/profile
+POST   /api/startups/profile
+
+================================
+NOTIFICATIONS (2)
+================================
+GET    /api/notifications
+POST   /api/notifications/read
+
+================================
+LIVE UPDATES (1)
+================================
+GET    /api/live-updates
+
+================================
+AI & OPENAI (1)
+================================
+POST   /api/openai/chat
+
+================================
+TELEMETRY (1)
+================================
+POST   /api/telemetry/events
+
+================================
+EXAMPLE API (1)
+================================
+GET    /api/hello
+POST   /api/hello
+
+================================
+SUMMARY
+================================
+Total Endpoints: 80
+GET Methods: 45
+POST Methods: 25
+PATCH Methods: 2
+DELETE Methods: 0
+
+Public APIs: 5
+Protected APIs: 75
+
+================================
+QUICK REFERENCE
+================================
+Most Used:
+1. GET  /api/dashboard
+2. GET  /api/funding/state
+3. POST /api/funding/match
+4. GET  /api/states
+5. GET  /api/talent
+
+Base URL: http://localhost:3000 (dev)
+Response Format: {success: true/false, data: {...}}
+
+================================
+

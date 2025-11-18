@@ -1,99 +1,73 @@
-// Build-safe guard: mark dynamic and avoid crashing at build-time
-export const dynamic = "force-dynamic";
-
-let prisma = null;
-try {
-  // require at runtime; during build this may fail if @prisma/client wasn't generated
-  const { PrismaClient } = require("@prisma/client");
-  prisma = new PrismaClient();
-} catch (e) {
-  // log to build output but do not throw — keeps Vercel build from failing
-  // eslint-disable-next-line no-console
-  console.warn("⚠️ Prisma client not available during build:", e && e.message ? e.message : e);
-  prisma = null;
-}
-
-/**
- * ensurePrisma()
- * Helper to short-circuit when prisma is not available (build-time).
- * Use in handlers before calling prisma:
- *
- *   const short = ensurePrisma();
- *   if (short) return short;
- *
- */
-function ensurePrisma() {
-  if (!prisma) {
-    return new Response(JSON.stringify({ message: "Prisma not available (build-time)" }), { status: 200 });
-  }
-  return null;
-}
-
-// Build-safe guard: mark dynamic and avoid crashing at build-time
-export const dynamic = "force-dynamic";
-
-let prisma = null;
-try {
-  // require at runtime; during build this may fail if @prisma/client wasn't generated
-  const { PrismaClient } = require("@prisma/client");
-  prisma = new PrismaClient();
-} catch (e) {
-  // log to build output but do not throw — keeps Vercel build from failing
-  // eslint-disable-next-line no-console
-  console.warn("⚠️ Prisma client not available during build:", e && e.message ? e.message : e);
-  prisma = null;
-}
 import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import prisma from '@/lib/prisma';
+import { z } from 'zod';
+import { rateLimit } from '@/lib/rate-limit';
+import { createRequestId, jsonError } from '@/lib/http';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(request, { params }) {
+  const rid = createRequestId();
   try {
+    // Optional per-route limiter (fail-open on error)
+    try {
+      const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+      const key = `${ip}:${request.nextUrl?.pathname || '/api/feed/posts/[postId]/bookmark'}`;
+      if (typeof rateLimit === 'function') {
+        const ok = await rateLimit(key, 60, 60);
+        if (!ok) return jsonError('too_many_requests', 'Too many requests', 429, rid);
+      }
+    } catch {}
+
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
     if (!token?.sub) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      return jsonError('unauthorized', 'Unauthorized', 401, rid);
     }
-    const userId = Number(token.sub);
-    const postId = Number(params.postId);
-    if (Number.isNaN(postId)) {
-      return NextResponse.json({ success: false, error: 'Invalid post id' }, { status: 400 });
-    }
+    const userId = z.coerce.number().int().positive().parse(token.sub);
+    const postId = z.coerce.number().int().positive().safeParse(params.postId);
+    if (!postId.success) return jsonError('invalid_params', 'Invalid post id', 400, rid);
 
     const payload = await request.json().catch(() => ({}));
     const action = payload?.action === 'remove' ? 'remove' : 'add';
+    const collection = payload?.collection || 'default';
 
     if (action === 'remove') {
       await prisma.feedBookmark.deleteMany({
         where: {
-          postId,
+          postId: postId.data,
           userId,
         },
       });
-      return NextResponse.json({ success: true, data: { bookmarked: false } });
+      return NextResponse.json({ success: true, data: { bookmarked: false } }, { headers: { 'x-request-id': rid } });
     }
 
     await prisma.feedBookmark.upsert({
       where: {
         userId_postId: {
           userId,
-          postId,
+          postId: postId.data,
         },
       },
       create: {
         userId,
-        postId,
+        postId: postId.data,
+        collection,
       },
-      update: {},
+      update: {
+        collection,
+      },
     });
 
-    return NextResponse.json({ success: true, data: { bookmarked: true } });
+    return NextResponse.json({ success: true, data: { bookmarked: true, collection } }, { headers: { 'x-request-id': rid } });
   } catch (error) {
-    console.error('POST /api/feed/posts/[postId]/bookmark failed:', error);
-    return NextResponse.json(
-      { success: false, error: 'Unable to update bookmark' },
-      { status: 500 }
-    );
+    console.error(JSON.stringify({
+      level: 'error',
+      rid,
+      route: '/api/feed/posts/[postId]/bookmark',
+      msg: 'POST failed',
+      err: String(error),
+    }));
+    return jsonError('internal_error', 'Unable to update bookmark', 500, rid);
   }
 }

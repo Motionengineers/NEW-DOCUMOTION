@@ -76,14 +76,52 @@ export function BrandingProvider({ children }) {
     }
   }, []);
 
-  const loadBranding = useCallback(async () => {
+  const loadBranding = useCallback(async (forceReload = false) => {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
 
-      const response = await fetch('/api/settings?category=branding', {
+      // Prefer published runtime at /brand.json; fallback to /api/settings
+      const cacheBuster = forceReload ? `?_t=${Date.now()}` : '';
+      const runtimeRes = await fetch(`/brand.json${cacheBuster}`, {
         signal: controller.signal,
         cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+        },
+      }).catch(() => null);
+
+      if (runtimeRes && runtimeRes.ok) {
+        const runtime = await runtimeRes.json();
+        const tokens = runtime?.tokens || {};
+        const colors = tokens.color || {};
+        const typography = tokens.typography || {};
+        const next = {
+          companyName: runtime?.name || 'Documotion',
+          logoUrl: runtime?.assets?.logo?.default || '',
+          faviconUrl: runtime?.assets?.favicon || '',
+          primaryColor: colors.primary || '#0066cc',
+          accentColor: colors.accent || '#22c55e',
+          // keep existing secondary if not provided
+          fontHeading: typography.fontPrimary || 'Inter',
+          fontBody: typography.fontPrimary || 'Inter',
+          loaded: true,
+        };
+        setBranding(prev => ({ ...prev, ...next }));
+        applyBranding(next);
+        clearTimeout(timeoutId);
+        return;
+      }
+
+      // Fallback to settings API
+      const response = await fetch(`/api/settings?category=branding${cacheBuster}`, {
+        signal: controller.signal,
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+        },
       });
       clearTimeout(timeoutId);
 
@@ -123,19 +161,20 @@ export function BrandingProvider({ children }) {
 
   const updateBranding = useCallback(
     async newSettings => {
+      // Apply immediately for instant feedback
       setBranding(prev => ({ ...prev, ...newSettings }));
       applyBranding(newSettings);
 
       // Save to database
       try {
-        await Promise.all(
+        const saveResults = await Promise.all(
           Object.entries(newSettings).map(([key, value]) =>
             fetch('/api/settings', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 key,
-                value,
+                value: typeof value === 'string' ? value : JSON.stringify(value),
                 category: 'branding',
                 type:
                   typeof value === 'object'
@@ -150,11 +189,23 @@ export function BrandingProvider({ children }) {
             })
           )
         );
+        
+        // Verify all saves succeeded
+        const failedSaves = saveResults.filter(res => !res.ok);
+        if (failedSaves.length > 0) {
+          throw new Error('Some branding settings failed to save');
+        }
+        
+        // Reload branding from server to ensure consistency
+        setTimeout(() => {
+          loadBranding(true);
+        }, 500);
       } catch (error) {
         console.error('Error saving branding:', error);
+        throw error; // Re-throw so caller knows save failed
       }
     },
-    [applyBranding]
+    [applyBranding, loadBranding]
   );
 
   const resetBranding = useCallback(() => {

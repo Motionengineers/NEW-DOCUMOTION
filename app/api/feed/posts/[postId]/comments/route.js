@@ -1,51 +1,9 @@
-// Build-safe guard: mark dynamic and avoid crashing at build-time
-export const dynamic = "force-dynamic";
-
-let prisma = null;
-try {
-  // require at runtime; during build this may fail if @prisma/client wasn't generated
-  const { PrismaClient } = require("@prisma/client");
-  prisma = new PrismaClient();
-} catch (e) {
-  // log to build output but do not throw — keeps Vercel build from failing
-  // eslint-disable-next-line no-console
-  console.warn("⚠️ Prisma client not available during build:", e && e.message ? e.message : e);
-  prisma = null;
-}
-
-/**
- * ensurePrisma()
- * Helper to short-circuit when prisma is not available (build-time).
- * Use in handlers before calling prisma:
- *
- *   const short = ensurePrisma();
- *   if (short) return short;
- *
- */
-function ensurePrisma() {
-  if (!prisma) {
-    return new Response(JSON.stringify({ message: "Prisma not available (build-time)" }), { status: 200 });
-  }
-  return null;
-}
-
-// Build-safe guard: mark dynamic and avoid crashing at build-time
-export const dynamic = "force-dynamic";
-
-let prisma = null;
-try {
-  // require at runtime; during build this may fail if @prisma/client wasn't generated
-  const { PrismaClient } = require("@prisma/client");
-  prisma = new PrismaClient();
-} catch (e) {
-  // log to build output but do not throw — keeps Vercel build from failing
-  // eslint-disable-next-line no-console
-  console.warn("⚠️ Prisma client not available during build:", e && e.message ? e.message : e);
-  prisma = null;
-}
 import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import prisma from '@/lib/prisma';
+import { z } from 'zod';
+import { rateLimit } from '@/lib/rate-limit';
+import { createRequestId, jsonError } from '@/lib/http';
 
 export const dynamic = 'force-dynamic';
 
@@ -70,10 +28,7 @@ function serializeComment(comment) {
 
 export async function GET(_request, { params }) {
   try {
-    const postId = Number(params.postId);
-    if (Number.isNaN(postId)) {
-      return NextResponse.json({ success: false, error: 'Invalid post id' }, { status: 400 });
-    }
+    const postId = z.coerce.number().int().positive().parse(params.postId);
 
     const comments = await prisma.feedComment.findMany({
       where: { postId, parentCommentId: null },
@@ -99,35 +54,43 @@ export async function GET(_request, { params }) {
 }
 
 export async function POST(request, { params }) {
+  const rid = createRequestId();
   try {
+    // Optional limiter (fail-open)
+    try {
+      const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+      const key = `${ip}:${request.nextUrl?.pathname || '/api/feed/posts/[postId]/comments'}`;
+      if (typeof rateLimit === 'function') {
+        const ok = await rateLimit(key, 60, 60);
+        if (!ok) return jsonError('too_many_requests', 'Too many requests', 429, rid);
+      }
+    } catch {}
+
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
     if (!token?.sub) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      return jsonError('unauthorized', 'Unauthorized', 401, rid);
     }
-    const userId = Number(token.sub);
-    const postId = Number(params.postId);
+    const userId = z.coerce.number().int().positive().parse(token.sub);
+    const postId = z.coerce.number().int().positive().safeParse(params.postId);
 
-    if (Number.isNaN(postId)) {
-      return NextResponse.json({ success: false, error: 'Invalid post id' }, { status: 400 });
-    }
+    if (!postId.success) return jsonError('invalid_params', 'Invalid post id', 400, rid);
 
-    const body = await request.json();
-    const text = body.body?.toString().trim();
-    if (!text) {
-      return NextResponse.json(
-        { success: false, error: 'Comment cannot be empty' },
-        { status: 400 }
-      );
-    }
+    const BodySchema = z.object({
+      body: z.string().trim().min(1, 'Comment cannot be empty'),
+      parentCommentId: z.coerce.number().int().positive().optional().nullable(),
+    });
+    const parsed = BodySchema.safeParse(await request.json());
+    if (!parsed.success) return jsonError('invalid_body', 'Invalid comment', 400, rid);
+    const { body: text, parentCommentId } = parsed.data;
 
-    const parentCommentId = body.parentCommentId ? Number(body.parentCommentId) : null;
+    const parentIdOrNull = parentCommentId ?? null;
 
     const created = await prisma.feedComment.create({
       data: {
-        postId,
+        postId: postId.data,
         authorUserId: userId,
         body: text,
-        parentCommentId,
+        parentCommentId: parentIdOrNull,
       },
       include: {
         author: { select: { id: true, name: true, image: true } },
@@ -139,9 +102,15 @@ export async function POST(request, { params }) {
       },
     });
 
-    return NextResponse.json({ success: true, data: serializeComment(created) });
+    return NextResponse.json({ success: true, data: serializeComment(created) }, { headers: { 'x-request-id': rid } });
   } catch (error) {
-    console.error('POST /api/feed/posts/[postId]/comments failed:', error);
-    return NextResponse.json({ success: false, error: 'Unable to add comment' }, { status: 500 });
+    console.error(JSON.stringify({
+      level: 'error',
+      rid,
+      route: '/api/feed/posts/[postId]/comments',
+      msg: 'POST failed',
+      err: String(error),
+    }));
+    return jsonError('internal_error', 'Unable to add comment', 500, rid);
   }
 }

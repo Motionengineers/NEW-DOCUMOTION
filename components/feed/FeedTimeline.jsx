@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import FeedPostCard from '@/components/feed/FeedPostCard';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Sparkles } from 'lucide-react';
+import clsx from 'clsx';
 
 export default function FeedTimeline({ initialPosts = [], onReady }) {
   const [posts, setPosts] = useState(initialPosts);
@@ -10,6 +11,7 @@ export default function FeedTimeline({ initialPosts = [], onReady }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [hasMore, setHasMore] = useState(true);
+  const [feedType, setFeedType] = useState('all'); // 'all' | 'following'
 
   const fetchPosts = useCallback(
     async (options = {}) => {
@@ -27,6 +29,9 @@ export default function FeedTimeline({ initialPosts = [], onReady }) {
         }
         if (options.professional !== undefined)
           params.set('professional', String(options.professional));
+        if (feedType === 'following') {
+          params.set('following', 'true');
+        }
 
         const response = await fetch(`/api/feed/posts?${params.toString()}`, { cache: 'no-store' });
         const json = await response.json();
@@ -147,8 +152,46 @@ export default function FeedTimeline({ initialPosts = [], onReady }) {
     ));
   }, [error, handleBookmark, handleLike, loading, posts]);
 
+  // Refresh when feed type changes
+  useEffect(() => {
+    setPosts([]);
+    setCursor(null);
+    fetchPosts();
+  }, [feedType]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      {/* Feed type tabs */}
+      <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-1">
+        <button
+          type="button"
+          onClick={() => setFeedType('all')}
+          className={clsx(
+            'flex-1 rounded-xl px-4 py-2 text-sm font-medium transition',
+            feedType === 'all'
+              ? 'bg-blue-500/20 text-blue-100'
+              : 'text-slate-300 hover:text-white'
+          )}
+        >
+          All Posts
+        </button>
+        <button
+          type="button"
+          onClick={() => setFeedType('following')}
+          className={clsx(
+            'flex-1 rounded-xl px-4 py-2 text-sm font-medium transition',
+            feedType === 'following'
+              ? 'bg-blue-500/20 text-blue-100'
+              : 'text-slate-300 hover:text-white'
+          )}
+        >
+          <span className="inline-flex items-center gap-1.5">
+            <Sparkles className="h-4 w-4" />
+            Following
+          </span>
+        </button>
+      </div>
+
       {timelineContent}
 
       {hasMore ? (

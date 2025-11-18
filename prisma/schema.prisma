@@ -199,6 +199,13 @@ model User {
   fundingReviews    FundingApplication[] @relation("ReviewerApplications")
   fundingActivities FundingApplicationActivity[]
   fundingApplicationDraft FundingApplicationDraft?
+  subscriptions     Subscription[]
+  invoices          Invoice[]
+  // Brand OS relations
+  brandDraftsAuthored BrandDraft[] @relation("BrandDraftAuthor")
+  brandRoles          BrandRole[]
+  brandComments       BrandComment[]
+  brandApprovals      BrandApproval[]
 }
 
 model Startup {
@@ -236,6 +243,13 @@ model Startup {
   feedFollowers      FeedFollow[]        @relation("FeedFollowTargetStartup")
   brandingSettings   BrandingSettings[]
   user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Brand OS relations
+  brandTokens        BrandToken[]
+  brandDrafts        BrandDraft[]
+  brandVersions      BrandVersion[]
+  brandAssets        BrandAsset[]
+  brandRoles         BrandRole[]
+  brandExportJobs    BrandExportJob[]
 }
 
 model Document {
@@ -274,6 +288,53 @@ model GovtScheme {
   source             String?
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
+}
+
+model State {
+  id           Int      @id @default(autoincrement())
+  name         String   @unique
+  abbreviation String?
+  region       String?
+  population   Int?
+  gdp          Float?
+  description  String?
+  schemes      StateFundingScheme[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([name])
+}
+
+model StateFundingScheme {
+  id              Int      @id @default(autoincrement())
+  stateId         Int
+  title           String
+  description     String?
+  fundingAmount   String?
+  interestRate    Float?
+  sector          String?
+  subSector       String?
+  eligibility     String?
+  eligibilityJson String?
+  applyLink       String?
+  officialLink    String?
+  centralOrState  String   @default("State")
+  fundingType     String?
+  fundingMin      Int?
+  fundingMax      Int?
+  subsidyPercent  Float?
+  lastUpdated     DateTime @default(now())
+  status          String   @default("Active")
+  verified        Boolean  @default(false)
+  popularityScore Int      @default(0)
+  tags            String?
+
+  state         State    @relation(fields: [stateId], references: [id], onDelete: Cascade)
+
+  @@index([stateId])
+  @@index([sector])
+  @@index([fundingType])
+  @@index([status])
 }
 
 model BankScheme {
@@ -334,6 +395,135 @@ model BrandingSettings {
   startup       Startup? @relation(fields: [startupId], references: [id], onDelete: SetNull)
 }
 
+// === Brand OS models ===
+model BrandToken {
+  id         Int      @id @default(autoincrement())
+  startupId  Int?
+  tokensJson String   // normalized semantic tokens (colors/typography/spacing), JSON string
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  startup    Startup? @relation(fields: [startupId], references: [id], onDelete: SetNull)
+
+  @@index([startupId])
+}
+
+model BrandDraft {
+  id         Int      @id @default(autoincrement())
+  startupId  Int?
+  authorId   Int?
+  dataJson   String   // full draft payload (tokens, assets selections, metadata)
+  status     String   @default("draft") // draft | review | approved
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  startup    Startup? @relation(fields: [startupId], references: [id], onDelete: SetNull)
+  author     User?    @relation("BrandDraftAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  comments   BrandComment[]
+  approvals  BrandApproval[]
+
+  @@index([startupId])
+  @@index([authorId])
+  @@index([status])
+}
+
+model BrandVersion {
+  id          Int      @id @default(autoincrement())
+  startupId   Int?
+  version     String
+  dataJson    String   // frozen published payload (tokens + assets)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  startup     Startup? @relation(fields: [startupId], references: [id], onDelete: SetNull)
+  assets      BrandAsset[]
+  exports     BrandExportJob[]
+
+  @@index([startupId])
+  @@unique([startupId, version])
+}
+
+model BrandAsset {
+  id          Int      @id @default(autoincrement())
+  startupId   Int?
+  versionId   Int?
+  kind        String   // logo | favicon | app_icon | social_banner
+  variant     String?  // default | mono | dark | light | twitter | linkedin etc.
+  url         String
+  width       Int?
+  height      Int?
+  format      String?  // svg | png | webp | ico
+  createdAt   DateTime @default(now())
+
+  startup     Startup?     @relation(fields: [startupId], references: [id], onDelete: SetNull)
+  version     BrandVersion? @relation(fields: [versionId], references: [id], onDelete: SetNull)
+
+  @@index([startupId])
+  @@index([versionId])
+  @@index([kind])
+}
+
+model BrandRole {
+  id        Int      @id @default(autoincrement())
+  startupId Int
+  userId    Int
+  role      String   // owner | designer | reviewer
+  createdAt DateTime @default(now())
+
+  startup   Startup  @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([startupId, userId])
+  @@index([role])
+}
+
+model BrandComment {
+  id        Int      @id @default(autoincrement())
+  draftId   Int
+  authorId  Int?
+  text      String
+  createdAt DateTime @default(now())
+
+  draft     BrandDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  author    User?      @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([draftId])
+  @@index([authorId])
+}
+
+model BrandApproval {
+  id        Int      @id @default(autoincrement())
+  draftId   Int
+  approverId Int?
+  status    String   @default("pending") // pending | approved | rejected
+  note      String?
+  createdAt DateTime @default(now())
+
+  draft     BrandDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  approver  User?      @relation(fields: [approverId], references: [id], onDelete: SetNull)
+
+  @@index([draftId])
+  @@index([approverId])
+  @@index([status])
+}
+
+model BrandExportJob {
+  id         Int      @id @default(autoincrement())
+  startupId  Int?
+  versionId  Int?
+  status     String   @default("queued") // queued | processing | completed | failed
+  filesJson  String?  // list of files in the export
+  url        String?  // final downloadable ZIP/PDF location
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  startup    Startup?     @relation(fields: [startupId], references: [id], onDelete: SetNull)
+  version    BrandVersion? @relation(fields: [versionId], references: [id], onDelete: SetNull)
+
+  @@index([startupId])
+  @@index([versionId])
+  @@index([status])
+}
 model FundingApplication {
   id                 Int       @id @default(autoincrement())
   userId             Int
@@ -426,6 +616,9 @@ model FeedPost {
   linkUrl         String?
   linkTitle       String?
   linkDescription String?
+  linkImageUrl    String?
+  template        String?           // funding | launch | hiring | milestone | general
+  templateData    String?           // JSON string for template-specific data
   professional    Boolean          @default(false)
   tagList         String?
   stage           String?
@@ -514,17 +707,20 @@ model FeedFollow {
   @@index([targetUserId])
   @@index([targetStartupId])
   @@index([tag])
+  @@unique([followerUserId, targetUserId, targetStartupId, tag])
 }
 
 model FeedBookmark {
-  userId    Int
-  postId    Int
-  createdAt DateTime @default(now())
+  userId     Int
+  postId     Int
+  collection String?   @default("default") // default | funding | product | hiring | learnings
+  createdAt  DateTime  @default(now())
 
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  post      FeedPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post       FeedPost  @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@id([userId, postId])
+  @@index([userId, collection])
 }
 
 model FounderProfile {
@@ -605,6 +801,101 @@ model FundedStartup {
   @@index([foundedYear])
 }
 
+model BrandingPartner {
+  id            Int      @id @default(autoincrement())
+  name          String
+  type          String
+  verified      Boolean  @default(false)
+  portfolioUrl  String?
+  website       String?
+  contactEmail  String?
+  phone         String?
+  city          String?
+  rating        Float?   @default(0)
+  ratingCount   Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  bookings      BrandingPartnerBooking[]
+
+  @@index([type])
+  @@index([verified])
+  @@index([city])
+}
+
+model BrandingPartnerBooking {
+  id             Int      @id @default(autoincrement())
+  partnerId      Int
+  requesterId    Int?
+  requesterName  String
+  requesterEmail String
+  requestNotes   String?
+  status         String   @default("PENDING") // PENDING | CONFIRMED | CANCELLED | COMPLETED
+  scheduledAt    DateTime?
+  meetingLink    String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  partner        BrandingPartner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  @@index([partnerId])
+  @@index([requesterEmail])
+  @@index([status])
+  @@index([scheduledAt])
+}
+
+model BrandingWorkspace {
+  id           Int      @id @default(autoincrement())
+  userId       Int?
+  agencyId     Int?
+  title        String?  @default("Untitled Brand Workspace")
+  sections     String   // JSON string with parsed sections
+  suggestions  String?  // JSON string with recommended next actions
+  progress     Int      @default(0)
+  status       String   @default("draft")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  uploads      BrandingUpload[]
+  tasks        BrandingWorkspaceTask[]
+
+  @@index([userId])
+  @@index([agencyId])
+  @@index([status])
+}
+
+model BrandingUpload {
+  id           Int      @id @default(autoincrement())
+  workspaceId  Int
+  filename     String
+  fileType     String
+  fileSize     Int
+  url          String
+  parsed       Boolean  @default(false)
+  metadata     String?
+  createdAt    DateTime @default(now())
+
+  workspace    BrandingWorkspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+}
+
+model BrandingWorkspaceTask {
+  id           Int      @id @default(autoincrement())
+  workspaceId  Int
+  title        String
+  description  String?
+  status       String   @default("pending")
+  category     String?  // e.g. messaging, collateral, campaign
+  aiGenerated  Boolean  @default(false)
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  workspace    BrandingWorkspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([status])
+}
+
 model PitchDeck {
   id          Int      @id @default(autoincrement())
   title       String
@@ -648,15 +939,88 @@ model DashboardStat {
 }
 
 model Subscription {
-  id         Int       @id @default(autoincrement())
-  userId     Int
-  plan       String
-  razorpayId String?   @unique
-  status     String    @default("active")
-  startedAt  DateTime  @default(now())
-  expiresAt  DateTime?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now()) @updatedAt
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tier          String    @default("freemium") // freemium | growth | scale | concierge
+  billingCycle  String    @default("monthly") // monthly | annual
+  razorpayId    String?   @unique
+  status        String    @default("active") // active | cancelled | expired | trial
+  startedAt     DateTime  @default(now())
+  expiresAt     DateTime?
+  cancelledAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
+  addOns        SubscriptionAddOn[]
+  usageTracking UsageTracking[]
+  invoices      Invoice[]
+  
+  @@index([userId])
+  @@index([tier])
+  @@index([status])
+}
+
+model SubscriptionAddOn {
+  id             Int       @id @default(autoincrement())
+  subscriptionId Int
+  addOnType      String    // storage_10gb | extra_seat | auto_apply_workflow | ai_parsing_pages
+  quantity       Int       @default(1)
+  pricePerUnit   Float
+  status         String    @default("active") // active | cancelled
+  purchasedAt    DateTime  @default(now())
+  expiresAt      DateTime?
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  
+  @@index([subscriptionId])
+  @@index([addOnType])
+}
+
+model UsageTracking {
+  id             Int       @id @default(autoincrement())
+  subscriptionId Int
+  userId         Int
+  startupId      Int?
+  metricType     String    // auto_apply_workflows | ai_parsing_pages | storage_gb | partner_bookings | team_seats
+  currentUsage   Int       @default(0)
+  limit           Int?     // null means unlimited
+  periodStart     DateTime  @default(now())
+  periodEnd       DateTime?
+  lastResetAt     DateTime  @default(now())
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  
+  @@index([subscriptionId])
+  @@index([userId])
+  @@index([startupId])
+  @@index([metricType])
+  @@unique([subscriptionId, userId, metricType, periodStart])
+}
+
+model Invoice {
+  id                Int       @id @default(autoincrement())
+  subscriptionId    Int
+  userId            Int
+  invoiceNumber     String    @unique
+  amount            Float
+  currency          String    @default("INR")
+  status            String    @default("pending") // pending | paid | failed | refunded
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+  items             String    // JSON string of invoice items
+  taxAmount         Float     @default(0)
+  discountAmount    Float     @default(0)
+  totalAmount       Float
+  dueDate           DateTime?
+  paidAt            DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @default(now()) @updatedAt
+  
+  subscription      Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([subscriptionId])
+  @@index([status])
+  @@index([invoiceNumber])
 }
 
 model Account {

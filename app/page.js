@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { Tiro_Devanagari_Hindi } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 import FaqSection from '@/components/FaqSection';
+import PricingSection from '@/components/PricingSection';
 import {
   Home,
   Shield,
@@ -17,6 +19,12 @@ import {
   CheckCircle2,
   XCircle,
   ArrowRight,
+  Sparkles,
+  Megaphone,
+  Handshake,
+  Rocket,
+  Link2,
+  Lock,
 } from 'lucide-react';
 
 const defaultApplyForm = {
@@ -25,6 +33,12 @@ const defaultApplyForm = {
   company: '',
   focus: '',
 };
+
+const hindiDisplay = Tiro_Devanagari_Hindi({
+  subsets: ['latin', 'devanagari'],
+  weight: '400',
+  variable: '--font-hindi-display',
+});
 
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
@@ -83,40 +97,108 @@ export default function HomePage() {
               The New Standard for Indian Startups
             </h1>
             <p
-              className="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed"
+              className="text-xl md:text-2xl mb-6 max-w-4xl mx-auto leading-relaxed"
               style={{ color: 'var(--secondary-label)' }}
             >
               Sharp design. Smart automation. Real-time intelligence.
               <br />
               Made in India, for India&apos;s next 10 million founders.
             </p>
+            <p
+              className={`${hindiDisplay.className} text-sm md:text-base font-semibold tracking-[0.25em] uppercase text-center text-slate-200/90`}
+              style={{ fontFeatureSettings: "'ss01' on, 'liga' on", letterSpacing: '0.25em', marginBottom: '0.75rem' }}
+            >
+              भारतीय उद्यमियों के लिए विश्वसनीय साथी—सब कुछ एक ही प्लेटफ़ॉर्म पर।
+            </p>
+            <div
+              className="h-1 w-40 mx-auto rounded-full mb-12"
+              style={{
+                background:
+                  'linear-gradient(90deg, rgba(255,153,51,0.9) 0%, rgba(255,255,255,0.9) 46%, rgba(19,136,8,0.9) 100%)',
+                boxShadow: '0 8px 24px rgba(19,136,8,0.35)',
+              }}
+            />
 
             <div className="flex flex-wrap justify-center gap-3 mb-12 max-w-4xl mx-auto">
               {[
-                'Registrations',
-                'Compliance',
-                'Funding',
-                'Branding',
-                'Investors',
-                'M&A',
-                'Auto-Apply',
-                'Smart Suggestions',
-              ].map((feature, idx) => (
-                <motion.div
-                  key={feature}
-                  initial={mounted ? { opacity: 0, scale: 0.9 } : false}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4, delay: 0.3 + idx * 0.05 }}
-                  className="px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm border"
-                  style={{
-                    backgroundColor: 'rgba(0, 102, 204, 0.1)',
-                    borderColor: 'rgba(0, 102, 204, 0.3)',
-                    color: 'var(--system-blue)',
-                  }}
-                >
-                  ✅ {feature}
-                </motion.div>
-              ))}
+                {
+                  label: 'Start Your Vision',
+                  icon: Sparkles,
+                  gradient: 'linear-gradient(135deg, rgba(236,72,153,0.35), rgba(59,130,246,0.2))',
+                  border: 'rgba(236,72,153,0.4)',
+                  iconBg: 'rgba(236,72,153,0.24)',
+                },
+                {
+                  label: 'Legal & Compliance',
+                  icon: Shield,
+                  gradient: 'linear-gradient(135deg, rgba(45,212,191,0.32), rgba(59,130,246,0.18))',
+                  border: 'rgba(45,212,191,0.35)',
+                  iconBg: 'rgba(45,212,191,0.22)',
+                },
+                {
+                  label: 'Secure Funding',
+                  icon: TrendingUp,
+                  gradient: 'linear-gradient(135deg, rgba(250,204,21,0.36), rgba(202,138,4,0.22))',
+                  border: 'rgba(250,204,21,0.34)',
+                  iconBg: 'rgba(250,204,21,0.2)',
+                },
+                {
+                  label: 'Build Your Brand',
+                  icon: Megaphone,
+                  gradient: 'linear-gradient(135deg, rgba(232,121,249,0.34), rgba(190,24,98,0.22))',
+                  border: 'rgba(232,121,249,0.32)',
+                  iconBg: 'rgba(232,121,249,0.22)',
+                },
+                {
+                  label: 'Find Investors & Experts',
+                  icon: Handshake,
+                  gradient: 'linear-gradient(135deg, rgba(74,222,128,0.3), rgba(22,163,74,0.2))',
+                  border: 'rgba(74,222,128,0.32)',
+                  iconBg: 'rgba(74,222,128,0.22)',
+                },
+                {
+                  label: 'Auto-Apply Workflows',
+                  icon: Rocket,
+                  gradient: 'linear-gradient(135deg, rgba(129,140,248,0.32), rgba(59,130,246,0.2))',
+                  border: 'rgba(129,140,248,0.3)',
+                  iconBg: 'rgba(129,140,248,0.22)',
+                },
+                {
+                  label: 'Scale & M&A Support',
+                  icon: Link2,
+                  gradient: 'linear-gradient(135deg, rgba(192,132,252,0.32), rgba(99,102,241,0.24))',
+                  border: 'rgba(192,132,252,0.3)',
+                  iconBg: 'rgba(192,132,252,0.22)',
+                },
+              ].map((feature, idx) => {
+                const Icon = feature.icon;
+
+                return (
+                  <motion.div
+                    key={feature.label}
+                    initial={mounted ? { opacity: 0, scale: 0.9 } : false}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.45, delay: 0.3 + idx * 0.05 }}
+                    className="group relative overflow-hidden rounded-full border px-5 py-2.5 text-xs md:text-sm font-medium backdrop-blur-xl transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_18px_36px_rgba(15,23,42,0.3)]"
+                    style={{
+                      background: feature.gradient,
+                      borderColor: feature.border,
+                      color: '#f8fafc',
+                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15)',
+                    }}
+                  >
+                    <span className="relative flex items-center gap-2.5">
+                      <span
+                        className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 backdrop-blur"
+                        style={{ backgroundColor: feature.iconBg }}
+                      >
+                        <Icon className="h-3 w-3" strokeWidth={2.2} />
+                      </span>
+                      <span>{feature.label}</span>
+                    </span>
+                  </motion.div>
+                );
+              })}
             </div>
 
             <div className="flex justify-center gap-4 flex-wrap">
@@ -190,38 +272,49 @@ export default function HomePage() {
             Made for Indian startups. Trusted by Indian founders.
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature, idx) => (
-              <Link key={feature.title} href={feature.href || '#'} className="block group">
-                <motion.div
-                  initial={mounted ? { opacity: 0, y: 20 } : false}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: idx * 0.05 }}
-                  className="glass rounded-xl p-6 hover:scale-[1.02] transition-all cursor-pointer h-full border border-transparent hover:border-blue-500/20"
-                >
-                  <div
-                    className="mb-4 inline-block p-3 rounded-xl group-hover:scale-110 transition-transform"
-                    style={{
-                      backgroundColor: 'rgba(0, 102, 204, 0.1)',
-                      color: 'var(--system-blue)',
-                    }}
+            {features.map((feature, idx) => {
+              const iconWrapperStyle = {
+                background: feature.iconBg || 'rgba(0, 102, 204, 0.1)',
+                color: feature.iconColor || 'var(--system-blue)',
+                boxShadow: feature.iconShadow,
+              };
+              const cardStyle = {
+                ...(feature.cardBackground ? { background: feature.cardBackground } : {}),
+                ...(feature.cardBorder ? { borderColor: feature.cardBorder } : {}),
+                ...(feature.cardShadow ? { boxShadow: feature.cardShadow } : {}),
+              };
+
+              return (
+                <Link key={feature.title} href={feature.href || '#'} className="block group">
+                  <motion.div
+                    initial={mounted ? { opacity: 0, y: 20 } : false}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: idx * 0.05 }}
+                    className="glass rounded-xl p-6 hover:scale-[1.02] transition-all cursor-pointer h-full border border-transparent hover:border-blue-500/20"
+                    style={cardStyle}
                   >
-                    {feature.icon}
-                  </div>
-                  <h3
-                    className="text-xl font-semibold mb-2 transition-colors"
-                    style={{ color: 'var(--label)' }}
-                  >
-                    {feature.title}
-                  </h3>
-                  <p
-                    className="text-sm leading-relaxed"
-                    style={{ color: 'var(--secondary-label)' }}
-                  >
-                    {feature.description}
-                  </p>
-                </motion.div>
-              </Link>
-            ))}
+                    <div
+                      className="mb-4 inline-block p-3 rounded-xl group-hover:scale-110 transition-transform"
+                      style={iconWrapperStyle}
+                    >
+                      {feature.icon}
+                    </div>
+                    <h3
+                      className="text-xl font-semibold mb-2 transition-colors"
+                      style={{ color: 'var(--label)' }}
+                    >
+                      {feature.title}
+                    </h3>
+                    <p
+                      className="text-sm leading-relaxed"
+                      style={{ color: 'var(--secondary-label)' }}
+                    >
+                      {feature.description}
+                    </p>
+                  </motion.div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -303,6 +396,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <PricingSection />
 
       <FaqSection />
 
@@ -502,10 +597,23 @@ const features = [
     href: '/dashboard/branding',
   },
   {
-    icon: <Shield className="h-6 w-6" style={{ color: 'var(--system-blue)' }} />,
+    icon: (
+      <div className="relative flex h-10 w-10 items-center justify-center">
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-amber-200/45 via-transparent to-transparent blur-[8px]" />
+        <div className="absolute inset-0 rounded-xl border border-amber-200/50" />
+        <Shield className="relative h-6 w-6 text-amber-200" strokeWidth={2.1} />
+        <Lock className="absolute -bottom-1 right-0 h-3.5 w-3.5 text-amber-100" strokeWidth={2.3} />
+      </div>
+    ),
     title: 'Document Vault',
     description: 'Secure storage and verification of all your startup documents',
     href: '/dashboard',
+    iconBg: 'linear-gradient(135deg, rgba(250,204,21,0.18), rgba(217,119,6,0.22))',
+    iconShadow: '0 22px 44px rgba(250,204,21,0.28)',
+    iconColor: '#FACC15',
+    cardBackground: 'linear-gradient(145deg, rgba(15,23,42,0.92), rgba(15,23,42,0.72))',
+    cardBorder: 'rgba(250,204,21,0.3)',
+    cardShadow: '0 26px 60px rgba(15,23,42,0.5)',
   },
   {
     icon: <TrendingUp className="h-6 w-6" style={{ color: 'var(--system-blue)' }} />,

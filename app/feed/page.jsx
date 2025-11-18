@@ -11,19 +11,39 @@ const PLACEHOLDER_CAPTIONS = [
   'Product launch drop: introducing our AI underwriting sandbox for founders in Fintech and ClimateTech.',
   'Investor spotlight: sharing portfolio wins and lessons from onboarding 120+ venture-backed founders.',
   'Talent shoutout: scaling our design practice with fresh leadership across Bengaluru and Mumbai hubs.',
+  'We\'re thrilled to announce our ₹40 Cr Series A led by Accel Partners! This funding will accelerate our mission to democratize AI for Indian startups.',
+  'Excited to launch V2.0 of our platform with real-time collaboration, advanced analytics, and enterprise-grade security.',
+  'We\'re hiring! Looking for Senior Engineers and Product Managers to join our growing team in Bangalore.',
+  'Proud milestone: Reached 10K active users in just 6 months! Thank you to our amazing community of founders.',
+  'Breaking barriers: Our AI-powered compliance tool just processed 1M+ documents. Here\'s what we learned.',
+  'Product update: New dashboard features, improved UX, and 10x faster performance. Try it now!',
 ];
 const TAG_SETS = [
   ['#Startup', '#Funding', '#AI'],
   ['#ProductLaunch', '#Growth', '#Fintech'],
   ['#Community', '#Hiring', '#SaaS'],
   ['#FounderLife', '#Climate', '#Innovation'],
+  ['#Funding', '#SeriesA', '#Startup'],
+  ['#ProductLaunch', '#SaaS', '#Tech'],
+  ['#Hiring', '#Jobs', '#Startup'],
+  ['#Milestone', '#Growth', '#Startup'],
+  ['#AI', '#Innovation', '#Tech'],
+  ['#ProductUpdate', '#SaaS', '#Growth'],
 ];
 const AUTHOR_POOL = [
   { name: 'Ananya Kapoor', designation: 'Founder · NovaSense AI', verified: true },
   { name: 'Rahul Verma', designation: 'Investor · BrightCap Ventures', verified: false },
   { name: 'Sana Khan', designation: 'COO · Meridian Labs', verified: true },
   { name: 'Ishaan Pillai', designation: 'Product Lead · VeloStack', verified: false },
+  { name: 'Priya Sharma', designation: 'Founder · TechFlow', verified: true },
+  { name: 'Arjun Mehta', designation: 'CEO · DataSync', verified: true },
+  { name: 'Kavya Patel', designation: 'CTO · CloudScale', verified: false },
+  { name: 'Rohan Singh', designation: 'Founder · FinTech Pro', verified: true },
+  { name: 'Meera Nair', designation: 'Co-founder · AI Labs', verified: true },
+  { name: 'Vikram Rao', designation: 'Founder · StartupHub', verified: false },
 ];
+
+const TEMPLATES = ['general', 'funding', 'launch', 'hiring', 'milestone'];
 
 export const metadata = {
   title: 'Startup Feed • Documotion',
@@ -109,8 +129,9 @@ function loadDemoPosts() {
   if (!fs.existsSync(FEED_IMAGES_DIR)) return [];
   const files = fs
     .readdirSync(FEED_IMAGES_DIR)
-    .filter(file => ['.jpg', '.jpeg', '.png', '.webp'].includes(path.extname(file).toLowerCase()))
-    .sort();
+    .filter(file => ['.jpg', '.jpeg', '.png', '.webp', '.gif'].includes(path.extname(file).toLowerCase()))
+    .sort()
+    .slice(0, 20); // Show first 20 images for demo
 
   if (!files.length) return [];
 
@@ -118,14 +139,51 @@ function loadDemoPosts() {
     const author = AUTHOR_POOL[index % AUTHOR_POOL.length];
     const caption = PLACEHOLDER_CAPTIONS[index % PLACEHOLDER_CAPTIONS.length];
     const tags = TAG_SETS[index % TAG_SETS.length];
+    const template = TEMPLATES[index % TEMPLATES.length];
     const createdAt = new Date(Date.now() - index * 60 * 60 * 1000).toISOString();
     const mediaUrl = `/uploads/feed/${file}`;
+    const isGif = file.toLowerCase().endsWith('.gif');
+
+    // Template-specific data
+    let templateData = {};
+    let title = author.verified ? 'Verified milestone update' : 'Community spotlight';
+    
+    if (template === 'funding') {
+      title = 'Funding Announcement';
+      templateData = {
+        amount: ['₹50 Lakh', '₹5 Cr', '₹10 Cr', '₹40 Cr', '₹100 Cr'][index % 5],
+        round: ['Pre-seed', 'Seed', 'Series A', 'Series B'][index % 4],
+        investors: ['Accel Partners', 'Sequoia Capital', 'Y Combinator', 'Lightspeed'][index % 4],
+      };
+    } else if (template === 'launch') {
+      title = 'Product Launch';
+      templateData = {
+        productName: ['AI Platform', 'SaaS Tool', 'Mobile App', 'API Suite'][index % 4],
+        features: 'AI-powered, Real-time analytics, Enterprise-ready',
+        earlyAccess: index % 2 === 0,
+      };
+    } else if (template === 'hiring') {
+      title = 'We\'re Hiring!';
+      templateData = {
+        roles: ['Senior Engineer', 'Product Manager', 'Designer', 'Data Scientist'][index % 4],
+        location: 'Bangalore, India',
+        applyLink: 'https://jobs.example.com',
+      };
+    } else if (template === 'milestone') {
+      title = 'Milestone Achievement';
+      templateData = {
+        metric: ['10K users', '₹8 Cr ARR', '100K downloads', '50K customers'][index % 4],
+        achievement: 'Reached in 6 months',
+      };
+    }
 
     return {
       id: `demo-post-${index}`,
-      title: author.verified ? 'Verified milestone update' : 'Community spotlight',
+      title,
       body: caption,
       tags,
+      template: template !== 'general' ? template : undefined,
+      templateData: Object.keys(templateData).length > 0 ? templateData : undefined,
       professional: author.verified,
       createdAt,
       updatedAt: createdAt,
@@ -137,12 +195,12 @@ function loadDemoPosts() {
         image: null,
       },
       startup: null,
-      mediaType: 'image',
+      mediaType: isGif ? 'video' : 'image',
       mediaUrl,
       media: [
         {
           id: `demo-media-${index}`,
-          type: 'image',
+          type: isGif ? 'video' : 'image',
           url: mediaUrl,
           thumbnailUrl: null,
         },
@@ -152,13 +210,22 @@ function loadDemoPosts() {
         comments: 5 + (index % 12),
         shares: 8 + (index % 9),
       },
+      reactionCounts: {
+        like: 45 + (index % 30),
+        celebrate: 12 + (index % 15),
+        support: 8 + (index % 10),
+        insightful: 5 + (index % 8),
+        question: 2 + (index % 5),
+      },
+      userReactions: index % 3 === 0 ? ['like'] : index % 5 === 0 ? ['like', 'celebrate'] : [],
       metrics: {
         views: `${(2 + (index % 7)).toFixed(1)}K`,
         engagementRate: `${14 + (index % 6)}%`,
         saved: 30 + (index % 20),
       },
-      liked: false,
-      bookmarked: false,
+      liked: index % 3 === 0,
+      bookmarked: index % 4 === 0,
+      following: index % 5 === 0,
       commentsPreview: buildDemoComments(author.name, index),
     };
   });

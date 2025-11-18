@@ -23,6 +23,8 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
     "test": "jest",
     "api:examples": "sh scripts/api-examples.sh",
+    "api:health-check": "node scripts/api-health-check.js",
+    "api:test-critical": "node scripts/api-health-check.js --critical-only",
     "integrations:check": "node scripts/integrations-check.js",
     "import:talent:csv": "node scripts/importTalentCsv.js",
     "import:startups:csv": "node scripts/importFundedStartups.js"

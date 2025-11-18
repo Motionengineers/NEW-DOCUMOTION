@@ -554,12 +554,54 @@ async function seedTalentMVP() {
   console.log('Seeded talent MVP data: skills, 20 talent, 5 roles.');
 }
 
+async function seedBrandingPartners() {
+  const dataset = await loadBrandingDataset();
+  if (!dataset.length) {
+    console.log('No curated branding dataset found for partners. Skipping verified partners seed.');
+    return;
+  }
+
+  const curated = dataset.slice(0, 8).map(entry => ({
+    name: entry.name,
+    type: 'AGENCY',
+    city: entry.city ?? entry.location ?? null,
+    website: entry.website ?? null,
+    portfolioUrl:
+      (Array.isArray(entry.portfolio) && entry.portfolio.length > 0 && entry.portfolio[0].caseStudyUrl) ||
+      entry.website ||
+      null,
+    contactEmail: entry.contactEmail ?? null,
+    phone: entry.contactPhone ?? null,
+    verified: Boolean(entry.verified ?? true),
+    rating: entry.rating ?? 4.6,
+    ratingCount: entry.reviewCount ?? 25,
+  }));
+
+  let created = 0;
+  for (const partner of curated) {
+    const existing = await prisma.brandingPartner.findFirst({
+      where: { name: partner.name },
+    });
+    if (existing) {
+      await prisma.brandingPartner.update({
+        where: { id: existing.id },
+        data: partner,
+      });
+    } else {
+      await prisma.brandingPartner.create({ data: partner });
+      created += 1;
+    }
+  }
+  console.log(`Seeded ${curated.length} branding partners (${created} new) from agencies dataset.`);
+}
+
 async function main() {
   await seedAgencies();
   await seedPitchDecks();
   await seedBankSchemes();
   await seedGovtSchemes();
   await seedTalentMVP();
+  await seedBrandingPartners();
 }
 
 main()

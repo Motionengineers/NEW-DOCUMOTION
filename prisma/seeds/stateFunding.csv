@@ -1,0 +1,94 @@
+state,centralOrState,fundingType,fundingMin,fundingMax,interestRate,subsidyPercent,sector,applyLink,source,tags,verified,popularityScore,description
+Andhra Pradesh,State,Grant,500000,2000000,,20,Agri,https://andhra.pr/scheme1,https://andhra.pr/scheme1,agri|msme,TRUE,25,Support for agri-tech startups with capex subsidy
+Andhra Pradesh,State,Loan,1000000,10000000,5.0,0,Manufacturing,https://andhra.pr/loan1,https://andhra.pr/loan1,loan|manufacturing,FALSE,10,Term loan with interest reimbursement for MSMEs
+Andhra Pradesh,State,Grant,200000,1000000,,0,IT,https://andhra.pr/itgrant,https://andhra.pr/itgrant,it|startup,TRUE,15,Seed grant for IT startups to build prototypes
+Arunachal Pradesh,State,Grant,300000,1500000,,15,Agri,https://arunachal.gov.in/scheme1,https://arunachal.gov.in/scheme1,agri|rural,TRUE,5,Support to agri startups in hilly regions
+Arunachal Pradesh,State,Loan,500000,5000000,6.5,0,Tourism,https://arunachal.gov.in/loan,https://arunachal.gov.in/loan,tourism|loan,FALSE,3,Low-interest loan for tourism-related startups
+Arunachal Pradesh,State,Grant,100000,500000,,0,Handicraft,https://arunachal.gov.in/craft,https://arunachal.gov.in/craft,handicraft|micro,TRUE,2,Micro grants for local artisans
+Assam,State,Grant,400000,2000000,,25,Agri,https://assam.gov.in/agri-support,https://assam.gov.in/agri-support,agri|startup,TRUE,18,Agritech grants and subsidies
+Assam,State,Loan,800000,8000000,5.5,0,Manufacturing,https://assam.gov.in/loan,https://assam.gov.in/loan,loan|manufacturing,FALSE,8,Manufacturing loan with partial interest subsidy
+Assam,State,Grant,150000,750000,,0,Healthcare,https://assam.gov.in/health-grant,https://assam.gov.in/health-grant,health|grant,TRUE,6,Seed grants for healthtech pilots
+Bihar,State,Grant,250000,1000000,,20,Agri,https://bihar.gov.in/agri,https://bihar.gov.in/agri,agri|rural,TRUE,12,Agriculture startup support
+Bihar,State,Loan,500000,5000000,6.0,0,Manufacturing,https://bihar.gov.in/loan,https://bihar.gov.in/loan,manufacturing|loan,FALSE,7,Term loans for small manufacturers
+Bihar,State,Grant,100000,400000,,0,Education,https://bihar.gov.in/edu-grant,https://bihar.gov.in/edu-grant,edu|startup,TRUE,4,Grants for edtech pilots
+Chhattisgarh,State,Grant,300000,1500000,,18,Manufacturing,https://chhattisgarh.nic.in/scheme,https://chhattisgarh.nic.in/scheme,manufacturing|msme,TRUE,9,Capex grant for manufacturing micro units
+Chhattisgarh,State,Loan,700000,7000000,5.8,0,Agri,https://chhattisgarh.nic.in/loan,https://chhattisgarh.nic.in/loan,agri|loan,FALSE,5,Agritech loans with competitive rates
+Chhattisgarh,State,Grant,120000,600000,,0,Energy,https://chhattisgarh.nic.in/energy,https://chhattisgarh.nic.in/energy,energy|renewable,TRUE,3,Support for renewable energy pilots
+Goa,State,Grant,200000,1000000,,10,Tourism,https://goapr.gov/scheme,https://goapr.gov/scheme,tourism|startup,TRUE,11,Incentives for tourism startups
+Goa,State,Loan,500000,3000000,5.0,0,Hospitality,https://goapr.gov/loan,https://goapr.gov/loan,hospitality|loan,FALSE,6,Loans for small hotels and homestays
+Goa,State,Grant,80000,300000,,0,Artisan,https://goapr.gov/artisan,https://goapr.gov/artisan,craft|micro,TRUE,2,Support grants for local artisans
+Gujarat,State,Grant,500000,5000000,,25,Manufacturing,https://gujarat.gov.in/industrial-subsidy,https://gujarat.gov.in/industrial-subsidy,manufacturing|subsidy,TRUE,40,Capital subsidy and interest reimbursement for manufacturing units
+Gujarat,State,Loan,1000000,20000000,3.0,0,Manufacturing,https://gujarat.gov.in/loan,https://gujarat.gov.in/loan,loan|manufacturing,FALSE,35,Low-interest industrial loans
+Gujarat,State,Grant,200000,1000000,,15,Agri,https://gujarat.gov.in/agri,https://gujarat.gov.in/agri,agri|startup,TRUE,20,Agriculture and food processing grants
+Haryana,State,Grant,400000,2500000,,20,Manufacturing,https://haryana.gov.in/startup-scheme,https://haryana.gov.in/startup-scheme,manufacturing|msme,TRUE,30,Incentives for startups in manufacturing and logistics
+Haryana,State,Loan,800000,10000000,4.5,0,Logistics,https://haryana.gov.in/loan,https://haryana.gov.in/loan,logistics|loan,FALSE,18,Loans for logistics and warehousing
+Haryana,State,Grant,150000,700000,,0,IT,https://haryana.gov.in/it-grant,https://haryana.gov.in/it-grant,it|startup,TRUE,12,Seed grants for IT product pilots
+Himachal Pradesh,State,Grant,200000,900000,,12,Agri,https://himachal.nic.in/agri,https://himachal.nic.in/agri,agri|rural,TRUE,6,Support for hill-region agri startups
+Himachal Pradesh,State,Loan,500000,4000000,6.0,0,Tourism,https://himachal.nic.in/loan,https://himachal.nic.in/loan,tourism|loan,FALSE,4,Loans for homestays and eco-tourism
+Himachal Pradesh,State,Grant,100000,300000,,0,Handicraft,https://himachal.nic.in/craft,https://himachal.nic.in/craft,craft|micro,TRUE,2,Grants for artisans
+Jharkhand,State,Grant,300000,1200000,,18,Manufacturing,https://jharkhand.gov.in/industry,https://jharkhand.gov.in/industry,manufacturing|msme,TRUE,9,Incentives for small manufacturing units
+Jharkhand,State,Loan,600000,6000000,5.5,0,Mining,https://jharkhand.gov.in/loan,https://jharkhand.gov.in/loan,mining|loan,FALSE,5,Loans for ancillary mining units
+Jharkhand,State,Grant,100000,400000,,0,Agri,https://jharkhand.gov.in/agri,https://jharkhand.gov.in/agri,agri|startup,TRUE,3,Grants for agri startups
+Karnataka,State,Grant,1000000,5000000,,0,AI,https://karnataka.gov.in/seedgrant,https://karnataka.gov.in/seedgrant,ai|deep-tech,TRUE,60,Non-dilutive grants for deep tech and AI proof-of-concepts
+Karnataka,State,Loan,2000000,15000000,4.2,0,Manufacturing,https://karnataka.gov.in/loan,https://karnataka.gov.in/loan,loan|manufacturing,FALSE,45,Startup-friendly term loans
+Karnataka,State,Grant,250000,1000000,,0,Startup,https://karnataka.gov.in/startup-support,https://karnataka.gov.in/startup-support,seed|startup,TRUE,35,Seed grants and mentorship support
+Kerala,State,Grant,300000,1500000,,18,Healthcare,https://kerala.gov.in/health-scheme,https://kerala.gov.in/health-scheme,health|startup,TRUE,22,Grants for healthtech pilots
+Kerala,State,Loan,800000,8000000,5.0,0,Tourism,https://kerala.gov.in/loan,https://kerala.gov.in/loan,tourism|loan,FALSE,15,Loans for hospitality startups
+Kerala,State,Grant,100000,500000,,0,Agri,https://kerala.gov.in/agri,https://kerala.gov.in/agri,agri|startup,TRUE,8,Sustainable agri grants
+Madhya Pradesh,State,Grant,500000,3000000,,20,Manufacturing,https://mp.gov.in/industry,https://mp.gov.in/industry,manufacturing|msme,TRUE,28,Capital subsidy for manufacturing
+Madhya Pradesh,State,Loan,1000000,12000000,5.5,0,Agri,https://mp.gov.in/loan,https://mp.gov.in/loan,agri|loan,FALSE,12,Agritech loans with interest support
+Madhya Pradesh,State,Grant,150000,600000,,0,Education,https://mp.gov.in/edu,https://mp.gov.in/edu,edu|startup,TRUE,6,Edtech pilot grants
+Maharashtra,State,Grant,1000000,10000000,,4.5,EV,https://maha.gov.in/startup/scheme,https://maha.gov.in/startup/scheme,ev|manufacturing,TRUE,80,Interest subsidy and caps for priority sectors including EV
+Maharashtra,State,Loan,2000000,25000000,4.5,0,Manufacturing,https://maha.gov.in/loan,https://maha.gov.in/loan,loan|manufacturing,FALSE,70,Startup loan programs backed by state
+Maharashtra,State,Grant,300000,2000000,,0,IT,https://maha.gov.in/it,https://maha.gov.in/it,it|startup,TRUE,50,Grants and incubation support for IT startups
+Manipur,State,Grant,100000,500000,,12,Handicraft,https://manipur.gov.in/craft,https://manipur.gov.in/craft,craft|micro,TRUE,3,Support grants for artisans
+Manipur,State,Loan,300000,3000000,6.5,0,Agri,https://manipur.gov.in/loan,https://manipur.gov.in/loan,agri|loan,FALSE,2,Agritech loans
+Manipur,State,Grant,80000,200000,,0,Tourism,https://manipur.gov.in/tourism,https://manipur.gov.in/tourism,tourism|startup,TRUE,1,Local tourism support
+Meghalaya,State,Grant,120000,600000,,15,Agri,https://meghalaya.gov.in/agri,https://meghalaya.gov.in/agri,agri|rural,TRUE,4,Agritech grants for hill regions
+Meghalaya,State,Loan,300000,2500000,6.0,0,Handicraft,https://meghalaya.gov.in/loan,https://meghalaya.gov.in/loan,craft|loan,FALSE,2,Loans for artisans
+Meghalaya,State,Grant,90000,250000,,0,Education,https://meghalaya.gov.in/edu,https://meghalaya.gov.in/edu,edu|micro,TRUE,1,Small edtech grants
+Mizoram,State,Grant,100000,400000,,12,Agri,https://mizoram.gov.in/agri,https://mizoram.gov.in/agri,agri|rural,TRUE,2,Agritech seed grants
+Mizoram,State,Loan,200000,2000000,6.5,0,Handicraft,https://mizoram.gov.in/loan,https://mizoram.gov.in/loan,craft|loan,FALSE,1,Loans for small artisans
+Mizoram,State,Grant,70000,200000,,0,Tourism,https://mizoram.gov.in/tourism,https://mizoram.gov.in/tourism,tourism|micro,TRUE,1,Micro grants for homestays
+Nagaland,State,Grant,120000,500000,,14,Agri,https://nagaland.gov.in/agri,https://nagaland.gov.in/agri,agri|rural,TRUE,3,Agritech support
+Nagaland,State,Loan,300000,3000000,6.0,0,Handicraft,https://nagaland.gov.in/loan,https://nagaland.gov.in/loan,craft|loan,FALSE,2,Loans for artisans
+Nagaland,State,Grant,80000,250000,,0,Tourism,https://nagaland.gov.in/tourism,https://nagaland.gov.in/tourism,tourism|startup,TRUE,1,Tourism pilot grants
+Odisha,State,Grant,400000,2000000,,22,Agri,https://odisha.gov.in/agri,https://odisha.gov.in/agri,agri|msme,TRUE,24,Agritech and fisheries grants
+Odisha,State,Loan,900000,9000000,5.0,0,Manufacturing,https://odisha.gov.in/loan,https://odisha.gov.in/loan,manufacturing|loan,FALSE,14,Industrial loans with incentives
+Odisha,State,Grant,200000,800000,,0,Energy,https://odisha.gov.in/energy,https://odisha.gov.in/energy,energy|renewable,TRUE,5,Renewable energy pilot grants
+Punjab,State,Grant,600000,3000000,,20,Manufacturing,https://punjab.gov.in/industry,https://punjab.gov.in/industry,manufacturing|msme,TRUE,32,Support for manufacturing clusters
+Punjab,State,Loan,1000000,12000000,4.8,0,Agri,https://punjab.gov.in/loan,https://punjab.gov.in/loan,agri|loan,FALSE,18,Agritech and cold chain loans
+Punjab,State,Grant,150000,700000,,0,FoodTech,https://punjab.gov.in/foodtech,https://punjab.gov.in/foodtech,food|startup,TRUE,10,Grants for food processing startups
+Rajasthan,State,Grant,400000,2500000,,18,Manufacturing,https://rajasthan.gov.in/industry,https://rajasthan.gov.in/industry,manufacturing|msme,TRUE,26,Subsidies for manufacturing and handicraft clusters
+Rajasthan,State,Loan,900000,10000000,5.2,0,Textiles,https://rajasthan.gov.in/loan,https://rajasthan.gov.in/loan,textile|loan,FALSE,12,Loans for textile SMEs
+Rajasthan,State,Grant,120000,600000,,0,Tourism,https://rajasthan.gov.in/tourism,https://rajasthan.gov.in/tourism,tourism|startup,TRUE,8,Incentives for heritage tourism startups
+Sikkim,State,Grant,100000,500000,,15,Agri,https://sikkim.gov.in/agri,https://sikkim.gov.in/agri,agri|rural,TRUE,3,Agritech grants for hill farms
+Sikkim,State,Loan,200000,2000000,6.0,0,Hospitality,https://sikkim.gov.in/loan,https://sikkim.gov.in/loan,hospitality|loan,FALSE,2,Loans for eco-lodges
+Sikkim,State,Grant,80000,200000,,0,Handicraft,https://sikkim.gov.in/craft,https://sikkim.gov.in/craft,craft|micro,TRUE,1,Artisan support grants
+Tamil Nadu,State,Grant,800000,4000000,,22,Manufacturing,https://tn.gov.in/industry,https://tn.gov.in/industry,manufacturing|msme,TRUE,55,Large suite of incentives for manufacturing and electronics
+Tamil Nadu,State,Loan,1500000,20000000,4.0,0,Electronics,https://tn.gov.in/loan,https://tn.gov.in/loan,electronics|loan,FALSE,48,Electronics-specific loans and capital subsidies
+Tamil Nadu,State,Grant,200000,900000,,0,IT,https://tn.gov.in/it,https://tn.gov.in/it,it|startup,TRUE,30,IT incubation and seed grants
+Telangana,State,Grant,700000,3500000,,20,IT,https://telangana.gov.in/it-scheme,https://telangana.gov.in/it-scheme,it|startup,TRUE,50,Grants and incubation for IT and startups
+Telangana,State,Loan,1200000,15000000,4.2,0,Manufacturing,https://telangana.gov.in/loan,https://telangana.gov.in/loan,manufacturing|loan,FALSE,40,Manufacturing loans with supportive terms
+Telangana,State,Grant,300000,1200000,,0,Biotech,https://telangana.gov.in/biotech,https://telangana.gov.in/biotech,biotech|research,TRUE,18,Biotech seed grants
+Tripura,State,Grant,100000,450000,,12,Agri,https://tripura.gov.in/agri,https://tripura.gov.in/agri,agri|rural,TRUE,2,Small agri grants
+Tripura,State,Loan,250000,2500000,6.0,0,Handicraft,https://tripura.gov.in/loan,https://tripura.gov.in/loan,craft|loan,FALSE,1,Loans for local artisans
+Tripura,State,Grant,80000,200000,,0,Tourism,https://tripura.gov.in/tourism,https://tripura.gov.in/tourism,tourism|micro,TRUE,1,Micro grants for homestays
+Uttar Pradesh,State,Grant,600000,3000000,,20,Manufacturing,https://up.gov.in/industry,https://up.gov.in/industry,manufacturing|msme,TRUE,45,Incentives for manufacturing clusters and cold chain
+Uttar Pradesh,State,Loan,1200000,20000000,5.0,0,Agri,https://up.gov.in/loan,https://up.gov.in/loan,agri|loan,FALSE,35,Agritech loans and cold storage funding
+Uttar Pradesh,State,Grant,200000,900000,,0,Education,https://up.gov.in/edu,https://up.gov.in/edu,edu|startup,TRUE,10,Edtech incubation grants
+Uttarakhand,State,Grant,300000,1500000,,15,Energy,https://uttarakhand.gov.in/energy,https://uttarakhand.gov.in/energy,energy|renewable,TRUE,8,Renewable energy pilot grants
+Uttarakhand,State,Loan,600000,6000000,5.5,0,Tourism,https://uttarakhand.gov.in/loan,https://uttarakhand.gov.in/loan,tourism|loan,FALSE,6,Loans for adventure tourism startups
+Uttarakhand,State,Grant,120000,500000,,0,Agri,https://uttarakhand.gov.in/agri,https://uttarakhand.gov.in/agri,agri|rural,TRUE,3,Support for hill farming startups
+West Bengal,State,Grant,500000,2500000,,18,Manufacturing,https://wb.gov.in/industry,https://wb.gov.in/industry,manufacturing|msme,TRUE,34,Subsidies for manufacturing and creative industries
+West Bengal,State,Loan,900000,9000000,5.0,0,Agri,https://wb.gov.in/loan,https://wb.gov.in/loan,agri|loan,FALSE,20,Agritech and fisheries loans
+West Bengal,State,Grant,200000,800000,,0,Creative,https://wb.gov.in/creative,https://wb.gov.in/creative,creative|startup,TRUE,9,Support for creative economy startups
+Andaman and Nicobar Islands,UT,Grant,80000,300000,,10,Tourism,https://andaman.gov.in/tourism,https://andaman.gov.in/tourism,tourism|micro,TRUE,1,Incentives for tourism micro ventures
+Chandigarh,UT,Grant,150000,600000,,12,IT,https://chandigarh.gov.in/it,https://chandigarh.gov.in/it,it|startup,TRUE,3,Seed grants for IT pilots
+Dadra and Nagar Haveli and Daman and Diu,UT,Grant,80000,300000,,10,Manufacturing,https://dnnhdd.gov.in/industry,https://dnnhdd.gov.in/industry,manufacturing|micro,TRUE,1,Micro grants for industrial setups
+Lakshadweep,UT,Grant,50000,200000,,8,Tourism,https://lakshadweep.gov.in/tourism,https://lakshadweep.gov.in/tourism,tourism|micro,TRUE,1,Support for island tourism startups
+Puducherry,UT,Grant,100000,400000,,12,IT,https://puducherry.gov.in/it,https://puducherry.gov.in/it,it|startup,TRUE,2,Support for IT startups and incubation
+Delhi,UT,Grant,1000000,5000000,,15,IT,https://delhi.gov.in/startup,https://delhi.gov.in/startup,it|startup,TRUE,70,Rich startup grants and incubation support
+Delhi,UT,Loan,2000000,20000000,3.5,0,IT,https://delhi.gov.in/loan,https://delhi.gov.in/loan,loan|it,FALSE,55,Low-cost loans for tech startups
+Jammu and Kashmir,UT,Grant,200000,1000000,,14,Agri,https://jk.gov.in/agri,https://jk.gov.in/agri,agri|rural,TRUE,4,Support for cold-climate agri startups
+Jammu and Kashmir,UT,Loan,400000,4000000,6.0,0,Tourism,https://jk.gov.in/tourism,https://jk.gov.in/tourism,tourism|loan,FALSE,3,Loans for hospitality and tourism

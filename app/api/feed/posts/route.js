@@ -20,6 +20,7 @@ export async function GET(request) {
     const mediaType = searchParams.get('mediaType');
     const q = searchParams.get('q');
     const sort = searchParams.get('sort');
+    const following = searchParams.get('following') === 'true';
 
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
     const userId = token?.sub ? Number(token.sub) : null;
@@ -60,7 +61,52 @@ export async function GET(request) {
     if (mediaType) {
       where.mediaType = mediaType;
     }
-    if (q) {
+    // Filter by following if requested
+    if (following && userId) {
+      const follows = await prisma.feedFollow.findMany({
+        where: { followerUserId: userId },
+        select: { targetUserId: true, targetStartupId: true },
+      });
+
+      const followedUserIds = follows.filter(f => f.targetUserId).map(f => f.targetUserId);
+      const followedStartupIds = follows.filter(f => f.targetStartupId).map(f => f.targetStartupId);
+
+      if (followedUserIds.length > 0 || followedStartupIds.length > 0) {
+        const followConditions = [
+          ...(followedUserIds.length > 0 ? [{ authorUserId: { in: followedUserIds } }] : []),
+          ...(followedStartupIds.length > 0 ? [{ startupId: { in: followedStartupIds } }] : []),
+        ];
+        
+        // Combine with search query if present
+        if (q) {
+          where.AND = [
+            {
+              OR: followConditions,
+            },
+            {
+              OR: [
+                { body: { contains: q, mode: 'insensitive' } },
+                { linkTitle: { contains: q, mode: 'insensitive' } },
+                { linkDescription: { contains: q, mode: 'insensitive' } },
+                { tagList: { contains: q.toLowerCase(), mode: 'insensitive' } },
+              ],
+            },
+          ];
+        } else {
+          where.OR = followConditions;
+        }
+      } else {
+        // User follows no one, return empty
+        return NextResponse.json({
+          success: true,
+          data: {
+            posts: [],
+            nextCursor: null,
+          },
+        });
+      }
+    } else if (q) {
+      // Search query without following filter
       where.OR = [
         { body: { contains: q, mode: 'insensitive' } },
         { linkTitle: { contains: q, mode: 'insensitive' } },
@@ -156,6 +202,9 @@ export async function POST(request) {
     const linkUrl = body.linkUrl?.toString().trim() || null;
     const linkTitle = body.linkTitle?.toString().trim() || null;
     const linkDescription = body.linkDescription?.toString().trim() || null;
+    const linkImageUrl = body.linkImageUrl?.toString().trim() || null;
+    const template = body.template?.toString().trim() || null;
+    const templateData = body.templateData ? JSON.stringify(body.templateData) : null;
     const professional = Boolean(body.professional);
     const tagArray = Array.isArray(body.tags)
       ? body.tags
@@ -182,6 +231,9 @@ export async function POST(request) {
       linkUrl,
       linkTitle,
       linkDescription,
+      linkImageUrl,
+      template,
+      templateData,
       professional,
       tagList: tags.join(','),
       stage,
