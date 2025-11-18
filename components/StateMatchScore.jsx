@@ -53,14 +53,14 @@ export default function StateMatchScore({ data, loading, onSubmit }) {
   }
 
   return (
-    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-blue-900/40 via-indigo-900/30 to-slate-900/60 p-6 shadow-2xl backdrop-blur">
+    <div className="rounded-3xl border p-6 shadow-2xl backdrop-blur" style={{ borderColor: 'var(--separator)', backgroundColor: 'var(--system-secondary-background)' }}>
       <div className="flex flex-col gap-4 md:flex-row md:items-center">
         <div className="flex-1 space-y-2">
-          <p className="text-xs uppercase tracking-[0.4em] text-white/60">AI match score</p>
-          <h3 className="text-2xl font-semibold text-white">
+          <p className="text-xs uppercase tracking-[0.4em]" style={{ color: 'var(--secondary-label)' }}>AI match score</p>
+          <h3 className="text-2xl font-semibold" style={{ color: 'var(--label)' }}>
             Not sure which state fits best? Get an instant suitability score.
           </h3>
-          <p className="text-sm text-white/70">
+          <p className="text-sm" style={{ color: 'var(--secondary-label)' }}>
             Tell us your industry, stage, and benefit preference. We&apos;ll crunch every state policy and
             surface the best matches for your team.
           </p>
@@ -73,13 +73,24 @@ export default function StateMatchScore({ data, loading, onSubmit }) {
             value={form.industry}
             onChange={event => handleChange('industry', event.target.value)}
             placeholder="Industry (e.g., EV, SaaS, Climate)"
-            className="w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-white/50 focus:outline-none"
+            className="w-full rounded-2xl border px-4 py-3 text-sm focus:outline-none"
+            style={{ 
+              borderColor: 'var(--separator)', 
+              backgroundColor: 'var(--system-secondary-background)',
+              color: 'var(--label)'
+            }}
+            placeholderStyle={{ color: 'var(--tertiary-label)' }}
           />
           <div className="flex flex-col gap-3 md:flex-row">
             <select
               value={form.stage}
               onChange={event => handleChange('stage', event.target.value)}
-              className="w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white focus:border-white/50 focus:outline-none"
+              className="w-full rounded-2xl border px-4 py-3 text-sm focus:outline-none"
+              style={{ 
+                borderColor: 'var(--separator)', 
+                backgroundColor: 'var(--system-secondary-background)',
+                color: 'var(--label)'
+              }}
             >
               {STAGE_OPTIONS.map(option => (
                 <option key={option.value} value={option.value}>
@@ -90,7 +101,12 @@ export default function StateMatchScore({ data, loading, onSubmit }) {
             <select
               value={form.preferredBenefit}
               onChange={event => handleChange('preferredBenefit', event.target.value)}
-              className="w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white focus:border-white/50 focus:outline-none"
+              className="w-full rounded-2xl border px-4 py-3 text-sm focus:outline-none"
+              style={{ 
+                borderColor: 'var(--separator)', 
+                backgroundColor: 'var(--system-secondary-background)',
+                color: 'var(--label)'
+              }}
             >
               {BENEFIT_TYPES.map(option => (
                 <option key={option.value} value={option.value}>
@@ -104,16 +120,28 @@ export default function StateMatchScore({ data, loading, onSubmit }) {
               value={form.registeredState}
               onChange={event => handleChange('registeredState', event.target.value)}
               placeholder="Registered state (optional)"
-              className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-white/50 focus:outline-none"
+              className="rounded-2xl border px-4 py-3 text-sm focus:outline-none"
+              style={{ 
+                borderColor: 'var(--separator)', 
+                backgroundColor: 'var(--system-secondary-background)',
+                color: 'var(--label)'
+              }}
+              placeholderStyle={{ color: 'var(--tertiary-label)' }}
             />
             <input
               value={form.requiredFunding}
               onChange={event => handleChange('requiredFunding', event.target.value)}
               placeholder="Funding need (₹)"
-              className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-white/50 focus:outline-none"
+              className="rounded-2xl border px-4 py-3 text-sm focus:outline-none"
+              style={{ 
+                borderColor: 'var(--separator)', 
+                backgroundColor: 'var(--system-secondary-background)',
+                color: 'var(--label)'
+              }}
+              placeholderStyle={{ color: 'var(--tertiary-label)' }}
             />
           </div>
-          <label className="flex items-center gap-2 text-sm text-white/80">
+          <label className="flex items-center gap-2 text-sm" style={{ color: 'var(--label)' }}>
             <input
               type="checkbox"
               checked={form.prefersGrant}
@@ -143,15 +171,20 @@ export default function StateMatchScore({ data, loading, onSubmit }) {
           {recommendations.map(reco => (
             <div
               key={reco.state?.id}
-              className="rounded-2xl border border-white/10 bg-black/30 p-4 text-white"
+              className="rounded-2xl border p-4"
+              style={{ 
+                borderColor: 'var(--separator)', 
+                backgroundColor: 'var(--system-secondary-background)',
+                color: 'var(--label)'
+              }}
             >
-              <p className="text-xs uppercase tracking-[0.3em] text-white/50">
+              <p className="text-xs uppercase tracking-[0.3em]" style={{ color: 'var(--tertiary-label)' }}>
                 Suitability {reco.matchScore}%
               </p>
-              <h4 className="mt-2 text-xl font-semibold">{reco.state?.name}</h4>
-              <p className="text-sm text-white/60">{reco.state?.description}</p>
+              <h4 className="mt-2 text-xl font-semibold" style={{ color: 'var(--label)' }}>{reco.state?.name}</h4>
+              <p className="text-sm" style={{ color: 'var(--secondary-label)' }}>{reco.state?.description}</p>
               {reco.explanation && (
-                <div className="mt-4 space-y-2 text-xs text-white/70">
+                <div className="mt-4 space-y-2 text-xs" style={{ color: 'var(--secondary-label)' }}>
                   {reco.explanation.map(item => (
                     <div key={item.key} className="flex justify-between">
                       <span>{item.note}</span>
