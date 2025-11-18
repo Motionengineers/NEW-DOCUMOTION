@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  i18n: {
-    locales: ['en', 'hi'],
-    defaultLocale: 'en',
-  },
+  // Note: i18n is handled via middleware in App Router, not via next.config.js
   experimental: {
     serverActions: {
       bodySizeLimit: '10mb',
