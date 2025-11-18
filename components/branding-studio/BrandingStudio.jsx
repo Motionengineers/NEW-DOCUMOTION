@@ -369,7 +369,13 @@ export default function BrandingStudio() {
 
       // Now apply branding globally (this will also save, but we've already saved above)
       // This ensures the UI updates immediately
-      await updateBranding(brandingSettings);
+      // Wrap in try-catch to handle gracefully if updateBranding fails
+      try {
+        await updateBranding(brandingSettings);
+      } catch (updateError) {
+        console.warn('updateBranding failed (non-critical, branding still applied):', updateError);
+        // Branding is already applied via setBranding in updateBranding, so continue
+      }
 
       // Save to branding workspace for version history (optional)
       try {

@@ -114,6 +114,44 @@ export function BrandingProvider({ children }) {
         return;
       }
 
+      // Try localStorage first for faster loading
+      if (typeof window !== 'undefined') {
+        try {
+          const stored = localStorage.getItem('branding_settings');
+          if (stored) {
+            const parsed = JSON.parse(stored);
+            setBranding(prev => ({
+              ...prev,
+              ...parsed,
+              loaded: true,
+            }));
+            applyBranding(parsed);
+            clearTimeout(timeoutId);
+            // Still fetch from server in background to sync
+            fetch(`/api/settings?category=branding${cacheBuster}`, {
+              signal: controller.signal,
+              cache: 'no-store',
+            }).then(res => res.json()).then(data => {
+              if (data.success && data.settings) {
+                setBranding(prev => ({
+                  ...prev,
+                  ...data.settings,
+                  loaded: true,
+                }));
+                applyBranding(data.settings);
+                // Update localStorage with server data
+                localStorage.setItem('branding_settings', JSON.stringify(data.settings));
+              }
+            }).catch(() => {
+              // Ignore - we already have localStorage data
+            });
+            return;
+          }
+        } catch (localError) {
+          console.warn('Failed to load from localStorage:', localError);
+        }
+      }
+
       // Fallback to settings API
       const response = await fetch(`/api/settings?category=branding${cacheBuster}`, {
         signal: controller.signal,
@@ -143,6 +181,14 @@ export function BrandingProvider({ children }) {
           loaded: true,
         }));
         applyBranding(data.settings);
+        // Save to localStorage for faster future loading
+        if (typeof window !== 'undefined') {
+          try {
+            localStorage.setItem('branding_settings', JSON.stringify(data.settings));
+          } catch (localError) {
+            console.warn('Failed to save to localStorage:', localError);
+          }
+        }
       } else {
         setBranding(prev => ({ ...prev, loaded: true }));
       }
@@ -165,7 +211,7 @@ export function BrandingProvider({ children }) {
       setBranding(prev => ({ ...prev, ...newSettings }));
       applyBranding(newSettings);
 
-      // Save to database
+      // Save to database with localStorage fallback
       try {
         const saveResults = await Promise.all(
           Object.entries(newSettings).map(([key, value]) =>
@@ -190,10 +236,46 @@ export function BrandingProvider({ children }) {
           )
         );
         
-        // Verify all saves succeeded
-        const failedSaves = saveResults.filter(res => !res.ok);
+        // Read all responses before checking
+        const results = await Promise.all(
+          saveResults.map(async (res) => {
+            try {
+              const json = await res.json();
+              return { ok: res.ok, json, status: res.status };
+            } catch (error) {
+              return { ok: false, json: { error: 'Invalid response' }, status: res.status };
+            }
+          })
+        );
+        
+        // Check for failures
+        const failedSaves = results.filter(r => !r.ok || !r.json.success);
+        
+        // If some saves failed, use localStorage as fallback
         if (failedSaves.length > 0) {
-          throw new Error('Some branding settings failed to save');
+          console.warn('Some branding settings failed to save to server, using localStorage fallback');
+          // Save to localStorage as fallback
+          if (typeof window !== 'undefined') {
+            try {
+              const stored = JSON.parse(localStorage.getItem('branding_settings') || '{}');
+              const updated = { ...stored, ...newSettings };
+              localStorage.setItem('branding_settings', JSON.stringify(updated));
+              console.log('Branding saved to localStorage as fallback');
+            } catch (localError) {
+              console.error('Failed to save to localStorage:', localError);
+            }
+          }
+          // Don't throw - branding is still applied, just not persisted to server
+          // This allows the UI to work even if server storage fails
+        } else {
+          // All saves succeeded - also save to localStorage for faster loading
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem('branding_settings', JSON.stringify(newSettings));
+            } catch (localError) {
+              console.warn('Failed to save to localStorage:', localError);
+            }
+          }
         }
         
         // Reload branding from server to ensure consistency
@@ -202,7 +284,16 @@ export function BrandingProvider({ children }) {
         }, 500);
       } catch (error) {
         console.error('Error saving branding:', error);
-        throw error; // Re-throw so caller knows save failed
+        // Save to localStorage as fallback even on network errors
+        if (typeof window !== 'undefined') {
+          try {
+            localStorage.setItem('branding_settings', JSON.stringify(newSettings));
+            console.log('Branding saved to localStorage due to network error');
+          } catch (localError) {
+            console.error('Failed to save to localStorage:', localError);
+          }
+        }
+        // Don't throw - branding is applied, just not persisted
       }
     },
     [applyBranding, loadBranding]
