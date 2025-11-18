@@ -349,28 +349,22 @@ export default function BrandingStudio() {
 
       // Wait for all settings to be saved and verify
       const saveResults = await Promise.all(savePromises);
-      const failedSaves = saveResults.filter(res => !res.ok);
+      const results = await Promise.all(
+        saveResults.map(async (res) => {
+          try {
+            const json = await res.json();
+            return { ok: res.ok, json, status: res.status };
+          } catch (error) {
+            return { ok: false, json: { error: 'Invalid response' }, status: res.status };
+          }
+        })
+      );
+      
+      const failedSaves = results.filter(r => !r.ok || !r.json.success);
       
       if (failedSaves.length > 0) {
-        const errorDetails = await Promise.all(
-          failedSaves.map(async res => {
-            try {
-              const json = await res.json();
-              return json.error || 'Unknown error';
-            } catch {
-              return `HTTP ${res.status}`;
-            }
-          })
-        );
+        const errorDetails = failedSaves.map(r => r.json.error || `HTTP ${r.status}`);
         throw new Error(`Failed to save: ${errorDetails.join(', ')}`);
-      }
-
-      // Verify saves by checking response
-      for (const res of saveResults) {
-        const json = await res.json();
-        if (!json.success) {
-          throw new Error('Save verification failed');
-        }
       }
 
       // Now apply branding globally (this will also save, but we've already saved above)

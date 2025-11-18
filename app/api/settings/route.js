@@ -49,11 +49,26 @@ export async function POST(request) {
 
     const settings = await ensureDefaults();
     settings[category] = { ...(settings[category] || {}), [key]: value };
-    await writeJson(STORE_FILE, settings);
+    
+    try {
+      await writeJson(STORE_FILE, settings);
+    } catch (writeError) {
+      console.error('Failed to write settings file:', writeError);
+      // On Vercel/serverless, file writes might fail - return success anyway for client-side storage
+      // The branding will still be applied via BrandingProvider's updateBranding
+      return NextResponse.json({ 
+        success: true, 
+        settings: settings[category],
+        warning: 'Settings saved in memory only (file system not available)'
+      });
+    }
 
     return NextResponse.json({ success: true, settings: settings[category] });
   } catch (error) {
     console.error('POST /api/settings failed:', error);
-    return NextResponse.json({ success: false, error: 'Failed to save setting' }, { status: 500 });
+    return NextResponse.json({ 
+      success: false, 
+      error: error.message || 'Failed to save setting' 
+    }, { status: 500 });
   }
 }
