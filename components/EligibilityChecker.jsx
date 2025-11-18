@@ -216,7 +216,14 @@ export default function EligibilityChecker({ startupId, startup }) {
       )}
 
       {results?.error && (
-        <div className="mt-4 p-3 bg-red-600/20 border border-red-600/50 rounded-lg text-red-300 text-sm">
+        <div 
+          className="mt-4 p-3 rounded-lg border text-sm"
+          style={{
+            borderColor: 'var(--system-red)',
+            backgroundColor: 'rgba(255, 59, 48, 0.1)',
+            color: 'var(--system-red)'
+          }}
+        >
           {results.error}
         </div>
       )}

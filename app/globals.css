@@ -12,6 +12,7 @@
   --muted: rgba(255, 255, 255, 0.08);
   --system-blue: #0066cc;
   --system-green: #2ecc71;
+  --system-red: #ff3b30;
   --primary-hover: #0a84ff;
   --glass-blur: 24px;
   --glass-opacity: 0.82;
@@ -29,6 +30,7 @@
   --tertiary-label: rgba(11, 19, 38, 0.56);
   --separator: rgba(11, 19, 38, 0.08);
   --muted: rgba(11, 19, 38, 0.06);
+  --system-red: #d70015;
 }
 
 .light .glass {

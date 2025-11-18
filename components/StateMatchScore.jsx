@@ -161,7 +161,14 @@ export default function StateMatchScore({ data, loading, onSubmit }) {
       </div>
 
       {data?.error && (
-        <div className="mt-4 rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-100">
+        <div 
+          className="mt-4 rounded-2xl border p-4 text-sm"
+          style={{
+            borderColor: 'var(--system-red)',
+            backgroundColor: 'rgba(255, 59, 48, 0.1)',
+            color: 'var(--system-red)'
+          }}
+        >
           {data.error}
         </div>
       )}

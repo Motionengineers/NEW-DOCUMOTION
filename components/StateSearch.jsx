@@ -421,7 +421,14 @@ export default function StateSearch() {
         )}
 
         {error && !loadingSchemes && (
-          <div className="rounded-2xl border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200">
+          <div 
+            className="rounded-2xl border p-4 text-sm"
+            style={{
+              borderColor: 'var(--system-red)',
+              backgroundColor: 'rgba(255, 59, 48, 0.1)',
+              color: 'var(--system-red)'
+            }}
+          >
             {error}
           </div>
         )}
