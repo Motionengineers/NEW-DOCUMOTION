@@ -1,75 +1,67 @@
+/**
+ * Production Rate Limiting Middleware
+ * 
+ * Protects all /api/* routes with Upstash Redis rate limiting
+ * Configured: 50 requests per minute per IP
+ * 
+ * Environment variables required:
+ * - UPSTASH_REDIS_REST_URL
+ * - UPSTASH_REDIS_REST_TOKEN
+ */
+
 import { NextResponse } from 'next/server';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
 
-// Public routes that don't require authentication
-const PUBLIC_ROUTES = [
-  '/',
-  '/auth',
-  '/api/auth',
-  '/api/govt-schemes',
-  '/api/bank-schemes',
-  '/api/founders',
-  '/api/pitch-decks',
-  '/schemes',
-  '/feed',
-  '/talent',
-  '/pitch-decks',
-  '/bank',
-  '/banking',
-  '/services',
-];
+// Initialize Redis client
+const redis = Redis.fromEnv();
 
-export function middleware(req) {
-  const { pathname } = req.nextUrl;
-  
-  // Skip middleware for static files, Next.js internals, and API routes (except protected ones)
-  const PUBLIC_FILE = /\.(.*)$/;
-  if (
-    PUBLIC_FILE.test(pathname) ||
-    pathname.startsWith('/_next') ||
-    pathname.startsWith('/api') && !pathname.startsWith('/api/admin')
-  ) {
+// Initialize rate limiter
+const ratelimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(50, '1 m'), // 50 requests per minute
+  analytics: true,
+  prefix: '@documotion/ratelimit',
+});
+
+export async function middleware(req) {
+  // Only apply rate limiting to API routes
+  if (!req.nextUrl.pathname.startsWith('/api/')) {
     return NextResponse.next();
   }
 
-  // Lightweight locale handling with rewrite so existing routes work
-  const supported = ['en', 'hi'];
-  const seg = pathname.split('/').filter(Boolean)[0];
-  const hasLocale = seg && supported.includes(seg);
-  if (hasLocale) {
-    // store cookie for client use
-    const res = NextResponse.rewrite(
-      new URL(pathname.replace(/^\/[a-z]{2}(?=\/|$)/, '') || '/', req.url)
-    );
-    res.cookies.set('NEXT_LOCALE', seg, { path: '/' });
-    return res;
-  }
+  try {
+    // Get client IP
+    const ip =
+      req.ip ??
+      req.headers.get('x-forwarded-for')?.split(',')[0] ??
+      req.headers.get('x-real-ip') ??
+      'unknown';
 
-  // For protected routes, check authentication (only if NextAuth is configured)
-  if (pathname.startsWith('/admin')) {
-    // Admin routes require authentication - redirect to signin if not authenticated
-    // This will be handled by the page component if NextAuth is not configured
+    // Check rate limit
+    const { success, limit, remaining, reset } = await ratelimit.limit(ip);
+
+    // Add rate limit headers
+    const response = success
+      ? NextResponse.next()
+      : NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
+
+    response.headers.set('X-RateLimit-Limit', limit.toString());
+    response.headers.set('X-RateLimit-Remaining', remaining.toString());
+    response.headers.set('X-RateLimit-Reset', reset.toString());
+
+    if (!success) {
+      return response;
+    }
+
+    return response;
+  } catch (error) {
+    // If rate limiting fails, log but don't block the request
+    console.error('[Rate Limit Error]', error);
     return NextResponse.next();
   }
-
-  if (pathname.startsWith('/dashboard')) {
-    // Dashboard routes - allow in development, require auth in production
-    // This will be handled by the page component if NextAuth is not configured
-    return NextResponse.next();
-  }
-
-  // All other routes are public
-  return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
-     */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
+  matcher: ['/api/:path*'],
 };

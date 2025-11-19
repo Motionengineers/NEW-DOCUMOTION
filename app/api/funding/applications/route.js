@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import { CreateFundingApplicationSchema } from '@/lib/schemas/funding-schema';
+import { validateBody } from '@/lib/api-validation';
+import { ApiError } from '@/lib/api-error';
 import prisma from '@/lib/prisma';
+import { logger } from '@/lib/logger';
+import sanitizeHtml from 'sanitize-html';
+import { serializeFundingApplication } from '@/lib/serializers/funding';
 
 function parseNumber(value) {
   if (value === null || value === undefined || value === '') return null;
@@ -30,56 +36,6 @@ function normaliseSocialLinks(value) {
   } catch (error) {
     return cleaned.join(',');
   }
-}
-
-function parseSocialLinks(value) {
-  if (!value) return '';
-  try {
-    const parsed = JSON.parse(value);
-    if (Array.isArray(parsed)) {
-      return parsed.join('\n');
-    }
-  } catch (error) {
-    // fallthrough to plain string
-  }
-  return value.toString();
-}
-
-function serializeFundingApplication(record) {
-  if (!record) return null;
-  return {
-    id: record.id,
-    status: record.status,
-    progress: record.progress,
-    fullName: record.fullName || '',
-    email: record.email || '',
-    phone: record.phone || '',
-    city: record.city || '',
-    state: record.state || '',
-    startupName: record.startupName || '',
-    website: record.website || '',
-    socialLinks: parseSocialLinks(record.socialLinks),
-    industry: record.industry || '',
-    stage: record.stage || '',
-    problem: record.problem || '',
-    solution: record.solution || '',
-    targetAudience: record.targetAudience || '',
-    revenue: record.revenue || '',
-    profit: record.profit || '',
-    customers: record.customers || '',
-    fundingRaised: record.fundingRaised || '',
-    growthMetrics: record.growthMetrics || '',
-    amountRequested: record.amountRequested,
-    equityOffered: record.equityOffered,
-    useOfFunds: record.useOfFunds || '',
-    pitchVideoUrl: record.pitchVideoUrl || '',
-    pitchDeckUrl: record.pitchDeckUrl || '',
-    submittedAt: record.submittedAt?.toISOString?.(),
-    reviewedAt: record.reviewedAt?.toISOString?.(),
-    reviewNotes: record.reviewNotes || '',
-    createdAt: record.createdAt?.toISOString?.(),
-    updatedAt: record.updatedAt?.toISOString?.(),
-  };
 }
 
 function buildApplicationData(payload = {}) {
@@ -171,18 +127,107 @@ function buildDemoApplication() {
   };
 }
 
+async function logFundingActivity(applicationId, actorUserId, activityType, message) {
+  if (!applicationId) return;
+  try {
+    await prisma.fundingApplicationActivity.create({
+      data: {
+        applicationId,
+        actorUserId,
+        activityType,
+        message,
+      },
+    });
+  } catch (error) {
+    logger.error({
+      event: 'funding_activity_log_error',
+      error: error.message,
+      applicationId,
+    });
+  }
+}
+
+async function emitFundingNotification({
+  userId,
+  type,
+  payload = {},
+}) {
+  try {
+    // Placeholder for email/SMS integrations (Resend, Twilio, etc.)
+    logger.info({
+      event: 'funding_notification_enqueued',
+      userId,
+      type,
+      payload,
+    });
+  } catch (error) {
+    logger.error({
+      event: 'funding_notification_error',
+      error: error.message,
+      userId,
+      type,
+    });
+  }
+}
+
+const TRUSTED_VIDEO_DOMAINS = ['youtube.com', 'youtu.be', 'vimeo.com', 'loom.com', 'drive.google.com'];
+
+function isTrustedVideoUrl(url) {
+  try {
+    const { hostname } = new URL(url);
+    const normalized = hostname.replace(/^www\./, '');
+    return TRUSTED_VIDEO_DOMAINS.some(domain => normalized.endsWith(domain));
+  } catch (error) {
+    return false;
+  }
+}
+
+async function assertUniqueApplication({ userId, startupName, excludeId }) {
+  if (!startupName) return;
+  const existing = await prisma.fundingApplication.findFirst({
+    where: {
+      userId,
+      startupName: { equals: startupName, mode: 'insensitive' },
+      status: { in: ['submitted', 'in-review', 'approved'] },
+      ...(excludeId ? { NOT: { id: excludeId } } : {}),
+    },
+    select: { id: true },
+  });
+  if (existing) {
+    throw new ApiError(
+      409,
+      'You already have an active application for this startup. Update the existing submission instead.'
+    );
+  }
+}
+
+function buildReapplyGuidance(application) {
+  if (!application || application.status !== 'rejected') {
+    return null;
+  }
+  const tips = [];
+  if (!application.pitchDeckUrl) {
+    tips.push('Upload a detailed pitch deck so reviewers can assess your traction clearly.');
+  }
+  if (!application.growthMetrics) {
+    tips.push('Add growth metrics (MoM revenue, user retention) to strengthen your story.');
+  }
+  if (application.amountRequested && application.amountRequested > 100000000) {
+    tips.push('Consider lowering the funding ask or sharing a phased plan for capital deployment.');
+  }
+  tips.push('Re-run the state matching tool to explore states with grant-heavy programs.');
+  return {
+    status: application.status,
+    title: 'How to strengthen your next application',
+    tips,
+  };
+}
+
 export async function GET(request) {
   try {
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
     if (!token?.sub) {
-      return NextResponse.json({
-        success: true,
-        demo: true,
-        data: {
-          application: buildDemoApplication(),
-          draft: null,
-        },
-      });
+      throw new ApiError(401, 'Unauthorized');
     }
     const userId = Number(token.sub);
 
@@ -196,21 +241,49 @@ export async function GET(request) {
       }),
     ]);
 
+    let activities = [];
+    if (application) {
+      const timeline = await prisma.fundingApplicationActivity.findMany({
+        where: { applicationId: application.id },
+        orderBy: { createdAt: 'desc' },
+        take: 20,
+      });
+      activities = timeline.map(entry => ({
+        id: entry.id,
+        activityType: entry.activityType,
+        message: entry.message,
+        createdAt: entry.createdAt?.toISOString?.(),
+      }));
+    }
+
+    logger.info({
+      event: 'funding_application_viewed',
+      userId,
+      applicationId: application?.id,
+    });
+
     return NextResponse.json({
-      success: true,
+      ok: true,
       data: {
         application: serializeFundingApplication(application),
         draft: draft
           ? { ...JSON.parse(draft.data || '{}'), updatedAt: draft.updatedAt?.toISOString?.() }
           : null,
+        activities,
+        guidance: buildReapplyGuidance(application),
       },
     });
-  } catch (error) {
-    console.error('GET /api/funding/applications failed:', error);
-    return NextResponse.json(
-      { success: false, error: 'Unable to load funding applications' },
-      { status: 500 }
-    );
+  } catch (err) {
+    logger.error({
+      event: 'funding_application_get_error',
+      error: err.message,
+    });
+
+    if (err instanceof ApiError) {
+      return NextResponse.json({ error: err.message }, { status: err.status });
+    }
+
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
@@ -218,17 +291,14 @@ export async function POST(request) {
   try {
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
     if (!token?.sub) {
-      return NextResponse.json(
-        { success: false, error: 'Please sign in to continue' },
-        { status: 401 }
-      );
+      throw new ApiError(401, 'Unauthorized');
     }
     const userId = Number(token.sub);
 
     const payload = await request.json();
     const { action, data = {}, applicationId, progress } = payload || {};
     if (!action) {
-      return NextResponse.json({ success: false, error: 'Missing action' }, { status: 400 });
+      throw new ApiError(400, 'Missing action');
     }
 
     if (action === 'save-draft') {
@@ -251,21 +321,62 @@ export async function POST(request) {
         });
       }
 
-      return NextResponse.json({ success: true, message: 'Draft saved' });
+      logger.info({
+        event: 'funding_application_draft_saved',
+        userId,
+      });
+
+      const draftApplication = await prisma.fundingApplication.findFirst({
+        where: { userId, status: 'draft' },
+        orderBy: { updatedAt: 'desc' },
+      });
+
+      if (draftApplication) {
+        await logFundingActivity(draftApplication.id, userId, 'draft_saved', 'Draft updated');
+      }
+
+      await emitFundingNotification({
+        userId,
+        type: 'draft_saved',
+        payload: { progress },
+      });
+
+      return NextResponse.json({ ok: true, message: 'Draft saved' });
     }
 
     if (action !== 'submit') {
-      return NextResponse.json({ success: false, error: 'Unsupported action' }, { status: 400 });
+      throw new ApiError(400, 'Unsupported action');
     }
 
-    const mapped = buildApplicationData(data);
-    const missing = validateSubmission(mapped);
-    if (missing.length) {
-      return NextResponse.json(
-        { success: false, error: `Please complete: ${missing.join(', ')}` },
-        { status: 400 }
+    // Validate with schema
+    const validated = await validateBody(CreateFundingApplicationSchema, data);
+
+    // Sanitize text fields
+    const mapped = {
+      ...validated,
+      problem: validated.problem ? sanitizeHtml(validated.problem) : null,
+      solution: validated.solution ? sanitizeHtml(validated.solution) : null,
+      targetAudience: validated.targetAudience ? sanitizeHtml(validated.targetAudience) : null,
+      useOfFunds: validated.useOfFunds ? sanitizeHtml(validated.useOfFunds) : null,
+    };
+
+    if (mapped.pitchVideoUrl && !isTrustedVideoUrl(mapped.pitchVideoUrl)) {
+      throw new ApiError(
+        400,
+        'Pitch video must be hosted on YouTube, Vimeo, Loom, or Google Drive'
       );
     }
+
+    const missing = validateSubmission(mapped);
+    if (missing.length) {
+      throw new ApiError(400, `Please complete: ${missing.join(', ')}`);
+    }
+
+    await assertUniqueApplication({
+      userId,
+      startupName: mapped.startupName,
+      excludeId: applicationId ? Number(applicationId) : undefined,
+    });
 
     const baseData = {
       ...mapped,
@@ -301,15 +412,36 @@ export async function POST(request) {
 
     await prisma.fundingApplicationDraft.deleteMany({ where: { userId } });
 
-    return NextResponse.json({
-      success: true,
-      data: serializeFundingApplication(application),
+    logger.info({
+      event: 'funding_application_submitted',
+      userId,
+      applicationId: application.id,
     });
-  } catch (error) {
-    console.error('POST /api/funding/applications failed:', error);
+
+    await logFundingActivity(application.id, userId, 'submitted', 'Application submitted');
+    await emitFundingNotification({
+      userId,
+      type: 'submitted',
+      payload: { applicationId: application.id, amount: application.amountRequested },
+    });
+
     return NextResponse.json(
-      { success: false, error: 'Unable to process funding application' },
-      { status: 500 }
+      {
+        ok: true,
+        data: serializeFundingApplication(application),
+      },
+      { status: 201 }
     );
+  } catch (err) {
+    logger.error({
+      event: 'funding_application_submit_error',
+      error: err.message,
+    });
+
+    if (err instanceof ApiError) {
+      return NextResponse.json({ error: err.message }, { status: err.status });
+    }
+
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

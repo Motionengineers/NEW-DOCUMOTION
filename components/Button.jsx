@@ -34,12 +34,16 @@ export default function Button({
 
   // Apply Von Restorff Effect: Primary actions stand out
   const variantClasses = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg ring-2 ring-blue-200',
-    secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200',
+    primary:
+      'bg-[var(--system-blue)] text-white shadow-lg ring-2 ring-blue-300/40 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--system-blue)]',
+    secondary:
+      'bg-white/10 text-white border border-white/20 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60',
     outline:
-      'border-2 border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300',
-    danger: 'bg-red-600 text-white hover:bg-red-700 shadow-lg',
-    ghost: 'bg-transparent text-gray-700 hover:bg-gray-100 dark:text-gray-300',
+      'border border-white/30 text-white hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60',
+    danger:
+      'bg-[var(--system-red)] text-white hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--system-red)]',
+    ghost:
+      'bg-transparent text-white hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60',
   };
 
   // Apply Doherty Threshold: Immediate visual feedback
@@ -70,12 +74,7 @@ export default function Button({
         ${loading ? 'cursor-wait' : ''}
         ${className}
       `}
-      style={{
-        ...(variant === 'primary' && {
-          backgroundColor: 'var(--system-blue)',
-          color: '#ffffff',
-        }),
-      }}
+      style={variant === 'secondary' ? { color: 'var(--label)' } : undefined}
       {...props}
     >
       {loading ? (

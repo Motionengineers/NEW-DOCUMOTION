@@ -1,22 +1,19 @@
 import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { z } from 'zod';
+import { UpdateStartupSchema } from '@/lib/schemas/startup-schema';
+import { validateBody } from '@/lib/api-validation';
+import { ApiError } from '@/lib/api-error';
 import prisma from '@/lib/prisma';
 import { normaliseStartupProfileForMatching } from '@/lib/bankMatching';
+import { logger } from '@/lib/logger';
+import { z } from 'zod';
 
 export const dynamic = 'force-dynamic';
 
-const updateSchema = z.object({
-  stage: z.string().max(120).nullable().optional(),
-  sector: z.string().max(240).nullable().optional(),
-  revenue: z.number().nonnegative().nullable().optional(),
-  revenueBand: z.string().max(50).nullable().optional(),
-  location: z.string().max(240).nullable().optional(),
+const updateSchema = UpdateStartupSchema.extend({
   servicesNeeded: z.array(z.string().min(1)).optional(),
   specialCriteria: z.array(z.string().min(1)).optional(),
   preferredBankTypes: z.array(z.string().min(1)).optional(),
-  preferredLoanMin: z.number().nonnegative().nullable().optional(),
-  preferredLoanMax: z.number().nonnegative().nullable().optional(),
 });
 
 function requireAuth(token) {
@@ -68,7 +65,7 @@ export async function GET(request) {
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
     const userId = requireAuth(token);
     if (!userId) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      throw new ApiError(401, 'Unauthorized');
     }
 
     const startup = await prisma.startup.findFirst({
@@ -89,13 +86,27 @@ export async function GET(request) {
     });
 
     if (!startup) {
-      return NextResponse.json({ success: false, error: 'Startup not found' }, { status: 404 });
+      throw new ApiError(404, 'Startup not found');
     }
 
-    return NextResponse.json({ success: true, data: shapeStartupPayload(startup) });
-  } catch (error) {
-    console.error('GET /api/startups/profile failed:', error);
-    return NextResponse.json({ success: false, error: 'Unable to load profile' }, { status: 500 });
+    logger.info({
+      event: 'startup_profile_viewed',
+      userId,
+      startupId: startup.id,
+    });
+
+    return NextResponse.json({ ok: true, data: shapeStartupPayload(startup) });
+  } catch (err) {
+    logger.error({
+      event: 'startup_profile_get_error',
+      error: err.message,
+    });
+
+    if (err instanceof ApiError) {
+      return NextResponse.json({ error: err.message }, { status: err.status });
+    }
+
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
@@ -104,7 +115,7 @@ export async function PATCH(request) {
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
     const userId = requireAuth(token);
     if (!userId) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      throw new ApiError(401, 'Unauthorized');
     }
 
     const startup = await prisma.startup.findFirst({
@@ -113,11 +124,11 @@ export async function PATCH(request) {
     });
 
     if (!startup) {
-      return NextResponse.json({ success: false, error: 'Startup not found' }, { status: 404 });
+      throw new ApiError(404, 'Startup not found');
     }
 
     const json = await request.json();
-    const payload = updateSchema.parse(json);
+    const payload = await validateBody(updateSchema, json);
 
     const data = {
       stage: payload.stage ?? undefined,
@@ -152,18 +163,23 @@ export async function PATCH(request) {
       },
     });
 
-    return NextResponse.json({ success: true, data: shapeStartupPayload(updated) });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { success: false, error: 'Invalid payload', details: error.flatten() },
-        { status: 422 }
-      );
+    logger.info({
+      event: 'startup_profile_updated',
+      userId,
+      startupId: startup.id,
+    });
+
+    return NextResponse.json({ ok: true, data: shapeStartupPayload(updated) });
+  } catch (err) {
+    logger.error({
+      event: 'startup_profile_update_error',
+      error: err.message,
+    });
+
+    if (err instanceof ApiError) {
+      return NextResponse.json({ error: err.message }, { status: err.status });
     }
-    console.error('PATCH /api/startups/profile failed:', error);
-    return NextResponse.json(
-      { success: false, error: 'Unable to update profile' },
-      { status: 500 }
-    );
+
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

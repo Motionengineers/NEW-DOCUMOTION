@@ -64,6 +64,12 @@ NEXTAUTH_SECRET="your-secret-here"
 OPENAI_API_KEY="your-openai-key"
 RAZORPAY_KEY_ID="your-razorpay-key"
 RAZORPAY_KEY_SECRET="your-razorpay-secret"
+# Queue / automation
+REDIS_URL="rediss://:<password>@<host>:<port>"
+QUEUE_PREFIX="documotion"
+AUTO_SUBMIT_CONCURRENCY=3
+SUBMISSION_RECEIPTS_BUCKET="documotion-receipts"
+# Set AUTO_SUBMIT_WORKER=true for any dedicated worker runtime
 # Optional external APIs (enable enhanced routes)
 GOV_DATA_API_KEY=your_data_gov_in_key
 GOOGLE_PLACES_API_KEY=your_google_places_key
@@ -191,6 +197,29 @@ If keys are missing, API routes will return `500` with a descriptive `Missing Ra
      curl -sf -o /dev/null "http://localhost:3000$route"
    done
    ```
+
+## Setup Wizard (Phase 2)
+
+Documotion now ships with a guided onboarding flow at `/setup`:
+
+- **Step 1–2**: connect free OpenAI, Cloudinary/Supabase, and Razorpay sandbox keys (stored via the `AppConfig` table).
+- **Step 3**: upload branding, colors, founder info (applies instantly across the glassmorphic UI).
+- **Step 4**: run optional import scripts (`npm run import:govt|bank|founders|pitchdecks`) from the UI.
+- **Step 5**: finish and jump to the dashboard once `AppConfig.completed` is true.
+
+Toggle **Free Mode** under `Dashboard → Settings` (backed by `/api/app/mode`). When Free Mode is enabled:
+
+- Real auto-submit adapters are disabled; use `/api/simulate/auto-apply`.
+- Only lightweight analytics (`/api/analytics/basic`) and AI scoring (`/api/ai/score`) run.
+- Search prefers local Postgres trigram indexes via `/api/search/local`.
+
+See `docs/SETUP_WIZARD.md` for full details, diagnostics, and environment tips.
+
+### Admin Dashboard
+
+- Visit `/dashboard/admin` for operator metrics (startup/doc counts, auto-submit pipeline, document vault activity, and portal logs).
+- Everything is powered by the same helpers as `/api/analytics/basic`, so API consumers and the UI stay in sync.
+- Read `docs/ADMIN_DASHBOARD_GUIDE.md` for an overview of data sources and extension tips.
 
 ## Deployment
 

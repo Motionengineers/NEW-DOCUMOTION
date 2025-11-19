@@ -1,18 +1,27 @@
 import { NextResponse } from 'next/server';
-import { z } from 'zod';
+import { getToken } from 'next-auth/jwt';
+import { VerifyPaymentSchema } from '@/lib/schemas/payment-schema';
+import { validateBody } from '@/lib/api-validation';
+import { ApiError } from '@/lib/api-error';
 import crypto from 'crypto';
 import { getRazorpayCredentials } from '@/lib/env';
+import prisma from '@/lib/prisma';
+import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
-const verifySchema = z.object({
-  orderId: z.string().min(10),
-  paymentId: z.string().min(10),
-  signature: z.string().min(10),
-});
+function requireAuth(token) {
+  if (!token?.sub) {
+    return null;
+  }
+  return Number(token.sub);
+}
 
 function verifySignature({ orderId, paymentId, signature }) {
   const { RAZORPAY_KEY_SECRET } = getRazorpayCredentials();
+  if (!RAZORPAY_KEY_SECRET) {
+    throw new ApiError(500, 'Payment configuration error');
+  }
   const body = `${orderId}|${paymentId}`;
   const expected = crypto.createHmac('sha256', RAZORPAY_KEY_SECRET).update(body).digest('hex');
   return expected === signature;
@@ -20,29 +29,71 @@ function verifySignature({ orderId, paymentId, signature }) {
 
 export async function POST(request) {
   try {
-    const json = await request.json();
-    const payload = verifySchema.parse(json);
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+    const userId = requireAuth(token);
+    if (!userId) {
+      throw new ApiError(401, 'Unauthorized');
+    }
 
-    const valid = verifySignature(payload);
+    const json = await request.json();
+    const payload = await validateBody(VerifyPaymentSchema, json);
+
+    // Normalize payload to snake_case for Razorpay
+    const normalizedPayload = {
+      razorpay_order_id: payload.razorpay_order_id || payload.orderId,
+      razorpay_payment_id: payload.razorpay_payment_id || payload.paymentId,
+      razorpay_signature: payload.razorpay_signature || payload.signature,
+    };
+
+    const valid = verifySignature({
+      orderId: normalizedPayload.razorpay_order_id,
+      paymentId: normalizedPayload.razorpay_payment_id,
+      signature: normalizedPayload.razorpay_signature,
+    });
     if (!valid) {
-      return NextResponse.json({ success: false, error: 'Signature mismatch' }, { status: 400 });
+      throw new ApiError(400, 'Signature mismatch');
+    }
+
+    // Update order status in database if exists
+    const order = await prisma.serviceRequest.findFirst({
+      where: { razorpayOrderId: normalizedPayload.razorpay_order_id },
+    });
+
+    if (order) {
+      await prisma.serviceRequest.update({
+        where: { id: order.id },
+        data: {
+          paymentStatus: 'completed',
+          razorpayPaymentId: normalizedPayload.razorpay_payment_id,
+        },
+      });
+
+      logger.info({
+        event: 'payment_verified',
+        userId,
+        orderId: order.id,
+        paymentId: normalizedPayload.razorpay_payment_id,
+      });
     }
 
     return NextResponse.json({
-      success: true,
-      data: { orderId: payload.orderId, paymentId: payload.paymentId },
+      ok: true,
+      data: {
+        orderId: normalizedPayload.razorpay_order_id,
+        paymentId: normalizedPayload.razorpay_payment_id,
+        verified: true,
+      },
     });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { success: false, error: 'Invalid payload', details: error.flatten() },
-        { status: 422 }
-      );
+  } catch (err) {
+    logger.error({
+      event: 'payment_verify_error',
+      error: err.message,
+    });
+
+    if (err instanceof ApiError) {
+      return NextResponse.json({ error: err.message }, { status: err.status });
     }
-    console.error('POST /api/payment/razorpay/verify failed:', error);
-    return NextResponse.json(
-      { success: false, error: 'Unable to verify payment' },
-      { status: 500 }
-    );
+
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

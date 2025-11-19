@@ -1,7 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import { createPostSchema } from '@/lib/api-validation';
+import { validateBody, validateQuery } from '@/lib/api-validation';
+import { ApiError } from '@/lib/api-error';
 import prisma from '@/lib/prisma';
 import { normaliseTag, serializePost } from '@/lib/feed/serializers';
+import { logger } from '@/lib/logger';
+import sanitizeHtml from 'sanitize-html';
 
 const DEFAULT_PAGE_SIZE = 15;
 const COMMENT_PREVIEW_LIMIT = 2;
@@ -173,16 +178,30 @@ export async function GET(request) {
 
     const data = posts.map(post => serializePost(post, userId));
 
+    logger.info({
+      event: 'feed_posts_viewed',
+      userId,
+      count: data.length,
+    });
+
     return NextResponse.json({
-      success: true,
+      ok: true,
       data: {
         posts: data,
         nextCursor,
       },
     });
-  } catch (error) {
-    console.error('GET /api/feed/posts failed:', error);
-    return NextResponse.json({ success: false, error: 'Unable to load feed' }, { status: 500 });
+  } catch (err) {
+    logger.error({
+      event: 'feed_posts_get_error',
+      error: err.message,
+    });
+
+    if (err instanceof ApiError) {
+      return NextResponse.json({ error: err.message }, { status: err.status });
+    }
+
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
@@ -190,35 +209,40 @@ export async function POST(request) {
   try {
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
     if (!token?.sub) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      throw new ApiError(401, 'Unauthorized');
     }
     const userId = Number(token.sub);
 
     const body = await request.json();
-    const text = body.body?.toString().trim();
-    const stage = body.stage?.toString().trim() || null;
-    const industry = body.industry?.toString().trim() || null;
-    const location = body.location?.toString().trim() || null;
-    const linkUrl = body.linkUrl?.toString().trim() || null;
-    const linkTitle = body.linkTitle?.toString().trim() || null;
-    const linkDescription = body.linkDescription?.toString().trim() || null;
-    const linkImageUrl = body.linkImageUrl?.toString().trim() || null;
-    const template = body.template?.toString().trim() || null;
-    const templateData = body.templateData ? JSON.stringify(body.templateData) : null;
-    const professional = Boolean(body.professional);
-    const tagArray = Array.isArray(body.tags)
-      ? body.tags
-      : body.tags
-        ? body.tags.toString().split(',')
+    const validated = await validateBody(createPostSchema, body);
+
+    // Sanitize text content
+    const text = validated.body ? sanitizeHtml(validated.body.trim()) : null;
+    const stage = validated.stage?.toString().trim() || null;
+    const industry = validated.industry?.toString().trim() || null;
+    const location = validated.location?.toString().trim() || null;
+    const linkUrl = validated.linkUrl?.toString().trim() || null;
+    const linkTitle = validated.linkTitle ? sanitizeHtml(validated.linkTitle.trim()) : null;
+    const linkDescription = validated.linkDescription
+      ? sanitizeHtml(validated.linkDescription.trim())
+      : null;
+    const linkImageUrl = validated.linkImageUrl?.toString().trim() || null;
+    const template = validated.template?.toString().trim() || null;
+    const templateData = validated.templateData ? JSON.stringify(validated.templateData) : null;
+    const professional = Boolean(validated.professional);
+    const tagArray = Array.isArray(validated.tags)
+      ? validated.tags
+      : validated.tags
+        ? validated.tags.toString().split(',')
         : [];
     const tags = Array.from(new Set(tagArray.map(normaliseTag))).filter(Boolean);
-    const mediaItems = Array.isArray(body.media) ? body.media : [];
+    const mediaItems = Array.isArray(validated.media) ? validated.media : [];
     const mediaType = mediaItems[0]?.type ?? null;
-    const mediaUrl = mediaItems[0]?.url ?? body.mediaUrl?.toString().trim() ?? null;
-    const startupId = body.startupId ? Number(body.startupId) : null;
+    const mediaUrl = mediaItems[0]?.url ?? validated.mediaUrl?.toString().trim() ?? null;
+    const startupId = validated.startupId ? Number(validated.startupId) : null;
 
     if (!text && !mediaUrl && !linkUrl) {
-      return NextResponse.json({ success: false, error: 'Post content is empty' }, { status: 400 });
+      throw new ApiError(400, 'Post content is empty');
     }
 
     const createData = {
@@ -296,9 +320,23 @@ export async function POST(request) {
 
     const serialized = serializePost(created, userId);
 
-    return NextResponse.json({ success: true, data: serialized });
-  } catch (error) {
-    console.error('POST /api/feed/posts failed:', error);
-    return NextResponse.json({ success: false, error: 'Unable to create post' }, { status: 500 });
+    logger.info({
+      event: 'feed_post_created',
+      userId,
+      postId: created.id,
+    });
+
+    return NextResponse.json({ ok: true, data: serialized }, { status: 201 });
+  } catch (err) {
+    logger.error({
+      event: 'feed_post_create_error',
+      error: err.message,
+    });
+
+    if (err instanceof ApiError) {
+      return NextResponse.json({ error: err.message }, { status: err.status });
+    }
+
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

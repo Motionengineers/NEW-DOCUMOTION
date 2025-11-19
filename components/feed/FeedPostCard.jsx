@@ -88,16 +88,16 @@ export default function FeedPostCard({
   const commentPreview = post.commentsPreview || [];
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-xl backdrop-blur">
+    <article className="group relative flex flex-col overflow-hidden rounded-3xl border border-separator bg-gray-50 dark:bg-gray-900/50 shadow-xl backdrop-blur">
       <header className="flex items-start justify-between gap-3 px-6 pt-6">
         <div className="flex items-start gap-4">
-          <div className="relative h-12 w-12 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-indigo-500/60 to-blue-500/60 text-white shadow-inner">
+          <div className="relative h-12 w-12 overflow-hidden rounded-2xl border border-separator bg-gradient-to-br from-indigo-500/60 to-blue-500/60 text-white shadow-inner">
             <span className="absolute inset-0 flex items-center justify-center text-lg font-semibold">
               {initials(author?.name)}
             </span>
           </div>
           <div>
-            <div className="flex items-center gap-2 text-sm text-white">
+            <div className="flex items-center gap-2 text-sm text-gray-900 dark:text-gray-100" style={{ color: 'var(--label)' }}>
               <span className="font-semibold leading-tight">{author?.name}</span>
               {professional && (
                 <span className="inline-flex items-center gap-1 rounded-full border border-emerald-400/40 bg-emerald-500/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.2em] text-emerald-200">
@@ -106,8 +106,8 @@ export default function FeedPostCard({
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-300/80">{designation}</p>
-            <p className="text-xs text-slate-500">{timestamp}</p>
+            <p className="text-xs text-gray-600 dark:text-gray-400" style={{ color: 'var(--secondary-label)' }}>{designation}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-500" style={{ color: 'var(--tertiary-label)' }}>{timestamp}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -134,8 +134,8 @@ export default function FeedPostCard({
               className={clsx(
                 'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition',
                 following
-                  ? 'border-blue-400/50 bg-blue-500/20 text-blue-100'
-                  : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white'
+                  ? 'border-blue-400/50 bg-blue-500/20 dark:bg-blue-500/20 text-blue-700 dark:text-blue-100'
+                  : 'border-separator bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               )}
             >
               {following ? <UserCheck className="h-3.5 w-3.5" /> : <UserPlus className="h-3.5 w-3.5" />}
@@ -144,7 +144,7 @@ export default function FeedPostCard({
           )}
           <button
             type="button"
-            className="rounded-full border border-white/10 bg-white/5 p-2 text-slate-300 transition hover:bg-white/10 hover:text-white"
+            className="rounded-full border border-separator bg-gray-100 dark:bg-gray-800 p-2 text-gray-600 dark:text-gray-400 transition hover:bg-gray-200 dark:hover:bg-gray-700"
             aria-label="Post options"
           >
             <MoreVertical className="h-4 w-4" />
@@ -152,10 +152,10 @@ export default function FeedPostCard({
         </div>
       </header>
 
-      <div className="flex flex-col gap-4 px-6 pt-5 text-sm text-slate-200">
-        {post.title ? <h2 className="text-lg font-semibold text-white">{post.title}</h2> : null}
+      <div className="flex flex-col gap-4 px-6 pt-5 text-sm text-gray-700 dark:text-gray-300" style={{ color: 'var(--secondary-label)' }}>
+        {post.title ? <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100" style={{ color: 'var(--label)' }}>{post.title}</h2> : null}
         {post.body ? (
-          <p className="whitespace-pre-line leading-relaxed text-slate-200/90">{post.body}</p>
+          <p className="whitespace-pre-line leading-relaxed text-gray-800 dark:text-gray-200" style={{ color: 'var(--secondary-label)' }}>{post.body}</p>
         ) : null}
         {post.link ? (
           <a

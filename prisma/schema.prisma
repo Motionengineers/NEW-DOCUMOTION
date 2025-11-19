@@ -3,8 +3,28 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AppConfig {
+  id               String   @id @default(cuid())
+  openaiKey        String?
+  cloudName        String?
+  cloudKey         String?
+  cloudSecret      String?
+  storageProvider  String?  @default("cloudinary")
+  razorpayId       String?
+  razorpaySecret   String?
+  brandColor       String?
+  brandLogo        String?
+  brandName        String?
+  brandDescription String?
+  founderName      String?
+  freeMode         Boolean  @default(true)
+  completed        Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 // ==== Talent Database (MVP) ====
@@ -198,6 +218,7 @@ model User {
   fundingApplications FundingApplication[] @relation("ApplicantApplications")
   fundingReviews    FundingApplication[] @relation("ReviewerApplications")
   fundingActivities FundingApplicationActivity[]
+  portalOtpResolutions PortalSubmissionOtp[] @relation("OtpResolvedBy")
   fundingApplicationDraft FundingApplicationDraft?
   subscriptions     Subscription[]
   invoices          Invoice[]
@@ -206,6 +227,14 @@ model User {
   brandRoles          BrandRole[]
   brandComments       BrandComment[]
   brandApprovals      BrandApproval[]
+  auditLogs           AuditLog[]
+  portalSubmissions   PortalSubmission[]    @relation("SubmissionRequestedBy")
+  documentGenerations DocumentGeneration[]
+
+  @@index([email])
+  @@index([role])
+  @@index([status])
+  @@index([createdAt])
 }
 
 model Startup {
@@ -235,6 +264,8 @@ model Startup {
   autoApplyLogs      AutoApplyLog[]
   complianceRequests ComplianceRequest[]
   documents          Document[]
+  portalSubmissions  PortalSubmission[]
+  documentGenerations DocumentGeneration[]
   maListings         MAListing[]
   marketingRequests  MarketingRequest[]
   serviceRequests    ServiceRequest[]
@@ -250,6 +281,12 @@ model Startup {
   brandAssets        BrandAsset[]
   brandRoles         BrandRole[]
   brandExportJobs    BrandExportJob[]
+
+  @@index([slug])
+  @@index([userId])
+  @@index([stage])
+  @@index([sector])
+  @@index([createdAt])
 }
 
 model Document {
@@ -260,9 +297,103 @@ model Document {
   type       String
   status     String    @default("pending")
   notes      String?
+  templateKey String?
+  format     String?   @default("pdf")
+  version    Int?      @default(1)
+  metadata   Json?
+  sourceGenerationId Int?
   uploadedAt DateTime  @default(now())
   verifiedAt DateTime?
   startup    Startup   @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  sourceGeneration DocumentGeneration? @relation(fields: [sourceGenerationId], references: [id], onDelete: SetNull)
+
+  @@index([startupId])
+  @@index([type])
+  @@index([status])
+  @@index([uploadedAt])
+}
+
+model DocumentGeneration {
+  id           Int      @id @default(autoincrement())
+  startupId    Int
+  createdById  Int?
+  templateKey  String
+  format       String   @default("pdf")
+  version      Int      @default(1)
+  status       String   @default("processing") // processing | completed | failed
+  tone         String?  // friendly | formal | investor
+  payload      Json?
+  errorMessage String?
+  documentId   Int?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  startup      Startup  @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  createdBy    User?    @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  document     Document? @relation(fields: [documentId], references: [id], onDelete: SetNull)
+
+  @@index([startupId])
+  @@index([createdById])
+  @@index([templateKey])
+  @@index([status])
+}
+
+model PortalSubmission {
+  id                 Int       @id @default(autoincrement())
+  startupId          Int
+  requestedById      Int?
+  portalKey          String
+  status             String    @default("queued") // queued | running | submitted | failed | cancelled
+  portalApplicationId String?
+  receiptUrl         String?
+  payload            Json?
+  metadata           Json?
+  lastError          String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  startup            Startup   @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  requestedBy        User?     @relation("SubmissionRequestedBy", fields: [requestedById], references: [id], onDelete: SetNull)
+  logs               PortalSubmissionLog[]
+  otpRequests        PortalSubmissionOtp[]
+
+  @@index([startupId])
+  @@index([requestedById])
+  @@index([portalKey])
+  @@index([status])
+}
+
+model PortalSubmissionLog {
+  id            Int      @id @default(autoincrement())
+  submissionId  Int
+  level         String   @default("info")
+  step          String?
+  message       String
+  context       Json?
+  createdAt     DateTime @default(now())
+  submission    PortalSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId])
+  @@index([level])
+}
+
+model PortalSubmissionOtp {
+  id           Int      @id @default(autoincrement())
+  submissionId Int
+  channel      String   @default("sms")
+  instructions String?
+  context      Json?
+  status       String   @default("pending") // pending | resolved | expired
+  code         String?
+  expiresAt    DateTime
+  resolvedAt   DateTime?
+  resolvedById Int?
+  createdAt    DateTime @default(now())
+
+  submission   PortalSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  resolvedBy   User?            @relation("OtpResolvedBy", fields: [resolvedById], references: [id], onDelete: SetNull)
+
+  @@index([submissionId])
+  @@index([status])
+  @@index([expiresAt])
 }
 
 model GovtScheme {
@@ -1508,4 +1639,27 @@ model ChallengeInvite {
   createdAt  DateTime @default(now())
   used       Boolean  @default(false)
   challenge  Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+}
+
+// === Audit Log (Production Security) ===
+model AuditLog {
+  id          Int      @id @default(autoincrement())
+  userId      Int?
+  action      String   // login, profile_update, api_access, funding_submission, admin_action
+  resourceType String? // User, Startup, FundingApplication, etc.
+  resourceId  Int?
+  ipAddress   String?
+  userAgent   String?
+  metadata    String?  // JSON string for additional context
+  success     Boolean  @default(true)
+  errorMessage String?
+  createdAt   DateTime @default(now())
+
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([action])
+  @@index([resourceType, resourceId])
+  @@index([createdAt])
+  @@index([success])
 }

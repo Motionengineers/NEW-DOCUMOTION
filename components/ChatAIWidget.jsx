@@ -103,27 +103,27 @@ export default function ChatAIWidget() {
             } flex flex-col overflow-hidden transition-all`}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-white/10">
+            <div className="flex items-center justify-between p-4 border-b border-separator">
               <div className="flex items-center space-x-2">
                 <Bot className="h-5 w-5 text-purple-400" />
-                <span className="font-semibold text-white">AI Assistant</span>
+                <span className="font-semibold text-gray-900 dark:text-gray-100" style={{ color: 'var(--label)' }}>AI Assistant</span>
               </div>
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => setIsMinimized(!isMinimized)}
-                  className="p-1 hover:bg-white/10 rounded transition-colors"
+                  className="p-1 hover:bg-gray-200 dark:hover:bg-gray-800 rounded transition-colors"
                 >
                   {isMinimized ? (
-                    <Maximize2 className="h-4 w-4 text-white/70" />
+                    <Maximize2 className="h-4 w-4 text-gray-600 dark:text-gray-400" />
                   ) : (
-                    <Minimize2 className="h-4 w-4 text-white/70" />
+                    <Minimize2 className="h-4 w-4 text-gray-600 dark:text-gray-400" />
                   )}
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-1 hover:bg-white/10 rounded transition-colors"
+                  className="p-1 hover:bg-gray-200 dark:hover:bg-gray-800 rounded transition-colors"
                 >
-                  <X className="h-4 w-4 text-white/70" />
+                  <X className="h-4 w-4 text-gray-600 dark:text-gray-400" />
                 </button>
               </div>
             </div>
@@ -140,8 +140,8 @@ export default function ChatAIWidget() {
                       <div
                         className={`max-w-[80%] rounded-lg p-3 ${
                           msg.role === 'user'
-                            ? 'bg-purple-600/30 text-white'
-                            : 'bg-white/10 text-white/90'
+                            ? 'bg-purple-600 dark:bg-purple-600/30 text-white'
+                            : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
                         }`}
                       >
                         <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
@@ -151,7 +151,7 @@ export default function ChatAIWidget() {
 
                   {loading && (
                     <div className="flex justify-start">
-                      <div className="bg-white/10 rounded-lg p-3">
+                      <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3">
                         <div className="flex space-x-2">
                           <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
                           <div
@@ -170,14 +170,14 @@ export default function ChatAIWidget() {
                 </div>
 
                 {/* Input */}
-                <form onSubmit={handleSend} className="p-4 border-t border-white/10">
+                <form onSubmit={handleSend} className="p-4 border-t border-separator">
                   <div className="flex space-x-2">
                     <input
                       type="text"
                       value={input}
                       onChange={e => setInput(e.target.value)}
                       placeholder="Ask about schemes, eligibility..."
-                      className="flex-1 glass rounded-lg px-4 py-2 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="flex-1 glass rounded-lg px-4 py-2 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
                       disabled={loading}
                     />
                     <button

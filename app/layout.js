@@ -6,6 +6,7 @@ import { LanguageProvider } from '@/components/LanguageProvider';
 import SessionProvider from '@/components/SessionProvider';
 import DemoBadge from '@/components/DemoBadge';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import FreeModeBadge from '@/components/FreeModeBadge';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-body' });
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
                 <ErrorBoundary>
                   {children}
                   <DemoBadge />
+                  <FreeModeBadge />
                 </ErrorBoundary>
               </LanguageProvider>
             </BrandingProvider>

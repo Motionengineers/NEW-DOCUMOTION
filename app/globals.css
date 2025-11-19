@@ -6,8 +6,8 @@
   --system-background: #050b18;
   --system-secondary-background: #0b1326;
   --label: #f8fbff;
-  --secondary-label: rgba(248, 251, 255, 0.72);
-  --tertiary-label: rgba(248, 251, 255, 0.56);
+  --secondary-label: rgba(248, 251, 255, 0.84);
+  --tertiary-label: rgba(248, 251, 255, 0.62);
   --separator: rgba(255, 255, 255, 0.12);
   --muted: rgba(255, 255, 255, 0.08);
   --system-blue: #0066cc;
@@ -52,6 +52,7 @@ body {
   font-family: var(--font-body);
   background-color: var(--system-background);
   color: var(--label);
+  color-scheme: dark;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -77,6 +78,35 @@ a {
 .dark .glass {
   background: rgba(10, 16, 32, 0.64);
   border-color: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --glass-blur: 18px;
+    --glass-opacity: 0.9;
+    --brand-radius: 14px;
+    --secondary-label: rgba(248, 251, 255, 0.9);
+  }
+
+  body {
+    background-color: #04050c;
+  }
+
+  .glass,
+  .rounded-2xl,
+  .rounded-3xl {
+    border-width: 1px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    line-height: 1.2;
+  }
+
+  p {
+    line-height: 1.5;
+  }
 }
 
 ::-webkit-scrollbar {

@@ -27,29 +27,29 @@ export default function StateFundingCard({ scheme, onSelect, highlighted }) {
   return (
     <div
       className={clsx(
-        'rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur transition hover:border-white/30',
+        'rounded-2xl border border-separator bg-gray-50 dark:bg-gray-900/50 p-4 backdrop-blur transition hover:border-blue-400 dark:hover:border-blue-400/60',
         highlighted && 'ring-2 ring-blue-400/60'
       )}
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.25em] text-white/60">
+          <p className="text-xs uppercase tracking-[0.25em] text-gray-500 dark:text-gray-400" style={{ color: 'var(--tertiary-label)' }}>
             {scheme.state?.abbreviation || scheme.state?.name || 'State Scheme'}
           </p>
-          <h3 className="mt-2 text-lg font-semibold text-white">{scheme.title}</h3>
+          <h3 className="mt-2 text-lg font-semibold text-gray-900 dark:text-gray-100" style={{ color: 'var(--label)' }}>{scheme.title}</h3>
         </div>
         <span className={clsx('rounded-full px-3 py-1 text-xs', badgeColor)}>{scheme.status}</span>
       </div>
 
-      <p className="mt-3 text-sm text-white/70">{scheme.description}</p>
+      <p className="mt-3 text-sm text-gray-700 dark:text-gray-300" style={{ color: 'var(--secondary-label)' }}>{scheme.description}</p>
 
-      <dl className="mt-4 grid grid-cols-2 gap-3 text-sm text-white/80">
+      <dl className="mt-4 grid grid-cols-2 gap-3 text-sm text-gray-800 dark:text-gray-200" style={{ color: 'var(--secondary-label)' }}>
         <div>
-          <dt className="text-xs uppercase tracking-wide text-white/50">Funding Amount</dt>
+          <dt className="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400" style={{ color: 'var(--tertiary-label)' }}>Funding Amount</dt>
           <dd className="font-medium">{scheme.fundingAmount || '—'}</dd>
         </div>
         <div>
-          <dt className="text-xs uppercase tracking-wide text-white/50">Interest Subsidy</dt>
+          <dt className="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400" style={{ color: 'var(--tertiary-label)' }}>Interest Subsidy</dt>
           <dd className="font-medium">
             {scheme.interestRate !== null && scheme.interestRate !== undefined
               ? `${scheme.interestRate}%`
@@ -57,12 +57,12 @@ export default function StateFundingCard({ scheme, onSelect, highlighted }) {
           </dd>
         </div>
         <div>
-          <dt className="text-xs uppercase tracking-wide text-white/50">Sector Focus</dt>
+          <dt className="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400" style={{ color: 'var(--tertiary-label)' }}>Sector Focus</dt>
           <dd className="font-medium">{scheme.sector || 'General'}</dd>
         </div>
         <div>
-          <dt className="text-xs uppercase tracking-wide text-white/50">Eligibility</dt>
-          <dd className="font-medium text-sm text-white/70">
+          <dt className="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400" style={{ color: 'var(--tertiary-label)' }}>Eligibility</dt>
+          <dd className="font-medium text-sm text-gray-700 dark:text-gray-300">
             {scheme.eligibility ? scheme.eligibility.slice(0, 120) + (scheme.eligibility.length > 120 ? '…' : '') : 'See policy'}
           </dd>
         </div>
@@ -82,7 +82,7 @@ export default function StateFundingCard({ scheme, onSelect, highlighted }) {
                 sector: scheme.sector,
               });
             }}
-            className="rounded-full border border-white/20 px-4 py-2 text-sm text-white hover:border-white/60"
+            className="rounded-full border border-separator bg-blue-600 dark:bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 dark:hover:bg-blue-500"
           >
             Apply
           </a>
@@ -92,7 +92,8 @@ export default function StateFundingCard({ scheme, onSelect, highlighted }) {
             href={scheme.officialLink}
             target="_blank"
             rel="noreferrer"
-            className="rounded-full border border-white/10 px-4 py-2 text-sm text-white/80 hover:text-white"
+            className="rounded-full border border-separator px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+            style={{ color: 'var(--label)' }}
           >
             Policy PDF
           </a>
@@ -104,8 +105,8 @@ export default function StateFundingCard({ scheme, onSelect, highlighted }) {
             setSaved(true);
           }}
           className={clsx(
-            'rounded-full border border-white/15 px-4 py-2 text-sm',
-            saved ? 'text-emerald-300 border-emerald-400/40' : 'text-white/80'
+            'rounded-full border px-4 py-2 text-sm',
+            saved ? 'text-emerald-600 dark:text-emerald-300 border-emerald-500 dark:border-emerald-400/40 bg-emerald-50 dark:bg-emerald-900/20' : 'text-gray-700 dark:text-gray-300 border-separator hover:bg-gray-100 dark:hover:bg-gray-800'
           )}
         >
           {saved ? 'Saved' : 'Save'}
@@ -114,7 +115,7 @@ export default function StateFundingCard({ scheme, onSelect, highlighted }) {
           <button
             type="button"
             onClick={() => onSelect(scheme)}
-            className="rounded-full border border-blue-400/60 px-4 py-2 text-sm text-blue-200 hover:bg-blue-500/10"
+            className="rounded-full border border-blue-500 dark:border-blue-400/60 px-4 py-2 text-sm text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20"
           >
             Compare
           </button>

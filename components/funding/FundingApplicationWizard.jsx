@@ -1,14 +1,18 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowRight,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
   FileText,
+  Info,
+  History,
   Loader2,
+  RefreshCw,
   Save,
+  Sparkles,
   UploadCloud,
   Video,
 } from 'lucide-react';
@@ -53,6 +57,46 @@ const INDUSTRY_OPTIONS = [
   'Other',
 ];
 const STAGE_OPTIONS = ['Idea', 'Pre-Seed', 'Seed', 'Early', 'Growth', 'Established'];
+
+const REQUIRED_FIELDS_BY_STEP = {
+  personal: ['fullName', 'email', 'phone', 'city', 'state'],
+  startup: ['startupName', 'industry', 'stage'],
+  product: ['problem', 'solution', 'targetAudience'],
+  funding: ['amountRequested', 'equityOffered', 'useOfFunds'],
+};
+
+const INLINE_VALIDATORS = {
+  fullName: value => (!value?.trim() ? 'Full name is required' : ''),
+  email: value => {
+    if (!value?.trim()) return 'Email is required';
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(value) ? '' : 'Enter a valid email address';
+  },
+  phone: value => {
+    if (!value?.trim()) return 'Contact number is required';
+    return value.replace(/[^\d+]/g, '').length >= 10 ? '' : 'Enter a valid phone number';
+  },
+  city: value => (!value?.trim() ? 'City is required' : ''),
+  state: value => (!value?.trim() ? 'State is required' : ''),
+  startupName: value => (!value?.trim() ? 'Startup name is required' : ''),
+  industry: value => (!value?.trim() ? 'Select an industry' : ''),
+  stage: value => (!value?.trim() ? 'Select a stage' : ''),
+  problem: value => (!value?.trim() ? 'Problem statement is required' : ''),
+  solution: value => (!value?.trim() ? 'Solution is required' : ''),
+  targetAudience: value => (!value?.trim() ? 'Target audience is required' : ''),
+  amountRequested: value => (!value?.trim() ? 'Funding amount is required' : ''),
+  equityOffered: value => (!value?.trim() ? 'Equity offered is required' : ''),
+  useOfFunds: value => (!value?.trim() ? 'Explain how funds will be used' : ''),
+};
+
+const FIELD_HINTS = {
+  amountRequested: 'Example: ₹2.5 Cr for a 18-month runway (include currency).',
+  equityOffered: 'Typical seed rounds trade 10–20% equity.',
+  growthMetrics: 'e.g., 12% MoM revenue growth, 40% retention, 3 enterprise pilots.',
+  customers: 'Example: 1,250 monthly active users or 48 enterprise logos.',
+  fundingRaised: 'Example: ₹50 Lakh pre-seed (Jan 2024).',
+  socialLinks: 'Share LinkedIn, Twitter, Product Hunt links – one per line.',
+};
 
 const STEPS = [
   {
@@ -108,6 +152,48 @@ function getProgressPercent(stepIndex) {
   return Math.round(((stepIndex + 1) / STEPS.length) * 100);
 }
 
+function validateFieldValue(field, value, data = {}) {
+  if (INLINE_VALIDATORS[field]) {
+    return INLINE_VALIDATORS[field](value);
+  }
+  if (field === 'website' && value) {
+    try {
+      const url = new URL(value);
+      if (!url.protocol.startsWith('http')) {
+        return 'Enter a valid URL (https://...)';
+      }
+    } catch (error) {
+      return 'Enter a valid URL (https://...)';
+    }
+  }
+  if ((field === 'pitchVideoUrl' || field === 'pitchDeckUrl') && value) {
+    return '';
+  }
+  if ((field === 'pitchVideoUrl' || field === 'pitchDeckUrl') && !value) {
+    const otherField = field === 'pitchVideoUrl' ? 'pitchDeckUrl' : 'pitchVideoUrl';
+    return data[field] || data[otherField] ? '' : 'Upload a pitch deck or video';
+  }
+  return '';
+}
+
+function getStepFields(stepIndex) {
+  const stepId = STEPS[stepIndex]?.id;
+  switch (stepId) {
+    case 'personal':
+      return REQUIRED_FIELDS_BY_STEP.personal;
+    case 'startup':
+      return REQUIRED_FIELDS_BY_STEP.startup;
+    case 'product':
+      return REQUIRED_FIELDS_BY_STEP.product;
+    case 'funding':
+      return REQUIRED_FIELDS_BY_STEP.funding;
+    case 'uploads':
+      return ['pitchVideoUrl', 'pitchDeckUrl'];
+    default:
+      return [];
+  }
+}
+
 export default function FundingApplicationWizard() {
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState(INITIAL_FORM);
@@ -122,6 +208,18 @@ export default function FundingApplicationWizard() {
   const [uploading, setUploading] = useState({ video: false, deck: false });
   const [loadError, setLoadError] = useState(null);
   const [demoMode, setDemoMode] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [hasLoaded, setHasLoaded] = useState(false);
+  const [insights, setInsights] = useState(null);
+  const [insightsLoading, setInsightsLoading] = useState(false);
+  const [insightsError, setInsightsError] = useState(null);
+  const [timeline, setTimeline] = useState([]);
+  const [guidance, setGuidance] = useState(null);
+  const [analytics, setAnalytics] = useState(null);
+  const [analyticsLoading, setAnalyticsLoading] = useState(false);
+  const [analyticsError, setAnalyticsError] = useState(null);
+  const autoSaveRef = useRef(null);
+  const insightsAbortRef = useRef(null);
 
   const progress = useMemo(() => getProgressPercent(currentStep), [currentStep]);
 
@@ -157,7 +255,7 @@ export default function FundingApplicationWizard() {
           return;
         }
 
-        const { application, draft } = json.data || {};
+        const { application, draft, activities, guidance: guidancePayload } = json.data || {};
         if (application) {
           setFormData(prev => ({ ...prev, ...normalizeIncoming(application) }));
           setApplicationId(application.id);
@@ -167,10 +265,13 @@ export default function FundingApplicationWizard() {
           setFormData(prev => ({ ...prev, ...normalizeIncoming(draft) }));
           setDraftUpdatedAt(draft.updatedAt || null);
         }
+        setTimeline(Array.isArray(activities) ? activities : []);
+        setGuidance(guidancePayload || null);
       } catch (error) {
         console.error('FundingApplicationWizard load failed:', error);
         setLoadError('Unable to load your application. Please refresh.');
       } finally {
+        setHasLoaded(true);
         setLoading(false);
       }
     }
@@ -178,8 +279,100 @@ export default function FundingApplicationWizard() {
     load();
   }, []);
 
+  useEffect(() => {
+    if (!hasLoaded || loading || demoMode) return;
+    if (autoSaveRef.current) {
+      clearTimeout(autoSaveRef.current);
+    }
+    autoSaveRef.current = setTimeout(() => {
+      handleSaveDraft(true);
+    }, 5000);
+    return () => {
+      if (autoSaveRef.current) {
+        clearTimeout(autoSaveRef.current);
+      }
+    };
+  }, [formData, handleSaveDraft, hasLoaded, loading, demoMode]);
+
+useEffect(() => {
+  if (!demoMode && hasLoaded && applicationStatus === 'submitted') {
+    fetchInsights();
+    fetchAnalytics();
+  }
+}, [applicationStatus, demoMode, fetchAnalytics, fetchInsights, hasLoaded]);
+
+useEffect(() => {
+  return () => {
+    if (autoSaveRef.current) {
+      clearTimeout(autoSaveRef.current);
+    }
+    if (insightsAbortRef.current) {
+      insightsAbortRef.current.abort();
+    }
+  };
+}, []);
+
+  useEffect(() => {
+    if (applicationStatus !== 'submitted') {
+      setInsights(null);
+      setInsightsError(null);
+      return;
+    }
+    let cancelled = false;
+    async function fetchInsights() {
+      try {
+        setInsightsLoading(true);
+        setInsightsError(null);
+        const params = new URLSearchParams();
+        if (formData.industry) params.append('industry', formData.industry);
+        if (formData.stage) params.append('stage', formData.stage);
+        if (formData.state) params.append('state', formData.state);
+        if (formData.amountRequested) params.append('amount', formData.amountRequested);
+        const response = await fetch(`/api/funding/insights?${params.toString()}`);
+        const json = await response.json();
+        if (cancelled) return;
+        if (!response.ok || !json.success) {
+          throw new Error(json.error || 'Unable to load funding insights');
+        }
+        setInsights(json.data);
+      } catch (error) {
+        if (!cancelled) {
+          setInsightsError(error.message);
+        }
+      } finally {
+        if (!cancelled) {
+          setInsightsLoading(false);
+        }
+      }
+    }
+    fetchInsights();
+    return () => {
+      cancelled = true;
+    };
+  }, [applicationStatus, formData.amountRequested, formData.industry, formData.stage, formData.state]);
+
   const handleFieldChange = useCallback((name, value) => {
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setErrors([]);
+    setFormData(prev => {
+      const next = { ...prev, [name]: value };
+      setFieldErrors(current => {
+        const updated = { ...current };
+        const message = validateFieldValue(name, value, next);
+        if (message) {
+          updated[name] = message;
+        } else {
+          delete updated[name];
+        }
+        if (name === 'pitchVideoUrl' || name === 'pitchDeckUrl') {
+          if (next.pitchVideoUrl || next.pitchDeckUrl) {
+            delete updated.pitchVideoUrl;
+            delete updated.pitchDeckUrl;
+          }
+        }
+        return updated;
+      });
+      return next;
+    });
   }, []);
 
   const handleNext = useCallback(() => {
@@ -190,10 +383,26 @@ export default function FundingApplicationWizard() {
 
     const stepErrors = validateStep(currentStep, formData);
     if (stepErrors.length) {
-      setErrors(stepErrors);
+      setErrors(stepErrors.map(error => error.label));
+      setFieldErrors(prev => {
+        const next = { ...prev };
+        stepErrors.forEach(({ field, label }) => {
+          if (field) {
+            next[field] = `${label} is required`;
+          }
+        });
+        return next;
+      });
       return;
     }
     setErrors([]);
+    setFieldErrors(prev => {
+      const next = { ...prev };
+      getStepFields(currentStep).forEach(field => {
+        delete next[field];
+      });
+      return next;
+    });
     setCurrentStep(step => Math.min(step + 1, STEPS.length - 1));
   }, [currentStep, formData]);
 
@@ -201,6 +410,57 @@ export default function FundingApplicationWizard() {
     setErrors([]);
     setCurrentStep(step => Math.max(step - 1, 0));
   }, []);
+
+  const fetchInsights = useCallback(async () => {
+    if (demoMode) return;
+    if (insightsAbortRef.current) {
+      insightsAbortRef.current.abort();
+    }
+    const controller = new AbortController();
+    insightsAbortRef.current = controller;
+    setInsightsLoading(true);
+    setInsightsError(null);
+    try {
+      const response = await fetch('/api/funding/insights', { signal: controller.signal });
+      const json = await response.json();
+      if (json.success) {
+        setInsights(json.data);
+      } else {
+        setInsights(null);
+        setInsightsError(json.error || 'Unable to load insights');
+      }
+    } catch (error) {
+      if (error.name !== 'AbortError') {
+        console.error('Funding insights load failed:', error);
+        setInsightsError('Unable to load insights right now');
+      }
+    } finally {
+      if (insightsAbortRef.current === controller) {
+        insightsAbortRef.current = null;
+      }
+      setInsightsLoading(false);
+    }
+  }, [demoMode]);
+
+  const fetchAnalytics = useCallback(async () => {
+    if (demoMode) return;
+    setAnalyticsLoading(true);
+    setAnalyticsError(null);
+    try {
+      const response = await fetch('/api/funding/analytics');
+      const json = await response.json();
+      if (json.success) {
+        setAnalytics(json.data);
+      } else {
+        setAnalyticsError(json.error || 'Unable to load analytics');
+      }
+    } catch (error) {
+      console.error('Funding analytics load failed:', error);
+      setAnalyticsError('Unable to load analytics');
+    } finally {
+      setAnalyticsLoading(false);
+    }
+  }, [demoMode]);
 
   const handleSaveDraft = useCallback(
     async (auto = false) => {
@@ -229,6 +489,18 @@ export default function FundingApplicationWizard() {
         setDraftUpdatedAt(new Date().toISOString());
         if (!auto) {
           setStatus({ variant: 'success', message: 'Draft saved successfully.' });
+          setTimeline(prev => {
+            const next = [
+              {
+                id: `draft-${Date.now()}`,
+                activityType: 'draft_saved',
+                message: 'Draft saved',
+                createdAt: new Date().toISOString(),
+              },
+              ...prev,
+            ];
+            return next.slice(0, 20);
+          });
         }
       } catch (error) {
         console.error('Save draft failed', error);
@@ -267,13 +539,28 @@ export default function FundingApplicationWizard() {
         variant: 'success',
         message: 'Application submitted! Our team will get in touch soon.',
       });
+      fetchInsights();
+      fetchAnalytics();
+      setTimeline(prev => {
+        const next = [
+          {
+            id: `submitted-${Date.now()}`,
+            activityType: 'submitted',
+            message: 'Application submitted',
+            createdAt: new Date().toISOString(),
+          },
+          ...prev,
+        ];
+        return next.slice(0, 20);
+      });
+      setGuidance(null);
     } catch (error) {
       console.error('Submit application failed', error);
       setStatus({ variant: 'error', message: error.message || 'Unable to submit application' });
     } finally {
       setSubmitting(false);
     }
-  }, [applicationId, demoMode, formData]);
+  }, [applicationId, demoMode, fetchInsights, formData]);
 
   const handleFileUpload = useCallback(
     async (field, file) => {
@@ -377,6 +664,10 @@ export default function FundingApplicationWizard() {
           </div>
         </div>
         <ProgressBar value={progress} />
+        <StepProgressIndicator
+          currentStep={currentStep}
+          onStepSelect={index => setCurrentStep(Math.min(Math.max(index, 0), STEPS.length - 1))}
+        />
         {demoMode ? (
           <div className="inline-flex items-center gap-2 rounded-full border border-blue-400/40 bg-blue-500/10 px-4 py-2 text-xs text-blue-100">
             <CheckCircle2 className="h-4 w-4" /> Demo preview — sign in to apply for real.
@@ -392,6 +683,9 @@ export default function FundingApplicationWizard() {
             <CheckCircle2 className="h-4 w-4" /> Submitted — you can update and resubmit if anything
             changes.
           </div>
+        ) : null}
+        {applicationStatus === 'submitted' ? (
+          <FundingInsightsPanel insights={insights} loading={insightsLoading} error={insightsError} />
         ) : null}
       </header>
 
@@ -416,6 +710,28 @@ export default function FundingApplicationWizard() {
         </div>
       ) : null}
 
+      {guidance ? <ReapplyGuidance guidance={guidance} /> : null}
+
+      {applicationStatus === 'submitted' && !demoMode ? (
+        <FundingInsightsPanel
+          insights={insights}
+          loading={insightsLoading}
+          error={insightsError}
+          onRefresh={fetchInsights}
+        />
+      ) : null}
+
+      {timeline?.length ? <FundingTimeline items={timeline} /> : null}
+
+      {applicationStatus === 'submitted' && !demoMode ? (
+        <FundingAnalyticsPanel
+          analytics={analytics}
+          loading={analyticsLoading}
+          error={analyticsError}
+          onRefresh={fetchAnalytics}
+        />
+      ) : null}
+
       <section className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 shadow-xl backdrop-blur">
         {renderStep({
           step: STEPS[currentStep],
@@ -432,6 +748,7 @@ export default function FundingApplicationWizard() {
           uploading,
           goToStep: index => setCurrentStep(Math.min(Math.max(index, 0), STEPS.length - 1)),
           demoMode,
+        fieldErrors,
         })}
       </section>
 
@@ -477,7 +794,9 @@ function normalizeIncoming(data = {}) {
 function validateStep(stepIndex, data) {
   const missing = [];
   const require = field => {
-    if (!data[field] || !data[field].toString().trim()) missing.push(fieldLabel(field));
+    if (!data[field] || !data[field].toString().trim()) {
+      missing.push({ field, label: fieldLabel(field) });
+    }
   };
   switch (STEPS[stepIndex].id) {
     case 'personal':
@@ -494,7 +813,8 @@ function validateStep(stepIndex, data) {
       break;
     case 'uploads':
       if (!data.pitchVideoUrl && !data.pitchDeckUrl) {
-        missing.push('Pitch video or deck');
+        missing.push({ field: 'pitchVideoUrl', label: 'Pitch video or deck' });
+        missing.push({ field: 'pitchDeckUrl', label: 'Pitch video or deck' });
       }
       break;
     default:
@@ -601,6 +921,7 @@ function renderStep({
   uploading,
   goToStep,
   demoMode,
+  fieldErrors,
 }) {
   switch (step.id) {
     case 'intro':
@@ -641,6 +962,7 @@ function renderStep({
               value={formData.fullName}
               onChange={handleFieldChange}
               required
+              error={fieldErrors.fullName}
             />
             <InputField
               label="Contact Number"
@@ -648,6 +970,7 @@ function renderStep({
               value={formData.phone}
               onChange={handleFieldChange}
               required
+              error={fieldErrors.phone}
             />
             <InputField
               label="Email"
@@ -656,6 +979,7 @@ function renderStep({
               value={formData.email}
               onChange={handleFieldChange}
               required
+              error={fieldErrors.email}
             />
             <InputField
               label="City"
@@ -663,6 +987,7 @@ function renderStep({
               value={formData.city}
               onChange={handleFieldChange}
               required
+              error={fieldErrors.city}
             />
             <InputField
               label="State"
@@ -670,6 +995,7 @@ function renderStep({
               value={formData.state}
               onChange={handleFieldChange}
               required
+              error={fieldErrors.state}
             />
           </div>
           <StepNavigation currentStep={currentStep} onBack={handleBack} onNext={handleNext} />
@@ -686,6 +1012,7 @@ function renderStep({
               value={formData.startupName}
               onChange={handleFieldChange}
               required
+              error={fieldErrors.startupName}
             />
             <InputField
               label="Website"
@@ -693,6 +1020,7 @@ function renderStep({
               value={formData.website}
               onChange={handleFieldChange}
               placeholder="https://"
+              error={fieldErrors.website}
             />
             <SelectField
               label="Industry / Sector"
@@ -701,6 +1029,7 @@ function renderStep({
               onChange={handleFieldChange}
               options={INDUSTRY_OPTIONS}
               required
+              error={fieldErrors.industry}
             />
             <SelectField
               label="Stage"
@@ -709,6 +1038,7 @@ function renderStep({
               onChange={handleFieldChange}
               options={STAGE_OPTIONS}
               required
+              error={fieldErrors.stage}
             />
             <TextAreaField
               label="Social Links"
@@ -717,6 +1047,8 @@ function renderStep({
               onChange={handleFieldChange}
               placeholder="LinkedIn, Twitter, Product Hunt... One per line"
               rows={3}
+              hint={FIELD_HINTS.socialLinks}
+              error={fieldErrors.socialLinks}
             />
           </div>
           <StepNavigation currentStep={currentStep} onBack={handleBack} onNext={handleNext} />
@@ -734,6 +1066,7 @@ function renderStep({
             required
             rows={4}
             maxLength={1000}
+            error={fieldErrors.problem}
           />
           <TextAreaField
             label="Your solution"
@@ -743,6 +1076,7 @@ function renderStep({
             required
             rows={4}
             maxLength={1000}
+            error={fieldErrors.solution}
           />
           <TextAreaField
             label="Target audience / market"
@@ -752,6 +1086,7 @@ function renderStep({
             required
             rows={4}
             maxLength={1000}
+            error={fieldErrors.targetAudience}
           />
           <StepNavigation currentStep={currentStep} onBack={handleBack} onNext={handleNext} />
         </div>
@@ -781,6 +1116,7 @@ function renderStep({
               value={formData.customers}
               onChange={handleFieldChange}
               placeholder="e.g. 1200 active users"
+              hint={FIELD_HINTS.customers}
             />
             <InputField
               label="Funding raised so far"
@@ -788,6 +1124,7 @@ function renderStep({
               value={formData.fundingRaised}
               onChange={handleFieldChange}
               placeholder="e.g. ₹50 Lakh seed"
+              hint={FIELD_HINTS.fundingRaised}
             />
           </div>
           <TextAreaField
@@ -797,6 +1134,7 @@ function renderStep({
             onChange={handleFieldChange}
             placeholder="Monthly growth, retention, partnerships etc."
             rows={4}
+            hint={FIELD_HINTS.growthMetrics}
           />
           <StepNavigation currentStep={currentStep} onBack={handleBack} onNext={handleNext} />
         </div>
@@ -813,6 +1151,8 @@ function renderStep({
               onChange={handleFieldChange}
               placeholder="e.g. 2.5 crore"
               required
+              hint={FIELD_HINTS.amountRequested}
+              error={fieldErrors.amountRequested}
             />
             <InputField
               label="Equity offered (%)"
@@ -821,6 +1161,8 @@ function renderStep({
               onChange={handleFieldChange}
               placeholder="e.g. 10"
               required
+              hint={FIELD_HINTS.equityOffered}
+              error={fieldErrors.equityOffered}
             />
           </div>
           <TextAreaField
@@ -831,6 +1173,7 @@ function renderStep({
             required
             rows={4}
             maxLength={800}
+              error={fieldErrors.useOfFunds}
           />
           <StepNavigation currentStep={currentStep} onBack={handleBack} onNext={handleNext} />
         </div>
@@ -849,6 +1192,7 @@ function renderStep({
             onChange={value => handleFieldChange('pitchVideoUrl', value)}
             accept="video/mp4,video/quicktime,video/x-m4v"
             disabled={demoMode}
+            error={fieldErrors.pitchVideoUrl}
           />
           <UploadCard
             icon={FileText}
@@ -861,6 +1205,7 @@ function renderStep({
             accept="application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
             required
             disabled={demoMode}
+            error={fieldErrors.pitchDeckUrl}
           />
           <StepNavigation currentStep={currentStep} onBack={handleBack} onNext={handleNext} />
         </div>
@@ -907,11 +1252,11 @@ function renderStep({
             >
               <ChevronLeft className="h-4 w-4" /> Back
             </button>
-            <div className="flex gap-3">
+            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
               <button
                 type="button"
                 onClick={() => handleSaveDraft()}
-                className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white transition hover:bg-white/10 disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white transition hover:bg-white/10 disabled:opacity-60"
                 disabled={demoMode}
               >
                 <Save className="h-4 w-4" /> Save draft
@@ -920,7 +1265,7 @@ function renderStep({
                 type="button"
                 onClick={handleSubmit}
                 disabled={submitting || demoMode}
-                className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/40 transition hover:bg-emerald-500 disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/40 transition hover:bg-emerald-500 disabled:opacity-60"
               >
                 {submitting ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -948,6 +1293,274 @@ function StepHeader({ step }) {
   );
 }
 
+const currencyFormatter = new Intl.NumberFormat('en-IN', {
+  notation: 'compact',
+  maximumFractionDigits: 1,
+});
+
+function formatINR(value) {
+  if (!value || Number.isNaN(value)) return '—';
+  return `₹${currencyFormatter.format(value)}`;
+}
+
+function FundingInsightsPanel({ insights, loading, error, onRefresh }) {
+  if (!loading && !error && (!insights || (!insights.benchmarks && !insights.matchInsights?.length))) {
+    return null;
+  }
+
+  return (
+    <section className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 text-sm text-white">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h3 className="text-lg font-semibold">Funding insights</h3>
+          <p className="text-xs text-slate-400">
+            Benchmarks from recently submitted startups plus your state match explanation.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onRefresh}
+          className="inline-flex items-center gap-2 rounded-xl border border-white/5 bg-white/5 px-3 py-2 text-xs text-white transition hover:bg-white/10"
+        >
+          <RefreshCw className="h-3.5 w-3.5" />
+          Refresh
+        </button>
+      </div>
+
+      {error ? (
+        <div className="mb-4 rounded-2xl border border-rose-400/30 bg-rose-500/10 px-4 py-2 text-xs text-rose-100">
+          {error}
+        </div>
+      ) : null}
+
+      {loading ? (
+        <div className="mb-4 text-xs text-slate-400">Loading insights…</div>
+      ) : null}
+
+      {insights?.benchmarks ? (
+        <div className="mb-5 grid gap-4 md:grid-cols-2">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Industry average raise</p>
+            <p className="mt-2 text-2xl font-semibold text-white">
+              {formatINR(insights.benchmarks.industryAverage)}
+            </p>
+            <p className="text-xs text-slate-400">
+              Based on {insights.benchmarks.industryCount || 0} startups in your sector
+            </p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Global average raise</p>
+            <p className="mt-2 text-2xl font-semibold text-white">
+              {formatINR(insights.benchmarks.globalAverage)}
+            </p>
+            <p className="text-xs text-slate-400">
+              Across {insights.benchmarks.globalCount || 0} submitted applications
+            </p>
+          </div>
+        </div>
+      ) : null}
+
+      {insights?.matchInsights?.length ? (
+        <div className="space-y-4">
+          {insights.matchInsights.map(match => (
+            <div
+              key={match.stateId}
+              className="rounded-2xl border border-white/10 bg-white/3 px-4 py-3 text-sm text-slate-200"
+            >
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2 text-white">
+                  <Sparkles className="h-4 w-4 text-blue-300" />
+                  <span className="font-semibold">{match.stateName}</span>
+                </div>
+                <span className="text-xs text-slate-400">{match.score}% fit</span>
+              </div>
+              <div className="mt-3 space-y-2">
+                {match.breakdown?.map(item => (
+                  <div key={item.key}>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-slate-400 capitalize">{item.key}</span>
+                      <span className="text-white">{item.value}%</span>
+                    </div>
+                    <div className="h-1.5 rounded-full bg-white/10">
+                      <div
+                        className="h-1.5 rounded-full bg-blue-500"
+                        style={{ width: `${Math.min(100, item.value)}%` }}
+                      />
+                    </div>
+                    <p className="text-[11px] text-slate-400">{item.note}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
+const dateTimeFormatter = new Intl.DateTimeFormat('en-IN', {
+  dateStyle: 'medium',
+  timeStyle: 'short',
+});
+
+function formatDateTime(value) {
+  if (!value) return '';
+  try {
+    return dateTimeFormatter.format(new Date(value));
+  } catch {
+    return value;
+  }
+}
+
+const ACTIVITY_LABELS = {
+  draft_saved: 'Draft saved',
+  submitted: 'Submitted',
+  'in-review': 'In review',
+  approved: 'Approved',
+  rejected: 'Rejected',
+};
+
+function FundingTimeline({ items }) {
+  if (!items?.length) return null;
+  return (
+    <section className="rounded-3xl border border-white/10 bg-white/[0.02] p-5 text-sm text-white">
+      <div className="mb-4 flex items-center gap-2 text-slate-300">
+        <History className="h-4 w-4 text-blue-300" />
+        <div>
+          <h3 className="text-lg font-semibold text-white">Application timeline</h3>
+          <p className="text-xs text-slate-400">Track every save, submission, and review action.</p>
+        </div>
+      </div>
+      <ol className="space-y-3 text-xs text-slate-300">
+        {items.map(item => (
+          <li
+            key={item.id}
+            className="rounded-2xl border border-white/5 bg-white/3 px-4 py-3 text-slate-200"
+          >
+            <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-white">
+              <span>{ACTIVITY_LABELS[item.activityType] || item.activityType}</span>
+              <span className="text-xs text-slate-400">{formatDateTime(item.createdAt)}</span>
+            </div>
+            {item.message ? <p className="text-xs text-slate-400">{item.message}</p> : null}
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+function ReapplyGuidance({ guidance }) {
+  if (!guidance) return null;
+  return (
+    <section className="rounded-3xl border border-amber-400/30 bg-amber-500/10 p-4 text-sm text-amber-50">
+      <div className="mb-3 flex items-center gap-2 text-amber-100">
+        <Info className="h-4 w-4" />
+        <span className="font-semibold">{guidance.title || 'Tips before you reapply'}</span>
+      </div>
+      <ul className="list-disc space-y-1 pl-5 text-xs text-amber-100/90">
+        {(guidance.tips || []).map(tip => (
+          <li key={tip}>{tip}</li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function FundingAnalyticsPanel({ analytics, loading, error, onRefresh }) {
+  if (!loading && !error && !analytics) return null;
+  const startupInsights = analytics?.startupInsights || [];
+  const investorInsights = analytics?.investorInsights || [];
+  const counts = analytics?.systemStats?.counts || {};
+  const matchSuccessRate = analytics?.systemStats?.matchSuccessRate ?? 0;
+
+  return (
+    <section className="rounded-3xl border border-white/10 bg-white/[0.02] p-5 text-sm text-white">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h3 className="text-lg font-semibold">Documotion analytics</h3>
+          <p className="text-xs text-slate-400">Live benchmarks from the funding network.</p>
+        </div>
+        <button
+          type="button"
+          onClick={onRefresh}
+          className="inline-flex items-center gap-2 rounded-xl border border-white/5 bg-white/5 px-3 py-2 text-xs text-white transition hover:bg-white/10"
+        >
+          <RefreshCw className="h-3.5 w-3.5" />
+          Refresh
+        </button>
+      </div>
+
+      {error ? (
+        <div className="mb-4 rounded-2xl border border-rose-400/30 bg-rose-500/10 px-4 py-2 text-xs text-rose-100">
+          {error}
+        </div>
+      ) : null}
+
+      {loading ? <p className="text-xs text-slate-400">Loading analytics…</p> : null}
+
+      <div className="grid gap-4 md:grid-cols-3">
+        <div className="rounded-2xl border border-white/10 bg-white/4 p-4">
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-400">System status</p>
+          <div className="mt-3 space-y-2 text-sm text-slate-200">
+            <div className="flex justify-between">
+              <span>Submitted</span>
+              <span>{counts.submitted || 0}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>In review</span>
+              <span>{counts['in-review'] || 0}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Approved</span>
+              <span>{counts.approved || 0}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Drafts</span>
+              <span>{counts.draft || 0}</span>
+            </div>
+          </div>
+          <p className="mt-3 text-xs text-emerald-300">
+            Match success rate {matchSuccessRate}% (approved / submitted)
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-white/10 bg-white/4 p-4">
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Top industries</p>
+          <ul className="mt-3 space-y-2 text-xs text-slate-200">
+            {startupInsights.length
+              ? startupInsights.map(item => (
+                  <li key={item.industry} className="flex justify-between">
+                    <span>{item.industry}</span>
+                    <span className="text-white">{formatINR(item.averageRaise)}</span>
+                  </li>
+                ))
+              : (
+                <li className="text-slate-500">No industry data yet.</li>
+                )}
+          </ul>
+        </div>
+
+        <div className="rounded-2xl border border-white/10 bg-white/4 p-4">
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Investor hotspots</p>
+          <ul className="mt-3 space-y-2 text-xs text-slate-200">
+            {investorInsights.length
+              ? investorInsights.map(item => (
+                  <li key={item.state} className="flex justify-between">
+                    <span>{item.state}</span>
+                    <span>{item.count}</span>
+                  </li>
+                ))
+              : (
+                <li className="text-slate-500">No state trends yet.</li>
+                )}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function StepNavigation({ currentStep, onBack, onNext }) {
   return (
     <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
@@ -955,14 +1568,14 @@ function StepNavigation({ currentStep, onBack, onNext }) {
         type="button"
         onClick={onBack}
         disabled={currentStep === 0}
-        className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white transition hover:bg-white/10 disabled:opacity-60"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white transition hover:bg-white/10 disabled:opacity-60 sm:w-auto"
       >
         <ChevronLeft className="h-4 w-4" /> Back
       </button>
       <button
         type="button"
         onClick={onNext}
-        className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/40 transition hover:bg-blue-500"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/40 transition hover:bg-blue-500 sm:w-auto"
       >
         Continue
         <ChevronRight className="h-4 w-4" />
@@ -971,7 +1584,17 @@ function StepNavigation({ currentStep, onBack, onNext }) {
   );
 }
 
-function InputField({ label, name, value, onChange, type = 'text', placeholder, required }) {
+function InputField({
+  label,
+  name,
+  value,
+  onChange,
+  type = 'text',
+  placeholder,
+  required,
+  hint,
+  error,
+}) {
   return (
     <label className="space-y-1 text-sm text-slate-200">
       <span className="text-xs uppercase tracking-[0.3em] text-slate-400">
@@ -983,13 +1606,18 @@ function InputField({ label, name, value, onChange, type = 'text', placeholder, 
         value={value}
         onChange={event => onChange(name, event.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-400/70 focus:outline-none"
+        className={clsx(
+          'w-full rounded-xl border bg-white/5 px-4 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none',
+          error ? 'border-rose-400/70 focus:border-rose-300' : 'border-white/10 focus:border-blue-400/70'
+        )}
       />
+      {hint ? <p className="text-xs text-slate-400">{hint}</p> : null}
+      {error ? <p className="text-xs text-rose-300">{error}</p> : null}
     </label>
   );
 }
 
-function SelectField({ label, name, value, onChange, options, required }) {
+function SelectField({ label, name, value, onChange, options, required, error }) {
   return (
     <label className="space-y-1 text-sm text-slate-200">
       <span className="text-xs uppercase tracking-[0.3em] text-slate-400">
@@ -999,7 +1627,10 @@ function SelectField({ label, name, value, onChange, options, required }) {
       <select
         value={value}
         onChange={event => onChange(name, event.target.value)}
-        className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus:border-blue-400/70 focus:outline-none"
+        className={clsx(
+          'w-full rounded-xl border bg-white/5 px-3 py-2 text-sm text-white focus:outline-none',
+          error ? 'border-rose-400/70 focus:border-rose-300' : 'border-white/10 focus:border-blue-400/70'
+        )}
       >
         <option value="">Select</option>
         {options.map(option => (
@@ -1008,6 +1639,7 @@ function SelectField({ label, name, value, onChange, options, required }) {
           </option>
         ))}
       </select>
+      {error ? <p className="text-xs text-rose-300">{error}</p> : null}
     </label>
   );
 }
@@ -1021,6 +1653,8 @@ function TextAreaField({
   placeholder,
   maxLength,
   required,
+  hint,
+  error,
 }) {
   const remaining = maxLength ? maxLength - (value?.length || 0) : null;
   return (
@@ -1037,11 +1671,16 @@ function TextAreaField({
         }}
         rows={rows}
         placeholder={placeholder}
-        className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-blue-400/70 focus:outline-none"
+        className={clsx(
+          'w-full rounded-2xl border bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none',
+          error ? 'border-rose-400/70 focus:border-rose-300' : 'border-white/10 focus:border-blue-400/70'
+        )}
       />
+      {hint ? <p className="text-xs text-slate-400">{hint}</p> : null}
       {remaining !== null ? (
         <span className="text-xs text-slate-400">{remaining} characters left</span>
       ) : null}
+      {error ? <p className="text-xs text-rose-300">{error}</p> : null}
     </label>
   );
 }
@@ -1057,6 +1696,7 @@ function UploadCard({
   accept,
   required,
   disabled,
+  error,
 }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
@@ -1110,6 +1750,7 @@ function UploadCard({
               </a>
             </div>
           ) : null}
+          {error ? <p className="text-xs text-rose-300">{error}</p> : null}
         </div>
       </div>
     </div>
@@ -1120,6 +1761,134 @@ function ProgressBar({ value }) {
   return (
     <div className="h-2 rounded-full bg-white/10">
       <div className="h-2 rounded-full bg-blue-500 transition-all" style={{ width: `${value}%` }} />
+    </div>
+  );
+}
+
+function StepProgressIndicator({ currentStep, onStepSelect }) {
+  return (
+    <div className="mt-3 flex gap-2 overflow-x-auto rounded-2xl border border-white/5 bg-white/[0.02] p-2 text-xs text-slate-300">
+      {STEPS.map((step, index) => {
+        const isActive = index === currentStep;
+        const isCompleted = index < currentStep;
+        return (
+          <button
+            key={step.id}
+            type="button"
+            onClick={() => onStepSelect(index)}
+            className={clsx(
+              'flex min-w-[120px] flex-1 items-center gap-2 rounded-xl px-3 py-2 transition focus:outline-none',
+              isActive
+                ? 'bg-blue-600/20 text-white'
+                : isCompleted
+                  ? 'bg-emerald-500/10 text-emerald-100'
+                  : 'bg-white/5 text-slate-400 hover:bg-white/10'
+            )}
+          >
+            <span
+              className={clsx(
+                'flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-semibold',
+                isCompleted
+                  ? 'bg-emerald-400/30 text-emerald-50'
+                  : isActive
+                    ? 'bg-blue-500/30 text-blue-50'
+                    : 'bg-white/10 text-slate-300'
+              )}
+            >
+              {index + 1}
+            </span>
+            <span className="text-left font-medium">{step.title}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function FundingInsightsPanel({ insights, loading, error }) {
+  if (loading) {
+    return (
+      <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300">
+        Loading funding insights...
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="mt-4 rounded-2xl border border-amber-400/40 bg-amber-500/10 p-4 text-xs text-amber-100">
+        {error}
+      </div>
+    );
+  }
+  if (!insights) {
+    return null;
+  }
+
+  const { benchmarks, matchInsights } = insights;
+
+  const formatAmount = value => {
+    if (!value) return '—';
+    return `₹ ${Number(value).toLocaleString('en-IN')}`;
+  };
+
+  return (
+    <div className="mt-4 grid gap-4 rounded-3xl border border-white/5 bg-white/[0.02] p-4 md:grid-cols-2">
+      <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div className="flex items-center gap-2 text-white">
+          <Sparkles className="h-4 w-4 text-blue-200" />
+          <span className="text-sm font-semibold">Sector Benchmarks</span>
+        </div>
+        {benchmarks ? (
+          <dl className="mt-3 space-y-2 text-sm text-slate-200">
+            <div className="flex justify-between">
+              <dt>Industry avg. ask</dt>
+              <dd className="font-semibold">{formatAmount(benchmarks.industryAverage)}</dd>
+            </div>
+            <div className="flex justify-between text-xs text-slate-400">
+              <dt>Industry submissions</dt>
+              <dd>{benchmarks.industryCount}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt>Platform avg. ask</dt>
+              <dd className="font-semibold">{formatAmount(benchmarks.globalAverage)}</dd>
+            </div>
+          </dl>
+        ) : (
+          <p className="mt-2 text-xs text-slate-400">Not enough data yet for benchmarks.</p>
+        )}
+      </div>
+      <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div className="flex items-center gap-2 text-white">
+          <Info className="h-4 w-4 text-emerald-200" />
+          <span className="text-sm font-semibold">Top State Matches</span>
+        </div>
+        {matchInsights?.length ? (
+          <ul className="mt-3 space-y-3 text-xs text-slate-200">
+            {matchInsights.map(match => (
+              <li key={match.stateId} className="rounded-xl border border-white/10 bg-white/[0.02] p-3">
+                <div className="flex items-center justify-between text-sm text-white">
+                  <span>{match.stateName}</span>
+                  <span className="font-semibold">{match.score}% fit</span>
+                </div>
+                <dl className="mt-2 grid grid-cols-2 gap-2 text-[11px] text-slate-400">
+                  {(match.breakdown || []).slice(0, 3).map(item => (
+                    <div key={`${match.stateId}-${item.key}`} className="rounded border border-white/5 px-2 py-1">
+                      <dt className="uppercase tracking-[0.2em] text-[9px] text-slate-500">
+                        {item.key}
+                      </dt>
+                      <dd className="text-slate-200">
+                        {item.value}%
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-2 text-xs text-slate-400">No matches yet.</p>
+        )}
+      </div>
     </div>
   );
 }

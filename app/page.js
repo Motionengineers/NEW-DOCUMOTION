@@ -189,7 +189,7 @@ export default function HomePage() {
                   >
                     <span className="relative flex items-center gap-2.5">
                       <span
-                        className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 backdrop-blur"
+                        className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 backdrop-blur"
                         style={{ backgroundColor: feature.iconBg }}
                       >
                         <Icon className="h-3 w-3" strokeWidth={2.2} />
@@ -355,7 +355,7 @@ export default function HomePage() {
                 ].map(item => (
                   <li key={item} className="flex items-start gap-4">
                     <CheckCircle2 className="w-6 h-6 text-emerald-400 mt-1" />
-                    <span className="text-base leading-relaxed text-white/95">{item}</span>
+                    <span className="text-base leading-relaxed text-gray-900 dark:text-gray-100" style={{ color: 'var(--label)' }}>{item}</span>
                   </li>
                 ))}
               </ul>
@@ -437,9 +437,9 @@ export default function HomePage() {
       {showApplyModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={resetModal} />
-          <div className="relative w-full max-w-2xl rounded-3xl p-8 md:p-10 glass border border-white/10 shadow-2xl">
+          <div className="relative w-full max-w-2xl rounded-3xl p-8 md:p-10 glass border border-separator shadow-2xl">
             <button
-              className="absolute top-4 right-4 text-sm font-medium text-white/60 hover:text-white transition-colors"
+              className="absolute top-4 right-4 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
               onClick={resetModal}
             >
               Close
@@ -465,7 +465,7 @@ export default function HomePage() {
               ].map(feature => (
                 <div
                   key={feature}
-                  className="flex items-start gap-3 rounded-2xl border border-white/5 bg-white/5 px-4 py-3"
+                  className="flex items-start gap-3 rounded-2xl border border-separator bg-gray-50 dark:bg-gray-800/50 px-4 py-3"
                 >
                   <CheckCircle2 className="w-5 h-5 mt-1" style={{ color: 'var(--system-blue)' }} />
                   <span className="text-sm" style={{ color: 'var(--secondary-label)' }}>

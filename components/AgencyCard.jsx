@@ -31,10 +31,10 @@ export default function AgencyCard({ agency }) {
   const minProjectLabel = formatCurrency(agency.minBudget, agency.currency);
 
   return (
-    <article className="glass group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 transition hover:-translate-y-1 hover:border-blue-400/40 hover:shadow-2xl hover:shadow-blue-500/20">
+    <article className="glass group flex h-full flex-col overflow-hidden rounded-2xl border border-separator transition hover:-translate-y-1 hover:border-blue-400/40 hover:shadow-2xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/10">
       <div className="flex flex-col gap-5 p-6">
         <header className="flex items-start gap-4">
-          <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-white/10 bg-white/10">
+          <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-separator bg-gray-100 dark:bg-gray-800">
             {agency.logoUrl ? (
               <Image
                 src={agency.logoUrl}
@@ -80,12 +80,12 @@ export default function AgencyCard({ agency }) {
               )}
               {agency.rating ? (
                 <span
-                  className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 text-sm font-medium"
+                  className="inline-flex items-center gap-1 rounded-full bg-gray-200 dark:bg-gray-800 px-2 py-0.5 text-sm font-medium"
                   style={{ color: 'var(--label)' }}
                 >
                   <Star className="h-4 w-4 text-amber-400" />
                   {agency.rating.toFixed(1)}
-                  <span className="text-xs text-amber-200/80">
+                  <span className="text-xs text-amber-300 dark:text-amber-200">
                     ({agency.reviewCount ?? agency.ratingCount ?? 0})
                   </span>
                 </span>
@@ -112,7 +112,7 @@ export default function AgencyCard({ agency }) {
             {serviceBadges.slice(0, 5).map(service => (
               <span
                 key={service}
-                className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-wide"
+                className="rounded-full border border-separator bg-gray-50 dark:bg-gray-800/50 px-3 py-1 text-xs font-medium uppercase tracking-wide"
                 style={{ color: 'var(--secondary-label)' }}
               >
                 {service}
@@ -121,7 +121,7 @@ export default function AgencyCard({ agency }) {
           </div>
         ) : null}
 
-        <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm">
+        <div className="rounded-xl border border-separator bg-gray-50 dark:bg-gray-800/30 p-4 text-sm">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span className="font-medium" style={{ color: 'var(--label)' }}>
               Starting from
@@ -140,7 +140,7 @@ export default function AgencyCard({ agency }) {
         </div>
       </div>
 
-      <footer className="flex items-center justify-between border-t border-white/10 bg-white/5 px-6 py-4">
+      <footer className="flex items-center justify-between border-t border-separator bg-gray-50 dark:bg-gray-800/30 px-6 py-4">
         <div className="flex items-center gap-3">
           {agency.website ? (
             <a
@@ -170,7 +170,7 @@ export default function AgencyCard({ agency }) {
         <div className="flex items-center gap-2">
           <Link
             href={`/branding/agencies/${agency.slug}`}
-            className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-semibold transition hover:bg-white/10"
+            className="inline-flex items-center gap-2 rounded-xl border border-separator bg-transparent px-4 py-2 text-sm font-semibold transition hover:bg-gray-100 dark:hover:bg-gray-800"
             style={{ color: 'var(--label)' }}
           >
             View Profile
@@ -178,7 +178,7 @@ export default function AgencyCard({ agency }) {
           </Link>
           <Link
             href={`/branding/agencies/${agency.slug}#hire`}
-            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-500"
+            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 dark:bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 dark:hover:bg-blue-500"
           >
             Hire Now
           </Link>
