@@ -301,11 +301,11 @@ model Document {
   format     String?   @default("pdf")
   version    Int?      @default(1)
   metadata   Json?
-  sourceGenerationId Int?
+  sourceGenerationId Int? @unique
   uploadedAt DateTime  @default(now())
   verifiedAt DateTime?
   startup    Startup   @relation(fields: [startupId], references: [id], onDelete: Cascade)
-  sourceGeneration DocumentGeneration? @relation(fields: [sourceGenerationId], references: [id], onDelete: SetNull)
+  sourceGeneration DocumentGeneration? @relation("DocumentSourceGeneration", fields: [sourceGenerationId], references: [id], onDelete: SetNull)
 
   @@index([startupId])
   @@index([type])
@@ -324,12 +324,11 @@ model DocumentGeneration {
   tone         String?  // friendly | formal | investor
   payload      Json?
   errorMessage String?
-  documentId   Int?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   startup      Startup  @relation(fields: [startupId], references: [id], onDelete: Cascade)
   createdBy    User?    @relation(fields: [createdById], references: [id], onDelete: SetNull)
-  document     Document? @relation(fields: [documentId], references: [id], onDelete: SetNull)
+  generatedDocument Document? @relation("DocumentSourceGeneration")
 
   @@index([startupId])
   @@index([createdById])
