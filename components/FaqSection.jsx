@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const faqItems = [
   {
@@ -95,14 +96,24 @@ export default function FaqSection() {
                     {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                   </span>
                 </button>
-                {isOpen && (
-                  <div
-                    className="px-6 md:px-8 pb-6 md:pb-8"
-                    style={{ color: 'var(--secondary-label)' }}
-                  >
-                    <p className="text-sm md:text-base leading-relaxed">{item.answer}</p>
-                  </div>
-                )}
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <div
+                        className="px-6 md:px-8 pb-6 md:pb-8"
+                        style={{ color: 'var(--secondary-label)' }}
+                      >
+                        <p className="text-sm md:text-base leading-relaxed">{item.answer}</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             );
           })}

@@ -24,5 +24,3 @@ export async function POST(request, { params }) {
     return NextResponse.json({ success: false, error: 'Unable to approve draft' }, { status: 500 });
   }
 }
-
-

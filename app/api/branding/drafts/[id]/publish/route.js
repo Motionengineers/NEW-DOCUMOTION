@@ -13,7 +13,10 @@ export async function POST(_request, { params }) {
     if (draft.status !== 'approved') {
       return NextResponse.json({ success: false, error: 'Draft is not approved' }, { status: 400 });
     }
-    const versionCode = new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 12);
+    const versionCode = new Date()
+      .toISOString()
+      .replace(/[-:.TZ]/g, '')
+      .slice(0, 12);
     const version = await prisma.brandVersion.create({
       data: {
         startupId: draft.startupId,
@@ -27,5 +30,3 @@ export async function POST(_request, { params }) {
     return NextResponse.json({ success: false, error: 'Unable to publish' }, { status: 500 });
   }
 }
-
-

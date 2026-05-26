@@ -1,9 +1,9 @@
 /**
  * Production Rate Limiting Middleware
- * 
+ *
  * Protects all /api/* routes with Upstash Redis rate limiting
  * Configured: 50 requests per minute per IP
- * 
+ *
  * Environment variables required:
  * - UPSTASH_REDIS_REST_URL
  * - UPSTASH_REDIS_REST_TOKEN

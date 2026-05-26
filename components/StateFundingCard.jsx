@@ -4,7 +4,7 @@ import { track } from '@/lib/telemetry';
 
 export default function StateFundingCard({ scheme, onSelect, highlighted }) {
   const [saved, setSaved] = React.useState(false);
-  
+
   // Track scheme view when card is rendered
   useEffect(() => {
     if (scheme) {
@@ -33,23 +33,49 @@ export default function StateFundingCard({ scheme, onSelect, highlighted }) {
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.25em] text-gray-500 dark:text-gray-400" style={{ color: 'var(--tertiary-label)' }}>
+          <p
+            className="text-xs uppercase tracking-[0.25em] text-gray-500 dark:text-gray-400"
+            style={{ color: 'var(--tertiary-label)' }}
+          >
             {scheme.state?.abbreviation || scheme.state?.name || 'State Scheme'}
           </p>
-          <h3 className="mt-2 text-lg font-semibold text-gray-900 dark:text-gray-100" style={{ color: 'var(--label)' }}>{scheme.title}</h3>
+          <h3
+            className="mt-2 text-lg font-semibold text-gray-900 dark:text-gray-100"
+            style={{ color: 'var(--label)' }}
+          >
+            {scheme.title}
+          </h3>
         </div>
         <span className={clsx('rounded-full px-3 py-1 text-xs', badgeColor)}>{scheme.status}</span>
       </div>
 
-      <p className="mt-3 text-sm text-gray-700 dark:text-gray-300" style={{ color: 'var(--secondary-label)' }}>{scheme.description}</p>
+      <p
+        className="mt-3 text-sm text-gray-700 dark:text-gray-300"
+        style={{ color: 'var(--secondary-label)' }}
+      >
+        {scheme.description}
+      </p>
 
-      <dl className="mt-4 grid grid-cols-2 gap-3 text-sm text-gray-800 dark:text-gray-200" style={{ color: 'var(--secondary-label)' }}>
+      <dl
+        className="mt-4 grid grid-cols-2 gap-3 text-sm text-gray-800 dark:text-gray-200"
+        style={{ color: 'var(--secondary-label)' }}
+      >
         <div>
-          <dt className="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400" style={{ color: 'var(--tertiary-label)' }}>Funding Amount</dt>
+          <dt
+            className="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400"
+            style={{ color: 'var(--tertiary-label)' }}
+          >
+            Funding Amount
+          </dt>
           <dd className="font-medium">{scheme.fundingAmount || '—'}</dd>
         </div>
         <div>
-          <dt className="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400" style={{ color: 'var(--tertiary-label)' }}>Interest Subsidy</dt>
+          <dt
+            className="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400"
+            style={{ color: 'var(--tertiary-label)' }}
+          >
+            Interest Subsidy
+          </dt>
           <dd className="font-medium">
             {scheme.interestRate !== null && scheme.interestRate !== undefined
               ? `${scheme.interestRate}%`
@@ -57,13 +83,25 @@ export default function StateFundingCard({ scheme, onSelect, highlighted }) {
           </dd>
         </div>
         <div>
-          <dt className="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400" style={{ color: 'var(--tertiary-label)' }}>Sector Focus</dt>
+          <dt
+            className="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400"
+            style={{ color: 'var(--tertiary-label)' }}
+          >
+            Sector Focus
+          </dt>
           <dd className="font-medium">{scheme.sector || 'General'}</dd>
         </div>
         <div>
-          <dt className="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400" style={{ color: 'var(--tertiary-label)' }}>Eligibility</dt>
+          <dt
+            className="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400"
+            style={{ color: 'var(--tertiary-label)' }}
+          >
+            Eligibility
+          </dt>
           <dd className="font-medium text-sm text-gray-700 dark:text-gray-300">
-            {scheme.eligibility ? scheme.eligibility.slice(0, 120) + (scheme.eligibility.length > 120 ? '…' : '') : 'See policy'}
+            {scheme.eligibility
+              ? scheme.eligibility.slice(0, 120) + (scheme.eligibility.length > 120 ? '…' : '')
+              : 'See policy'}
           </dd>
         </div>
       </dl>
@@ -106,7 +144,9 @@ export default function StateFundingCard({ scheme, onSelect, highlighted }) {
           }}
           className={clsx(
             'rounded-full border px-4 py-2 text-sm',
-            saved ? 'text-emerald-600 dark:text-emerald-300 border-emerald-500 dark:border-emerald-400/40 bg-emerald-50 dark:bg-emerald-900/20' : 'text-gray-700 dark:text-gray-300 border-separator hover:bg-gray-100 dark:hover:bg-gray-800'
+            saved
+              ? 'text-emerald-600 dark:text-emerald-300 border-emerald-500 dark:border-emerald-400/40 bg-emerald-50 dark:bg-emerald-900/20'
+              : 'text-gray-700 dark:text-gray-300 border-separator hover:bg-gray-100 dark:hover:bg-gray-800'
           )}
         >
           {saved ? 'Saved' : 'Save'}
@@ -124,5 +164,3 @@ export default function StateFundingCard({ scheme, onSelect, highlighted }) {
     </div>
   );
 }
-
-

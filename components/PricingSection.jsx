@@ -160,34 +160,25 @@ export default function PricingSection() {
           </p>
 
           {/* Billing Toggle */}
-          <div className="inline-flex items-center gap-2 p-1 rounded-xl border backdrop-blur-md" style={{ borderColor: 'var(--separator)', backgroundColor: 'rgba(255,255,255,0.02)' }}>
+          <div
+            className="inline-flex items-center gap-2 p-1 rounded-xl border backdrop-blur-md"
+            style={{ borderColor: 'var(--separator)', backgroundColor: 'rgba(255,255,255,0.02)' }}
+          >
             <button
               onClick={() => setBillingCycle('monthly')}
               className={`px-6 py-2 rounded-lg font-medium transition-all ${
-                billingCycle === 'monthly'
-                  ? 'text-white'
-                  : 'text-slate-400 hover:text-slate-300'
+                billingCycle === 'monthly' ? 'text-white' : 'text-slate-400 hover:text-slate-300'
               }`}
-              style={
-                billingCycle === 'monthly'
-                  ? { backgroundColor: 'var(--system-blue)' }
-                  : {}
-              }
+              style={billingCycle === 'monthly' ? { backgroundColor: 'var(--system-blue)' } : {}}
             >
               Monthly
             </button>
             <button
               onClick={() => setBillingCycle('annual')}
               className={`px-6 py-2 rounded-lg font-medium transition-all relative ${
-                billingCycle === 'annual'
-                  ? 'text-white'
-                  : 'text-slate-400 hover:text-slate-300'
+                billingCycle === 'annual' ? 'text-white' : 'text-slate-400 hover:text-slate-300'
               }`}
-              style={
-                billingCycle === 'annual'
-                  ? { backgroundColor: 'var(--system-blue)' }
-                  : {}
-              }
+              style={billingCycle === 'annual' ? { backgroundColor: 'var(--system-blue)' } : {}}
             >
               Annual
               <span className="absolute -top-1 -right-1 text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500 text-white font-semibold">
@@ -237,10 +228,7 @@ export default function PricingSection() {
                   >
                     <Icon className="w-6 h-6" />
                   </div>
-                  <h3
-                    className="text-2xl font-semibold mb-1"
-                    style={{ color: 'var(--label)' }}
-                  >
+                  <h3 className="text-2xl font-semibold mb-1" style={{ color: 'var(--label)' }}>
                     {tier.name}
                   </h3>
                   <p className="text-sm mb-4" style={{ color: 'var(--tertiary-label)' }}>
@@ -276,7 +264,10 @@ export default function PricingSection() {
                         className="w-5 h-5 mt-0.5 flex-shrink-0"
                         style={{ color: 'var(--system-green)' }}
                       />
-                      <span className="text-sm leading-relaxed" style={{ color: 'var(--secondary-label)' }}>
+                      <span
+                        className="text-sm leading-relaxed"
+                        style={{ color: 'var(--secondary-label)' }}
+                      >
                         {feature}
                       </span>
                     </li>
@@ -285,7 +276,10 @@ export default function PricingSection() {
 
                 {tier.addOns && tier.addOns.length > 0 && (
                   <div className="mb-6 pt-4 border-t" style={{ borderColor: 'var(--separator)' }}>
-                    <p className="text-xs font-medium mb-2" style={{ color: 'var(--tertiary-label)' }}>
+                    <p
+                      className="text-xs font-medium mb-2"
+                      style={{ color: 'var(--tertiary-label)' }}
+                    >
                       Add-ons:
                     </p>
                     {tier.addOns.map((addOn, aIdx) => (
@@ -334,4 +328,3 @@ export default function PricingSection() {
     </section>
   );
 }
-

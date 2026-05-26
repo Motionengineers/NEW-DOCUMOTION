@@ -35,4 +35,3 @@ export default function ReactionButton({ type, count = 0, active = false, onClic
     </button>
   );
 }
-

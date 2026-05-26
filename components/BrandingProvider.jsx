@@ -76,130 +76,136 @@ export function BrandingProvider({ children }) {
     }
   }, []);
 
-  const loadBranding = useCallback(async (forceReload = false) => {
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+  const loadBranding = useCallback(
+    async (forceReload = false) => {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
 
-      // Prefer published runtime at /brand.json; fallback to /api/settings
-      const cacheBuster = forceReload ? `?_t=${Date.now()}` : '';
-      const runtimeRes = await fetch(`/brand.json${cacheBuster}`, {
-        signal: controller.signal,
-        cache: 'no-store',
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-        },
-      }).catch(() => null);
+        // Prefer published runtime at /brand.json; fallback to /api/settings
+        const cacheBuster = forceReload ? `?_t=${Date.now()}` : '';
+        const runtimeRes = await fetch(`/brand.json${cacheBuster}`, {
+          signal: controller.signal,
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            Pragma: 'no-cache',
+          },
+        }).catch(() => null);
 
-      if (runtimeRes && runtimeRes.ok) {
-        const runtime = await runtimeRes.json();
-        const tokens = runtime?.tokens || {};
-        const colors = tokens.color || {};
-        const typography = tokens.typography || {};
-        const next = {
-          companyName: runtime?.name || 'Documotion',
-          logoUrl: runtime?.assets?.logo?.default || '',
-          faviconUrl: runtime?.assets?.favicon || '',
-          primaryColor: colors.primary || '#0066cc',
-          accentColor: colors.accent || '#22c55e',
-          // keep existing secondary if not provided
-          fontHeading: typography.fontPrimary || 'Inter',
-          fontBody: typography.fontPrimary || 'Inter',
-          loaded: true,
-        };
-        setBranding(prev => ({ ...prev, ...next }));
-        applyBranding(next);
-        clearTimeout(timeoutId);
-        return;
-      }
-
-      // Try localStorage first for faster loading
-      if (typeof window !== 'undefined') {
-        try {
-          const stored = localStorage.getItem('branding_settings');
-          if (stored) {
-            const parsed = JSON.parse(stored);
-            setBranding(prev => ({
-              ...prev,
-              ...parsed,
-              loaded: true,
-            }));
-            applyBranding(parsed);
-            clearTimeout(timeoutId);
-            // Still fetch from server in background to sync
-            fetch(`/api/settings?category=branding${cacheBuster}`, {
-              signal: controller.signal,
-              cache: 'no-store',
-            }).then(res => res.json()).then(data => {
-              if (data.success && data.settings) {
-                setBranding(prev => ({
-                  ...prev,
-                  ...data.settings,
-                  loaded: true,
-                }));
-                applyBranding(data.settings);
-                // Update localStorage with server data
-                localStorage.setItem('branding_settings', JSON.stringify(data.settings));
-              }
-            }).catch(() => {
-              // Ignore - we already have localStorage data
-            });
-            return;
-          }
-        } catch (localError) {
-          console.warn('Failed to load from localStorage:', localError);
+        if (runtimeRes && runtimeRes.ok) {
+          const runtime = await runtimeRes.json();
+          const tokens = runtime?.tokens || {};
+          const colors = tokens.color || {};
+          const typography = tokens.typography || {};
+          const next = {
+            companyName: runtime?.name || 'Documotion',
+            logoUrl: runtime?.assets?.logo?.default || '',
+            faviconUrl: runtime?.assets?.favicon || '',
+            primaryColor: colors.primary || '#0066cc',
+            accentColor: colors.accent || '#22c55e',
+            // keep existing secondary if not provided
+            fontHeading: typography.fontPrimary || 'Inter',
+            fontBody: typography.fontPrimary || 'Inter',
+            loaded: true,
+          };
+          setBranding(prev => ({ ...prev, ...next }));
+          applyBranding(next);
+          clearTimeout(timeoutId);
+          return;
         }
-      }
 
-      // Fallback to settings API
-      const response = await fetch(`/api/settings?category=branding${cacheBuster}`, {
-        signal: controller.signal,
-        cache: 'no-store',
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-        },
-      });
-      clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
-      }
-
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new Error('Unexpected response format from settings endpoint');
-      }
-
-      const data = await response.json();
-
-      if (data.success && data.settings) {
-        setBranding(prev => ({
-          ...prev,
-          ...data.settings,
-          loaded: true,
-        }));
-        applyBranding(data.settings);
-        // Save to localStorage for faster future loading
+        // Try localStorage first for faster loading
         if (typeof window !== 'undefined') {
           try {
-            localStorage.setItem('branding_settings', JSON.stringify(data.settings));
+            const stored = localStorage.getItem('branding_settings');
+            if (stored) {
+              const parsed = JSON.parse(stored);
+              setBranding(prev => ({
+                ...prev,
+                ...parsed,
+                loaded: true,
+              }));
+              applyBranding(parsed);
+              clearTimeout(timeoutId);
+              // Still fetch from server in background to sync
+              fetch(`/api/settings?category=branding${cacheBuster}`, {
+                signal: controller.signal,
+                cache: 'no-store',
+              })
+                .then(res => res.json())
+                .then(data => {
+                  if (data.success && data.settings) {
+                    setBranding(prev => ({
+                      ...prev,
+                      ...data.settings,
+                      loaded: true,
+                    }));
+                    applyBranding(data.settings);
+                    // Update localStorage with server data
+                    localStorage.setItem('branding_settings', JSON.stringify(data.settings));
+                  }
+                })
+                .catch(() => {
+                  // Ignore - we already have localStorage data
+                });
+              return;
+            }
           } catch (localError) {
-            console.warn('Failed to save to localStorage:', localError);
+            console.warn('Failed to load from localStorage:', localError);
           }
         }
-      } else {
+
+        // Fallback to settings API
+        const response = await fetch(`/api/settings?category=branding${cacheBuster}`, {
+          signal: controller.signal,
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            Pragma: 'no-cache',
+          },
+        });
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Unexpected response format from settings endpoint');
+        }
+
+        const data = await response.json();
+
+        if (data.success && data.settings) {
+          setBranding(prev => ({
+            ...prev,
+            ...data.settings,
+            loaded: true,
+          }));
+          applyBranding(data.settings);
+          // Save to localStorage for faster future loading
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem('branding_settings', JSON.stringify(data.settings));
+            } catch (localError) {
+              console.warn('Failed to save to localStorage:', localError);
+            }
+          }
+        } else {
+          setBranding(prev => ({ ...prev, loaded: true }));
+        }
+      } catch (error) {
+        // Silently fail - use defaults if API is unavailable
+        if (error.name !== 'AbortError') {
+          console.warn('Branding API unavailable, using defaults:', error.message);
+        }
         setBranding(prev => ({ ...prev, loaded: true }));
       }
-    } catch (error) {
-      // Silently fail - use defaults if API is unavailable
-      if (error.name !== 'AbortError') {
-        console.warn('Branding API unavailable, using defaults:', error.message);
-      }
-      setBranding(prev => ({ ...prev, loaded: true }));
-    }
-  }, [applyBranding]);
+    },
+    [applyBranding]
+  );
 
   useEffect(() => {
     loadBranding();
@@ -235,10 +241,10 @@ export function BrandingProvider({ children }) {
             })
           )
         );
-        
+
         // Read all responses before checking
         const results = await Promise.all(
-          saveResults.map(async (res) => {
+          saveResults.map(async res => {
             try {
               const json = await res.json();
               return { ok: res.ok, json, status: res.status };
@@ -247,13 +253,15 @@ export function BrandingProvider({ children }) {
             }
           })
         );
-        
+
         // Check for failures
         const failedSaves = results.filter(r => !r.ok || !r.json.success);
-        
+
         // If some saves failed, use localStorage as fallback
         if (failedSaves.length > 0) {
-          console.warn('Some branding settings failed to save to server, using localStorage fallback');
+          console.warn(
+            'Some branding settings failed to save to server, using localStorage fallback'
+          );
           // Save to localStorage as fallback
           if (typeof window !== 'undefined') {
             try {
@@ -277,7 +285,7 @@ export function BrandingProvider({ children }) {
             }
           }
         }
-        
+
         // Reload branding from server to ensure consistency
         setTimeout(() => {
           loadBranding(true);

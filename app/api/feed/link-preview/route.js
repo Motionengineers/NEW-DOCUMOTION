@@ -38,40 +38,54 @@ export async function POST(request) {
       }
 
       const html = await response.text();
-      
-      // Simple regex-based OG tag extraction (for MVP)
-      // In production, consider using a proper HTML parser like cheerio
-      const ogTitle = html.match(/<meta\s+property=["']og:title["']\s+content=["']([^"']+)["']/i)?.[1] ||
-        html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[1]?.trim() ||
-        null;
-      
-      const ogDescription = html.match(/<meta\s+property=["']og:description["']\s+content=["']([^"']+)["']/i)?.[1] ||
+
+      // Robust regex-based OG tag extraction
+      const extractMeta = name => {
+        const reg = new RegExp(
+          `<meta[^>]+(?:property|name)=["']og:${name}["'][^>]+content=["']([^"']+)["']`,
+          'i'
+        );
+        const regAlt = new RegExp(
+          `<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["']og:${name}["']`,
+          'i'
+        );
+        return html.match(reg)?.[1] || html.match(regAlt)?.[1] || null;
+      };
+
+      const title =
+        extractMeta('title') || html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[1]?.trim() || null;
+      const description =
+        extractMeta('description') ||
         html.match(/<meta\s+name=["']description["']\s+content=["']([^"']+)["']/i)?.[1] ||
         null;
-      
-      const ogImage = html.match(/<meta\s+property=["']og:image["']\s+content=["']([^"']+)["']/i)?.[1] ||
-        html.match(/<meta\s+property=["']og:image:url["']\s+content=["']([^"']+)["']/i)?.[1] ||
-        null;
-      
-      const ogSiteName = html.match(/<meta\s+property=["']og:site_name["']\s+content=["']([^"']+)["']/i)?.[1] || null;
+      const image = extractMeta('image') || extractMeta('image:url');
+      const siteName = extractMeta('site_name');
 
       return jsonOk(
         {
           url,
-          title: ogTitle,
-          description: ogDescription,
-          image: ogImage,
-          siteName: ogSiteName,
+          title,
+          description,
+          image,
+          siteName,
         },
         rid
       );
     } catch (fetchError) {
-      console.error(JSON.stringify({ level: 'error', rid, route: '/api/feed/link-preview', msg: String(fetchError) }));
+      console.error(
+        JSON.stringify({
+          level: 'error',
+          rid,
+          route: '/api/feed/link-preview',
+          msg: String(fetchError),
+        })
+      );
       return jsonError('fetch_failed', 'Failed to fetch URL metadata', 400, rid);
     }
   } catch (error) {
-    console.error(JSON.stringify({ level: 'error', rid, route: '/api/feed/link-preview', msg: String(error) }));
+    console.error(
+      JSON.stringify({ level: 'error', rid, route: '/api/feed/link-preview', msg: String(error) })
+    );
     return jsonError('internal_error', 'An unexpected error occurred', 500, rid);
   }
 }
-

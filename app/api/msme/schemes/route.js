@@ -7,9 +7,9 @@ const CACHE_NAMESPACE = 'msme-schemes';
 
 /**
  * GET /api/msme/schemes
- * 
+ *
  * Fetches MSME-specific schemes and benefits
- * 
+ *
  * Query params:
  * - sector: Filter by sector
  * - state: Filter by state
@@ -23,9 +23,9 @@ export async function GET(request) {
     const state = searchParams.get('state') || null;
     const limit = Math.min(Number.parseInt(searchParams.get('limit') || '20', 10), 100);
     const forceRefresh = searchParams.get('refresh') === 'true';
-    
+
     const cacheKey = `schemes:${sector || 'all'}:${state || 'all'}:${limit}`;
-    
+
     // Check cache
     if (!forceRefresh) {
       const cached = getCachedValue(CACHE_NAMESPACE, cacheKey);
@@ -41,10 +41,10 @@ export async function GET(request) {
 
     // Fetch MSME schemes
     const schemes = await fetchMSMESchemes({ sector, state, limit });
-    
+
     // Cache the result
     setCachedValue(CACHE_NAMESPACE, cacheKey, schemes, CACHE_TTL_MS);
-    
+
     return NextResponse.json({
       success: true,
       data: schemes,
@@ -119,11 +119,11 @@ async function fetchMSMESchemes({ sector, state, limit }) {
 
   // Filter by sector and state
   let filtered = allSchemes;
-  
+
   if (sector && sector !== 'all') {
     filtered = filtered.filter(s => s.sector === sector || s.sector === 'all');
   }
-  
+
   if (state && state !== 'all') {
     filtered = filtered.filter(s => s.state === state || s.state === 'all');
   }
@@ -135,7 +135,6 @@ async function fetchMSMESchemes({ sector, state, limit }) {
   // Example:
   // const response = await fetch('https://msme.gov.in/api/schemes');
   // const data = await response.json();
-  
+
   return filtered;
 }
-

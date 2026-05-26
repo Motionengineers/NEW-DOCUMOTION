@@ -61,10 +61,7 @@ export async function GET(request) {
       // SQLite doesn't support mode: 'insensitive', so we normalize the input
       const normalizedState = stateParam.trim();
       where.state = {
-        OR: [
-          { name: { equals: normalizedState } },
-          { abbreviation: { equals: normalizedState } },
-        ],
+        OR: [{ name: { equals: normalizedState } }, { abbreviation: { equals: normalizedState } }],
       };
     }
 

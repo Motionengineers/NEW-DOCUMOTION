@@ -7,21 +7,22 @@
 
 ## 📊 Summary
 
-| Category | Free APIs Available | Status |
-|----------|---------------------|--------|
-| **Government Data** | 10+ APIs | ✅ Free |
-| **Banking & Finance** | 5+ APIs | ✅ Free |
-| **Startup Data** | 8+ APIs | ✅ Free |
-| **Location & Maps** | 3+ APIs | ✅ Free (with limits) |
-| **News & Updates** | 5+ APIs | ✅ Free (with limits) |
-| **Company Data** | 4+ APIs | ✅ Free (with limits) |
-| **Total** | **35+ Free APIs** | ✅ Available |
+| Category              | Free APIs Available | Status                |
+| --------------------- | ------------------- | --------------------- |
+| **Government Data**   | 10+ APIs            | ✅ Free               |
+| **Banking & Finance** | 5+ APIs             | ✅ Free               |
+| **Startup Data**      | 8+ APIs             | ✅ Free               |
+| **Location & Maps**   | 3+ APIs             | ✅ Free (with limits) |
+| **News & Updates**    | 5+ APIs             | ✅ Free (with limits) |
+| **Company Data**      | 4+ APIs             | ✅ Free (with limits) |
+| **Total**             | **35+ Free APIs**   | ✅ Available          |
 
 ---
 
 ## 🏛️ Government & Public Data APIs
 
 ### 1. **data.gov.in** (India Open Data Portal)
+
 - **URL**: https://data.gov.in/
 - **Cost**: ✅ **FREE**
 - **Rate Limit**: 1000 requests/day
@@ -34,6 +35,7 @@
   ```
 
 ### 2. **India Census API**
+
 - **URL**: https://censusindia.gov.in/
 - **Cost**: ✅ **FREE**
 - **Data**: Population, demographics, economic data
@@ -41,6 +43,7 @@
 - **Format**: CSV/JSON downloads
 
 ### 3. **RBI (Reserve Bank of India) APIs**
+
 - **URL**: https://www.rbi.org.in/
 - **Cost**: ✅ **FREE**
 - **Data**: Interest rates, banking statistics, policy rates
@@ -48,6 +51,7 @@
 - **Format**: CSV/Excel downloads
 
 ### 4. **Ministry of MSME APIs**
+
 - **URL**: https://msme.gov.in/
 - **Cost**: ✅ **FREE**
 - **Data**: MSME schemes, registration data
@@ -55,6 +59,7 @@
 - **Format**: Web scraping or official APIs
 
 ### 5. **Startup India Hub API**
+
 - **URL**: https://www.startupindia.gov.in/
 - **Cost**: ✅ **FREE**
 - **Data**: Startup registrations, schemes, resources
@@ -62,18 +67,21 @@
 - **Format**: Official API (if available) or web scraping
 
 ### 6. **Ministry of Commerce & Industry APIs**
+
 - **URL**: https://commerce.gov.in/
 - **Cost**: ✅ **FREE**
 - **Data**: Trade data, export-import statistics
 - **Use Case**: Industry-specific schemes
 
 ### 7. **NITI Aayog Data Portal**
+
 - **URL**: https://www.niti.gov.in/
 - **Cost**: ✅ **FREE**
 - **Data**: Policy data, state rankings, development indices
 - **Use Case**: State-wise development data
 
 ### 8. **GST Portal APIs** (Official)
+
 - **URL**: https://www.gst.gov.in/
 - **Cost**: ✅ **FREE** (with registration)
 - **Data**: GST rates, tax information
@@ -81,6 +89,7 @@
 - **Note**: Requires GST registration
 
 ### 9. **MCA (Ministry of Corporate Affairs) APIs**
+
 - **URL**: https://www.mca.gov.in/
 - **Cost**: ✅ **FREE**
 - **Data**: Company registration, director information
@@ -88,6 +97,7 @@
 - **Format**: Official APIs available
 
 ### 10. **SEBI APIs**
+
 - **URL**: https://www.sebi.gov.in/
 - **Cost**: ✅ **FREE**
 - **Data**: Market data, regulations
@@ -98,6 +108,7 @@
 ## 🏦 Banking & Financial APIs
 
 ### 11. **RBI Policy Rates API**
+
 - **URL**: https://www.rbi.org.in/Scripts/BS_ViewBulletin.aspx
 - **Cost**: ✅ **FREE**
 - **Data**: Repo rate, reverse repo rate, CRR, SLR
@@ -105,7 +116,8 @@
 - **Format**: Web scraping or official data
 
 ### 12. **Bank IFSC Code API** (Multiple Providers)
-- **Providers**: 
+
+- **Providers**:
   - Razorpay IFSC API (free tier)
   - ifsc.razorpay.com
 - **Cost**: ✅ **FREE** (with limits)
@@ -114,7 +126,8 @@
 - **Rate Limit**: 1000 requests/month (free tier)
 
 ### 13. **Currency Exchange API** (Free Tier)
-- **Providers**: 
+
+- **Providers**:
   - exchangerate-api.com (free tier)
   - fixer.io (free tier)
 - **Cost**: ✅ **FREE** (with limits)
@@ -123,6 +136,7 @@
 - **Rate Limit**: 1500 requests/month (free tier)
 
 ### 14. **Stock Market APIs** (Free Tier)
+
 - **Providers**:
   - Alpha Vantage (free tier)
   - Yahoo Finance API (unofficial)
@@ -136,6 +150,7 @@
 ## 🚀 Startup & Company Data APIs
 
 ### 15. **Crunchbase API** (Free Tier)
+
 - **URL**: https://data.crunchbase.com/
 - **Cost**: ✅ **FREE** (limited access)
 - **Data**: Startup profiles, funding data
@@ -143,6 +158,7 @@
 - **Rate Limit**: 1000 requests/month (free tier)
 
 ### 16. **Clearbit Company API** (Free Tier)
+
 - **URL**: https://clearbit.com/
 - **Cost**: ✅ **FREE** (with limits)
 - **Data**: Company information, logos
@@ -150,6 +166,7 @@
 - **Rate Limit**: 50 requests/month (free tier)
 
 ### 17. **LinkedIn API** (Free Tier)
+
 - **URL**: https://developer.linkedin.com/
 - **Cost**: ✅ **FREE** (with limits)
 - **Data**: Professional profiles, company data
@@ -157,6 +174,7 @@
 - **Rate Limit**: 500 requests/day (free tier)
 
 ### 18. **AngelList API** (Unofficial/Scraping)
+
 - **URL**: https://angel.co/
 - **Cost**: ✅ **FREE** (web scraping)
 - **Data**: Startup listings, funding rounds
@@ -164,6 +182,7 @@
 - **Note**: Check robots.txt and terms of service
 
 ### 19. **Y Combinator API** (Unofficial)
+
 - **URL**: https://www.ycombinator.com/
 - **Cost**: ✅ **FREE** (web scraping)
 - **Data**: YC startup data
@@ -171,6 +190,7 @@
 - **Note**: Check terms of service
 
 ### 20. **GitHub API** (Free)
+
 - **URL**: https://api.github.com/
 - **Cost**: ✅ **FREE**
 - **Data**: Repository data, developer profiles
@@ -182,6 +202,7 @@
 ## 📍 Location & Maps APIs
 
 ### 21. **OpenStreetMap API** (Nominatim)
+
 - **URL**: https://nominatim.openstreetmap.org/
 - **Cost**: ✅ **FREE**
 - **Data**: Geocoding, reverse geocoding, places
@@ -189,6 +210,7 @@
 - **Rate Limit**: 1 request/second (free tier)
 
 ### 22. **Google Places API** (Free Tier)
+
 - **URL**: https://developers.google.com/maps/documentation/places
 - **Cost**: ✅ **FREE** (with $200/month credit)
 - **Data**: Places, businesses, reviews
@@ -196,6 +218,7 @@
 - **Free Credit**: $200/month (covers ~40,000 requests)
 
 ### 23. **Mapbox API** (Free Tier)
+
 - **URL**: https://www.mapbox.com/
 - **Cost**: ✅ **FREE** (with limits)
 - **Data**: Maps, geocoding, routing
@@ -207,6 +230,7 @@
 ## 📰 News & Updates APIs
 
 ### 24. **NewsAPI** (Free Tier)
+
 - **URL**: https://newsapi.org/
 - **Cost**: ✅ **FREE** (with limits)
 - **Data**: News articles, headlines
@@ -215,7 +239,8 @@
 - **Note**: Already integrated in your codebase
 
 ### 25. **RSS Feeds** (Multiple Sources)
-- **Sources**: 
+
+- **Sources**:
   - Startup India blog
   - YourStory
   - Inc42
@@ -225,6 +250,7 @@
 - **Format**: RSS/XML
 
 ### 26. **Reddit API** (Free)
+
 - **URL**: https://www.reddit.com/dev/api/
 - **Cost**: ✅ **FREE**
 - **Data**: Posts, comments, discussions
@@ -232,6 +258,7 @@
 - **Rate Limit**: 60 requests/minute
 
 ### 27. **Twitter API** (Free Tier - Limited)
+
 - **URL**: https://developer.twitter.com/
 - **Cost**: ✅ **FREE** (very limited)
 - **Data**: Tweets, trends
@@ -243,6 +270,7 @@
 ## 📊 Analytics & Data APIs
 
 ### 28. **Google Analytics API** (Free)
+
 - **URL**: https://developers.google.com/analytics
 - **Cost**: ✅ **FREE**
 - **Data**: Website analytics
@@ -250,6 +278,7 @@
 - **Note**: Requires Google Analytics setup
 
 ### 29. **SimilarWeb API** (Free Tier)
+
 - **URL**: https://www.similarweb.com/
 - **Cost**: ✅ **FREE** (limited)
 - **Data**: Website traffic, rankings
@@ -261,6 +290,7 @@
 ## 🔍 Search & Discovery APIs
 
 ### 30. **Algolia Places API** (Free Tier)
+
 - **URL**: https://www.algolia.com/
 - **Cost**: ✅ **FREE** (with limits)
 - **Data**: Address autocomplete, places
@@ -268,6 +298,7 @@
 - **Free Credit**: 10,000 requests/month
 
 ### 31. **DuckDuckGo API** (Free)
+
 - **URL**: https://duckduckgo.com/api
 - **Cost**: ✅ **FREE**
 - **Data**: Search results, instant answers
@@ -279,6 +310,7 @@
 ## 📧 Communication APIs
 
 ### 32. **Resend API** (Free Tier)
+
 - **URL**: https://resend.com/
 - **Cost**: ✅ **FREE** (with limits)
 - **Data**: Email sending
@@ -287,6 +319,7 @@
 - **Note**: Already in your dependencies
 
 ### 33. **Twilio API** (Free Trial)
+
 - **URL**: https://www.twilio.com/
 - **Cost**: ✅ **FREE** (trial credit)
 - **Data**: SMS, voice, WhatsApp
@@ -298,6 +331,7 @@
 ## 🎨 Design & Media APIs
 
 ### 34. **Unsplash API** (Free)
+
 - **URL**: https://unsplash.com/developers
 - **Cost**: ✅ **FREE**
 - **Data**: High-quality images
@@ -305,6 +339,7 @@
 - **Rate Limit**: 50 requests/hour (free tier)
 
 ### 35. **Pexels API** (Free)
+
 - **URL**: https://www.pexels.com/api/
 - **Cost**: ✅ **FREE**
 - **Data**: Stock photos, videos
@@ -316,7 +351,8 @@
 ## 🛠️ Utility APIs
 
 ### 36. **IP Geolocation API** (Free Tier)
-- **Providers**: 
+
+- **Providers**:
   - ipapi.co (free tier)
   - ip-api.com (free tier)
 - **Cost**: ✅ **FREE** (with limits)
@@ -325,6 +361,7 @@
 - **Rate Limit**: 1000 requests/month (free tier)
 
 ### 37. **Email Validation API** (Free Tier)
+
 - **Providers**:
   - email-validator.net (free tier)
   - hunter.io (free tier)
@@ -334,6 +371,7 @@
 - **Rate Limit**: 100 requests/month (free tier)
 
 ### 38. **QR Code API** (Free)
+
 - **URL**: https://qr-server.com/
 - **Cost**: ✅ **FREE**
 - **Data**: QR code generation
@@ -345,6 +383,7 @@
 ## 📋 Recommended Integration Priority
 
 ### Phase 1: High Value, Easy Integration
+
 1. ✅ **data.gov.in** - Government schemes (already integrated)
 2. ✅ **NewsAPI** - News updates (already integrated)
 3. ✅ **Google Places API** - Agency directory (already integrated)
@@ -352,6 +391,7 @@
 5. **Startup India Hub** - Startup data
 
 ### Phase 2: Medium Priority
+
 6. **Crunchbase API** - Startup enrichment
 7. **LinkedIn API** - Talent profiles
 8. **OpenStreetMap** - Location services
@@ -359,6 +399,7 @@
 10. **GitHub API** - Developer profiles
 
 ### Phase 3: Nice to Have
+
 11. **Unsplash/Pexels** - Stock images
 12. **Currency Exchange API** - Multi-currency
 13. **IP Geolocation** - Location detection
@@ -385,7 +426,7 @@ export async function GET(request) {
     const response = await fetch(
       `https://api.data.gov.in/resource/${resourceId}?api-key=${apiKey}&format=json&limit=100`
     );
-    
+
     const data = await response.json();
     return NextResponse.json({ success: true, data });
   } catch (error) {
@@ -415,24 +456,28 @@ export async function GET() {
 ## ⚠️ Important Notes
 
 ### Rate Limiting
+
 - Most free APIs have rate limits
 - Implement caching to reduce API calls
 - Use Redis or in-memory cache
 - Respect rate limits to avoid blocking
 
 ### API Keys
+
 - Register for free API keys
 - Store keys in `.env` file
 - Never commit keys to Git
 - Rotate keys periodically
 
 ### Terms of Service
+
 - Read and understand ToS for each API
 - Some APIs prohibit commercial use
 - Some require attribution
 - Check data usage restrictions
 
 ### Caching Strategy
+
 ```javascript
 // Example caching for free APIs
 const CACHE_TTL = 60 * 60 * 1000; // 1 hour
@@ -442,7 +487,7 @@ async function getCachedData(key, fetchFn) {
   if (cached && Date.now() < cached.expiry) {
     return cached.data;
   }
-  
+
   const data = await fetchFn();
   cache.set(key, { data, expiry: Date.now() + CACHE_TTL });
   return data;
@@ -453,14 +498,14 @@ async function getCachedData(key, fetchFn) {
 
 ## 📊 Cost Comparison
 
-| API Category | Free Tier | Paid Tier (if needed) |
-|--------------|-----------|----------------------|
-| Government Data | ✅ Free | N/A |
-| Banking Data | ✅ Free | N/A |
-| Location APIs | ✅ Free ($200 credit) | $0.005/request |
-| News APIs | ✅ Free (100/day) | $449/month |
-| Email APIs | ✅ Free (3000/month) | $20/month |
-| Stock Data | ✅ Free (5/min) | $49.99/month |
+| API Category    | Free Tier             | Paid Tier (if needed) |
+| --------------- | --------------------- | --------------------- |
+| Government Data | ✅ Free               | N/A                   |
+| Banking Data    | ✅ Free               | N/A                   |
+| Location APIs   | ✅ Free ($200 credit) | $0.005/request        |
+| News APIs       | ✅ Free (100/day)     | $449/month            |
+| Email APIs      | ✅ Free (3000/month)  | $20/month             |
+| Stock Data      | ✅ Free (5/min)       | $49.99/month          |
 
 ---
 
@@ -489,4 +534,3 @@ async function getCachedData(key, fetchFn) {
 **Total Free APIs Available**: **35+ APIs**  
 **Recommended for MVP**: **10-15 APIs**  
 **Status**: ✅ Ready to integrate
-

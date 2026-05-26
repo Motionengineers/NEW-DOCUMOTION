@@ -106,7 +106,12 @@ export default function ChatAIWidget() {
             <div className="flex items-center justify-between p-4 border-b border-separator">
               <div className="flex items-center space-x-2">
                 <Bot className="h-5 w-5 text-purple-400" />
-                <span className="font-semibold text-gray-900 dark:text-gray-100" style={{ color: 'var(--label)' }}>AI Assistant</span>
+                <span
+                  className="font-semibold text-gray-900 dark:text-gray-100"
+                  style={{ color: 'var(--label)' }}
+                >
+                  AI Assistant
+                </span>
               </div>
               <div className="flex items-center space-x-2">
                 <button

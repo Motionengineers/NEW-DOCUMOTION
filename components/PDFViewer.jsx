@@ -6,6 +6,10 @@ import { Download } from 'lucide-react';
 function normalizeUrl(url) {
   if (typeof url !== 'string' || !url) return '';
   let u = url.trim();
+
+  // Production check: Prevent Protocol Injection (XSS)
+  if (/^(javascript:|data:)/i.test(u)) return '';
+
   // Encode spaces
   u = u.replace(/ /g, '%20');
   // If relative path without protocol, ensure leading slash
@@ -19,11 +23,7 @@ function normalizeUrl(url) {
 
 export default function PDFViewer({ fileUrl, onShare }) {
   const safeUrl = useMemo(() => {
-    const u = normalizeUrl(fileUrl);
-    if (u.startsWith('/decks/')) {
-      return 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
-    }
-    return u;
+    return normalizeUrl(fileUrl);
   }, [fileUrl]);
   const [failed, setFailed] = useState(false);
 

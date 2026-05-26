@@ -116,4 +116,3 @@ export default function FilterDrawer({ open, onClose, onApply, sectors = [], def
     </div>
   );
 }
-

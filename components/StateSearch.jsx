@@ -54,14 +54,19 @@ export default function StateSearch() {
   const [lastMatchProfile, setLastMatchProfile] = useState(null);
 
   useEffect(() => {
+    let cancelled = false;
     fetch('/api/states')
       .then(res => res.json())
       .then(json => {
-        if (json?.success) {
+        if (!cancelled && json?.success) {
           setStates(json.data);
         }
       })
       .catch(err => console.error('Failed to load states', err));
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -276,10 +281,16 @@ export default function StateSearch() {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-3xl border p-6 shadow-2xl backdrop-blur glass" style={{ borderColor: 'var(--separator)' }}>
+      <div
+        className="rounded-3xl border p-6 shadow-2xl backdrop-blur glass"
+        style={{ borderColor: 'var(--separator)' }}
+      >
         <div className="flex flex-col gap-4 md:flex-row md:items-center">
           <div className="flex-1 space-y-2">
-            <p className="text-sm uppercase tracking-[0.4em]" style={{ color: 'var(--secondary-label)' }}>
+            <p
+              className="text-sm uppercase tracking-[0.4em]"
+              style={{ color: 'var(--secondary-label)' }}
+            >
               State-Wise Explorer
             </p>
             <h2 className="text-3xl font-semibold" style={{ color: 'var(--label)' }}>
@@ -295,10 +306,10 @@ export default function StateSearch() {
               onChange={event => setQuery(event.target.value)}
               placeholder="Search by state name…"
               className="flex-1 rounded-2xl border px-4 py-3 focus:outline-none"
-              style={{ 
-                borderColor: 'var(--separator)', 
+              style={{
+                borderColor: 'var(--separator)',
                 backgroundColor: 'var(--system-secondary-background)',
-                color: 'var(--label)'
+                color: 'var(--label)',
               }}
               placeholderStyle={{ color: 'var(--tertiary-label)' }}
               onKeyDown={event => {
@@ -322,27 +333,30 @@ export default function StateSearch() {
               type="button"
               onClick={() => handleChipClick(state.name)}
               className="rounded-full border px-4 py-2 text-sm transition-colors"
-              style={{ 
-                borderColor: 'var(--separator)', 
-                color: 'var(--label)'
+              style={{
+                borderColor: 'var(--separator)',
+                color: 'var(--label)',
               }}
-              onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--system-blue)'}
-              onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--separator)'}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--system-blue)')}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--separator)')}
             >
               {state.name}
             </button>
           ))}
         </div>
 
-        <div className="mt-6 flex flex-col gap-4 border-t pt-6 md:flex-row" style={{ borderColor: 'var(--separator)' }}>
+        <div
+          className="mt-6 flex flex-col gap-4 border-t pt-6 md:flex-row"
+          style={{ borderColor: 'var(--separator)' }}
+        >
           <select
             value={filters.sector}
             onChange={event => handleFilterChange('sector', event.target.value)}
             className="w-full rounded-2xl border px-4 py-3 text-sm focus:outline-none md:w-1/3"
-            style={{ 
-              borderColor: 'var(--separator)', 
+            style={{
+              borderColor: 'var(--separator)',
               backgroundColor: 'var(--system-secondary-background)',
-              color: 'var(--label)'
+              color: 'var(--label)',
             }}
           >
             <option value="">All sectors</option>
@@ -356,10 +370,10 @@ export default function StateSearch() {
             value={filters.sort}
             onChange={event => handleFilterChange('sort', event.target.value)}
             className="w-full rounded-2xl border px-4 py-3 text-sm focus:outline-none md:w-1/3"
-            style={{ 
-              borderColor: 'var(--separator)', 
+            style={{
+              borderColor: 'var(--separator)',
               backgroundColor: 'var(--system-secondary-background)',
-              color: 'var(--label)'
+              color: 'var(--label)',
             }}
           >
             {SORT_OPTIONS.map(option => (
@@ -401,8 +415,15 @@ export default function StateSearch() {
         {selectedState ? (
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <p className="text-xs uppercase tracking-[0.3em]" style={{ color: 'var(--tertiary-label)' }}>Selected state</p>
-              <h3 className="text-2xl font-semibold" style={{ color: 'var(--label)' }}>{selectedState}</h3>
+              <p
+                className="text-xs uppercase tracking-[0.3em]"
+                style={{ color: 'var(--tertiary-label)' }}
+              >
+                Selected state
+              </p>
+              <h3 className="text-2xl font-semibold" style={{ color: 'var(--label)' }}>
+                {selectedState}
+              </h3>
             </div>
             <span className="text-sm" style={{ color: 'var(--secondary-label)' }}>
               {schemes.length} scheme{schemes.length === 1 ? '' : 's'} found
@@ -415,18 +436,25 @@ export default function StateSearch() {
         )}
 
         {loadingSchemes && (
-          <div className="rounded-2xl border p-6" style={{ borderColor: 'var(--separator)', backgroundColor: 'var(--system-secondary-background)', color: 'var(--secondary-label)' }}>
+          <div
+            className="rounded-2xl border p-6"
+            style={{
+              borderColor: 'var(--separator)',
+              backgroundColor: 'var(--system-secondary-background)',
+              color: 'var(--secondary-label)',
+            }}
+          >
             Loading state incentives…
           </div>
         )}
 
         {error && !loadingSchemes && (
-          <div 
+          <div
             className="rounded-2xl border p-4 text-sm"
             style={{
               borderColor: 'var(--system-red)',
               backgroundColor: 'rgba(255, 59, 48, 0.1)',
-              color: 'var(--system-red)'
+              color: 'var(--system-red)',
             }}
           >
             {error}
@@ -446,10 +474,7 @@ export default function StateSearch() {
           </div>
         )}
 
-        <SavingsCalculator
-          schemes={schemes}
-          requiredFunding={lastMatchProfile?.requiredFunding}
-        />
+        <SavingsCalculator schemes={schemes} requiredFunding={lastMatchProfile?.requiredFunding} />
       </div>
 
       <StateCompareModal
@@ -467,5 +492,3 @@ export default function StateSearch() {
     </div>
   );
 }
-
-

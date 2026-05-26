@@ -25,8 +25,7 @@ function sanitizeProfile(body = {}) {
     stage: body.stage?.toString().trim()?.toLowerCase() ?? 'seed',
     requiredFunding: parseNumber(body.requiredFunding),
     registeredState: body.registeredState?.toString().trim() || '',
-    prefersGrant:
-      body.prefersGrant ?? body.preferredBenefit?.toString().toLowerCase() === 'grant',
+    prefersGrant: body.prefersGrant ?? body.preferredBenefit?.toString().toLowerCase() === 'grant',
   };
 }
 
@@ -53,10 +52,7 @@ function sanitizePreferences(preferences = {}, priority = '') {
 }
 
 function buildCacheKey(payload) {
-  const hash = crypto
-    .createHash('sha1')
-    .update(JSON.stringify(payload))
-    .digest('hex');
+  const hash = crypto.createHash('sha1').update(JSON.stringify(payload)).digest('hex');
   return `funding:match:${hash}`;
 }
 
@@ -97,16 +93,10 @@ function buildSchemeWhere(profile) {
   if (required) {
     where.AND = [
       {
-        OR: [
-          { fundingMin: null },
-          { fundingMin: { lte: required * 1.5 } },
-        ],
+        OR: [{ fundingMin: null }, { fundingMin: { lte: required * 1.5 } }],
       },
       {
-        OR: [
-          { fundingMax: null },
-          { fundingMax: { gte: required * 0.5 } },
-        ],
+        OR: [{ fundingMax: null }, { fundingMax: { gte: required * 0.5 } }],
       },
     ];
   }
@@ -168,9 +158,7 @@ export async function POST(request) {
     ]);
 
     const historyStats = {};
-    const stateMap = new Map(
-      states.map(state => [state.name?.toLowerCase(), state.id])
-    );
+    const stateMap = new Map(states.map(state => [state.name?.toLowerCase(), state.id]));
     approvedCounts.forEach(entry => {
       if (!entry.state) return;
       const key = entry.state.toLowerCase();

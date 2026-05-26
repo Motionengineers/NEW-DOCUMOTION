@@ -97,7 +97,10 @@ export default function FeedPostCard({
             </span>
           </div>
           <div>
-            <div className="flex items-center gap-2 text-sm text-gray-900 dark:text-gray-100" style={{ color: 'var(--label)' }}>
+            <div
+              className="flex items-center gap-2 text-sm text-gray-900 dark:text-gray-100"
+              style={{ color: 'var(--label)' }}
+            >
               <span className="font-semibold leading-tight">{author?.name}</span>
               {professional && (
                 <span className="inline-flex items-center gap-1 rounded-full border border-emerald-400/40 bg-emerald-500/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.2em] text-emerald-200">
@@ -106,8 +109,18 @@ export default function FeedPostCard({
                 </span>
               )}
             </div>
-            <p className="text-xs text-gray-600 dark:text-gray-400" style={{ color: 'var(--secondary-label)' }}>{designation}</p>
-            <p className="text-xs text-gray-500 dark:text-gray-500" style={{ color: 'var(--tertiary-label)' }}>{timestamp}</p>
+            <p
+              className="text-xs text-gray-600 dark:text-gray-400"
+              style={{ color: 'var(--secondary-label)' }}
+            >
+              {designation}
+            </p>
+            <p
+              className="text-xs text-gray-500 dark:text-gray-500"
+              style={{ color: 'var(--tertiary-label)' }}
+            >
+              {timestamp}
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -138,7 +151,11 @@ export default function FeedPostCard({
                   : 'border-separator bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               )}
             >
-              {following ? <UserCheck className="h-3.5 w-3.5" /> : <UserPlus className="h-3.5 w-3.5" />}
+              {following ? (
+                <UserCheck className="h-3.5 w-3.5" />
+              ) : (
+                <UserPlus className="h-3.5 w-3.5" />
+              )}
               {following ? 'Following' : 'Follow'}
             </button>
           )}
@@ -152,10 +169,25 @@ export default function FeedPostCard({
         </div>
       </header>
 
-      <div className="flex flex-col gap-4 px-6 pt-5 text-sm text-gray-700 dark:text-gray-300" style={{ color: 'var(--secondary-label)' }}>
-        {post.title ? <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100" style={{ color: 'var(--label)' }}>{post.title}</h2> : null}
+      <div
+        className="flex flex-col gap-4 px-6 pt-5 text-sm text-gray-700 dark:text-gray-300"
+        style={{ color: 'var(--secondary-label)' }}
+      >
+        {post.title ? (
+          <h2
+            className="text-lg font-semibold text-gray-900 dark:text-gray-100"
+            style={{ color: 'var(--label)' }}
+          >
+            {post.title}
+          </h2>
+        ) : null}
         {post.body ? (
-          <p className="whitespace-pre-line leading-relaxed text-gray-800 dark:text-gray-200" style={{ color: 'var(--secondary-label)' }}>{post.body}</p>
+          <p
+            className="whitespace-pre-line leading-relaxed text-gray-800 dark:text-gray-200"
+            style={{ color: 'var(--secondary-label)' }}
+          >
+            {post.body}
+          </p>
         ) : null}
         {post.link ? (
           <a

@@ -41,6 +41,7 @@ npm run api:performance
 ### Health Check Categories
 
 #### ✅ Critical APIs (Must Work Always)
+
 - `GET /api/dashboard` - Dashboard stats
 - `GET /api/govt-schemes` - Government schemes
 - `GET /api/funding/state` - State funding
@@ -50,12 +51,14 @@ npm run api:performance
 - `POST /api/payment/razorpay/create-order` - Payment creation
 
 #### ⚠️ Important APIs (Should Work)
+
 - All subscription APIs
 - All notification APIs
 - All invitation APIs
 - All branding studio APIs
 
 #### 📊 Monitoring APIs (Nice to Have)
+
 - All feed/social APIs
 - All agency marketplace APIs
 - Analytics and telemetry APIs
@@ -67,22 +70,24 @@ npm run api:performance
 ### Unit Tests
 
 Each API should have:
+
 - ✅ Input validation tests
 - ✅ Error handling tests
 - ✅ Success response tests
 - ✅ Edge case tests
 
 **Example Test Structure:**
+
 ```javascript
 describe('GET /api/funding/state', () => {
   it('should return schemes for valid state', async () => {
     // Test implementation
   });
-  
+
   it('should handle invalid state gracefully', async () => {
     // Test implementation
   });
-  
+
   it('should respect pagination limits', async () => {
     // Test implementation
   });
@@ -92,6 +97,7 @@ describe('GET /api/funding/state', () => {
 ### Integration Tests
 
 Test API interactions with:
+
 - Database (Prisma)
 - External services (Razorpay, OpenAI)
 - File uploads
@@ -100,6 +106,7 @@ Test API interactions with:
 ### E2E Tests
 
 Test complete user flows:
+
 - User registration → Dashboard → Scheme search → Application
 - Payment flow: Create order → Verify → Subscription
 - Team invitation → Accept → Collaboration
@@ -110,17 +117,18 @@ Test complete user flows:
 
 ### Response Time Targets
 
-| API Category | Target | Max Acceptable |
-|-------------|--------|----------------|
-| Dashboard | < 200ms | 500ms |
-| List APIs | < 300ms | 1000ms |
-| Search APIs | < 500ms | 2000ms |
-| Match APIs | < 1000ms | 3000ms |
-| Upload APIs | < 2000ms | 5000ms |
+| API Category | Target   | Max Acceptable |
+| ------------ | -------- | -------------- |
+| Dashboard    | < 200ms  | 500ms          |
+| List APIs    | < 300ms  | 1000ms         |
+| Search APIs  | < 500ms  | 2000ms         |
+| Match APIs   | < 1000ms | 3000ms         |
+| Upload APIs  | < 2000ms | 5000ms         |
 
 ### Optimization Techniques
 
 1. **Database Indexing**
+
    ```sql
    -- Ensure indexes on frequently queried fields
    CREATE INDEX idx_schemes_sector ON StateFundingScheme(sector);
@@ -183,33 +191,41 @@ Test complete user flows:
 Each API endpoint should have:
 
 1. **Route Definition**
+
    ```markdown
    ## GET /api/funding/state
-   
+
    Fetches state funding schemes with filtering and pagination.
    ```
 
 2. **Query Parameters**
+
    ```markdown
-   | Parameter | Type | Required | Description |
-   |-----------|------|----------|-------------|
-   | state | string | Yes | State name |
-   | sector | string | No | Filter by sector |
-   | limit | number | No | Items per page (default: 20) |
+   | Parameter | Type   | Required | Description                  |
+   | --------- | ------ | -------- | ---------------------------- |
+   | state     | string | Yes      | State name                   |
+   | sector    | string | No       | Filter by sector             |
+   | limit     | number | No       | Items per page (default: 20) |
    ```
 
 3. **Request Body** (for POST/PATCH)
-   ```markdown
+
+   ````markdown
    ```json
    {
      "state": "Karnataka",
      "sector": "AI"
    }
    ```
+   ````
+
+   ```
+
    ```
 
 4. **Response Format**
-   ```markdown
+
+   ````markdown
    ```json
    {
      "success": true,
@@ -217,16 +233,23 @@ Each API endpoint should have:
      "nextCursor": "123"
    }
    ```
+   ````
+
+   ```
+
    ```
 
 5. **Error Responses**
-   ```markdown
+   ````markdown
    ```json
    {
      "success": false,
      "error": "Invalid state name"
    }
    ```
+   ````
+   ```
+
    ```
 
 ---
@@ -238,6 +261,7 @@ Each API endpoint should have:
 Currently using **implicit versioning** (no `/v1/` prefix).
 
 **Future Consideration:**
+
 - Add `/api/v1/` prefix when breaking changes needed
 - Maintain backward compatibility for 6 months
 - Document deprecation timeline
@@ -265,18 +289,18 @@ Currently using **implicit versioning** (no `/v1/` prefix).
 
 ### HTTP Status Codes
 
-| Code | Usage |
-|------|-------|
-| 200 | Success |
-| 201 | Created |
-| 400 | Bad Request (validation error) |
-| 401 | Unauthorized |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 409 | Conflict (duplicate) |
-| 422 | Unprocessable Entity |
-| 500 | Internal Server Error |
-| 503 | Service Unavailable |
+| Code | Usage                          |
+| ---- | ------------------------------ |
+| 200  | Success                        |
+| 201  | Created                        |
+| 400  | Bad Request (validation error) |
+| 401  | Unauthorized                   |
+| 403  | Forbidden                      |
+| 404  | Not Found                      |
+| 409  | Conflict (duplicate)           |
+| 422  | Unprocessable Entity           |
+| 500  | Internal Server Error          |
+| 503  | Service Unavailable            |
 
 ### Error Logging
 
@@ -287,7 +311,7 @@ console.error('API Error:', {
   error: error.message,
   stack: error.stack,
   userId: request.user?.id,
-  timestamp: new Date().toISOString()
+  timestamp: new Date().toISOString(),
 });
 ```
 
@@ -303,19 +327,19 @@ import rateLimit from 'express-rate-limit';
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  max: 100, // limit each IP to 100 requests per windowMs
 });
 ```
 
 ### Rate Limits by Category
 
-| Category | Limit | Window |
-|----------|-------|--------|
-| Public APIs | 100 | 15 min |
-| Authenticated | 1000 | 15 min |
-| Payment APIs | 10 | 15 min |
-| Upload APIs | 20 | 15 min |
-| Match APIs | 50 | 15 min |
+| Category      | Limit | Window |
+| ------------- | ----- | ------ |
+| Public APIs   | 100   | 15 min |
+| Authenticated | 1000  | 15 min |
+| Payment APIs  | 10    | 15 min |
+| Upload APIs   | 20    | 15 min |
+| Match APIs    | 50    | 15 min |
 
 ---
 
@@ -323,22 +347,24 @@ const limiter = rateLimit({
 
 ### Cache TTL by Endpoint Type
 
-| Endpoint Type | TTL | Invalidation |
-|--------------|-----|--------------|
-| Dashboard stats | 5 min | On data update |
-| List endpoints | 5 min | On create/update/delete |
-| Detail endpoints | 10 min | On update |
-| Search results | 1 min | On data change |
-| Static data | 1 hour | Manual |
+| Endpoint Type    | TTL    | Invalidation            |
+| ---------------- | ------ | ----------------------- |
+| Dashboard stats  | 5 min  | On data update          |
+| List endpoints   | 5 min  | On create/update/delete |
+| Detail endpoints | 10 min | On update               |
+| Search results   | 1 min  | On data change          |
+| Static data      | 1 hour | Manual                  |
 
 ### Cache Keys
 
 Use consistent cache key format:
+
 ```
 {namespace}:{endpoint}:{params_hash}
 ```
 
 Example:
+
 ```
 states:list:region=north
 funding:state:state=Karnataka:sector=AI
@@ -371,12 +397,12 @@ funding:state:state=Karnataka:sector=AI
 
 ### Alert Thresholds
 
-| Metric | Warning | Critical |
-|--------|---------|----------|
-| Response Time (P95) | > 1000ms | > 3000ms |
-| Error Rate | > 0.5% | > 2% |
-| Database Connections | > 80% | > 95% |
-| Memory Usage | > 80% | > 95% |
+| Metric               | Warning  | Critical |
+| -------------------- | -------- | -------- |
+| Response Time (P95)  | > 1000ms | > 3000ms |
+| Error Rate           | > 0.5%   | > 2%     |
+| Database Connections | > 80%    | > 95%    |
+| Memory Usage         | > 80%    | > 95%    |
 
 ---
 
@@ -463,6 +489,7 @@ npm run api:audit
 ### Critical Path APIs
 
 These APIs must always work:
+
 1. Dashboard
 2. Government Schemes
 3. State Funding
@@ -474,4 +501,3 @@ These APIs must always work:
 
 **Last Reviewed**: 2024-11-18  
 **Next Review**: 2024-12-18
-

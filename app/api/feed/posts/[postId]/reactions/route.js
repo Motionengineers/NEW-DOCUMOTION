@@ -189,4 +189,3 @@ export async function GET(request, { params }) {
     return jsonError('internal_error', 'Unable to fetch reactions', 500, rid);
   }
 }
-

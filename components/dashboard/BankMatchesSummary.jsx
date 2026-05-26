@@ -95,12 +95,18 @@ export default function BankMatchesSummary() {
 
       {/* Empty State */}
       {!loading && !error && matches.length === 0 && (
-        <div className="mt-6 p-8 rounded-xl border text-center" style={{
-          backgroundColor: 'rgba(99, 102, 241, 0.05)',
-          borderColor: 'rgba(99, 102, 241, 0.2)',
-        }}>
+        <div
+          className="mt-6 p-8 rounded-xl border text-center"
+          style={{
+            backgroundColor: 'rgba(99, 102, 241, 0.05)',
+            borderColor: 'rgba(99, 102, 241, 0.2)',
+          }}
+        >
           <div className="flex flex-col items-center gap-3">
-            <div className="p-3 rounded-full" style={{ backgroundColor: 'rgba(99, 102, 241, 0.1)' }}>
+            <div
+              className="p-3 rounded-full"
+              style={{ backgroundColor: 'rgba(99, 102, 241, 0.1)' }}
+            >
               <Inbox className="h-8 w-8 text-purple-300" />
             </div>
             <div>

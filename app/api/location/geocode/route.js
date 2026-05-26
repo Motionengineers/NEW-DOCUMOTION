@@ -7,10 +7,10 @@ const CACHE_NAMESPACE = 'geocode';
 
 /**
  * GET /api/location/geocode
- * 
+ *
  * Geocoding using OpenStreetMap Nominatim API (free)
  * Converts address to coordinates or coordinates to address
- * 
+ *
  * Query params:
  * - q: Address to geocode (forward geocoding)
  * - lat: Latitude (reverse geocoding)
@@ -24,18 +24,16 @@ export async function GET(request) {
     const lat = searchParams.get('lat');
     const lon = searchParams.get('lon');
     const format = searchParams.get('format') || 'json';
-    
+
     if (!address && (!lat || !lon)) {
       return NextResponse.json(
         { success: false, error: 'Either address (q) or coordinates (lat, lon) is required' },
         { status: 400 }
       );
     }
-    
-    const cacheKey = address 
-      ? `forward:${address.toLowerCase().trim()}`
-      : `reverse:${lat},${lon}`;
-    
+
+    const cacheKey = address ? `forward:${address.toLowerCase().trim()}` : `reverse:${lat},${lon}`;
+
     // Check cache
     const cached = getCachedValue(CACHE_NAMESPACE, cacheKey);
     if (cached) {
@@ -49,17 +47,14 @@ export async function GET(request) {
 
     // Call OpenStreetMap Nominatim API
     const geocodeData = await geocodeWithOSM({ address, lat, lon, format });
-    
+
     if (!geocodeData || geocodeData.length === 0) {
-      return NextResponse.json(
-        { success: false, error: 'No results found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: 'No results found' }, { status: 404 });
     }
-    
+
     // Cache the result
     setCachedValue(CACHE_NAMESPACE, cacheKey, geocodeData, CACHE_TTL_MS);
-    
+
     return NextResponse.json({
       success: true,
       data: geocodeData,
@@ -82,7 +77,7 @@ export async function GET(request) {
 async function geocodeWithOSM({ address, lat, lon, format }) {
   const baseUrl = 'https://nominatim.openstreetmap.org';
   let url;
-  
+
   if (address) {
     // Forward geocoding (address to coordinates)
     url = `${baseUrl}/search?q=${encodeURIComponent(address)}&format=${format}&limit=5&addressdetails=1`;
@@ -90,20 +85,20 @@ async function geocodeWithOSM({ address, lat, lon, format }) {
     // Reverse geocoding (coordinates to address)
     url = `${baseUrl}/reverse?lat=${lat}&lon=${lon}&format=${format}&addressdetails=1`;
   }
-  
+
   try {
     const response = await fetch(url, {
       headers: {
         'User-Agent': 'Documotion/1.0 (contact@documotion.in)', // Required by OSM
       },
     });
-    
+
     if (!response.ok) {
       throw new Error(`OSM API error: ${response.status}`);
     }
-    
+
     const data = await response.json();
-    
+
     // Format response
     if (address) {
       // Forward geocoding returns array
@@ -120,7 +115,7 @@ async function geocodeWithOSM({ address, lat, lon, format }) {
 
 function formatOSMResult(result) {
   if (!result) return null;
-  
+
   return {
     displayName: result.display_name || result.name || '',
     lat: parseFloat(result.lat) || null,
@@ -131,4 +126,3 @@ function formatOSMResult(result) {
     importance: result.importance || null,
   };
 }
-

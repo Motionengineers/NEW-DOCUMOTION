@@ -17,6 +17,7 @@ import {
   Video,
 } from 'lucide-react';
 import clsx from 'clsx';
+import { formatDate } from '@/lib/utils';
 
 const INITIAL_FORM = {
   fullName: '',
@@ -213,6 +214,9 @@ export default function FundingApplicationWizard() {
   const [insights, setInsights] = useState(null);
   const [insightsLoading, setInsightsLoading] = useState(false);
   const [insightsError, setInsightsError] = useState(null);
+  const [investorMatches, setInvestorMatches] = useState([]);
+  const [investorLoading, setInvestorLoading] = useState(false);
+
   const [timeline, setTimeline] = useState([]);
   const [guidance, setGuidance] = useState(null);
   const [analytics, setAnalytics] = useState(null);
@@ -281,75 +285,29 @@ export default function FundingApplicationWizard() {
 
   useEffect(() => {
     if (!hasLoaded || loading || demoMode) return;
-    if (autoSaveRef.current) {
-      clearTimeout(autoSaveRef.current);
-    }
+
+    if (autoSaveRef.current) clearTimeout(autoSaveRef.current);
+
     autoSaveRef.current = setTimeout(() => {
       handleSaveDraft(true);
     }, 5000);
+
     return () => {
-      if (autoSaveRef.current) {
-        clearTimeout(autoSaveRef.current);
-      }
+      if (autoSaveRef.current) clearTimeout(autoSaveRef.current);
     };
   }, [formData, handleSaveDraft, hasLoaded, loading, demoMode]);
 
-useEffect(() => {
-  if (!demoMode && hasLoaded && applicationStatus === 'submitted') {
-    fetchInsights();
-    fetchAnalytics();
-  }
-}, [applicationStatus, demoMode, fetchAnalytics, fetchInsights, hasLoaded]);
-
-useEffect(() => {
-  return () => {
-    if (autoSaveRef.current) {
-      clearTimeout(autoSaveRef.current);
-    }
-    if (insightsAbortRef.current) {
-      insightsAbortRef.current.abort();
-    }
-  };
-}, []);
-
   useEffect(() => {
-    if (applicationStatus !== 'submitted') {
-      setInsights(null);
-      setInsightsError(null);
-      return;
+    if (!demoMode && hasLoaded && applicationStatus === 'submitted') {
+      fetchInsights();
+      fetchAnalytics();
+      fetchInvestorMatches();
     }
-    let cancelled = false;
-    async function fetchInsights() {
-      try {
-        setInsightsLoading(true);
-        setInsightsError(null);
-        const params = new URLSearchParams();
-        if (formData.industry) params.append('industry', formData.industry);
-        if (formData.stage) params.append('stage', formData.stage);
-        if (formData.state) params.append('state', formData.state);
-        if (formData.amountRequested) params.append('amount', formData.amountRequested);
-        const response = await fetch(`/api/funding/insights?${params.toString()}`);
-        const json = await response.json();
-        if (cancelled) return;
-        if (!response.ok || !json.success) {
-          throw new Error(json.error || 'Unable to load funding insights');
-        }
-        setInsights(json.data);
-      } catch (error) {
-        if (!cancelled) {
-          setInsightsError(error.message);
-        }
-      } finally {
-        if (!cancelled) {
-          setInsightsLoading(false);
-        }
-      }
-    }
-    fetchInsights();
+
     return () => {
-      cancelled = true;
+      if (insightsAbortRef.current) insightsAbortRef.current.abort();
     };
-  }, [applicationStatus, formData.amountRequested, formData.industry, formData.stage, formData.state]);
+  }, [applicationStatus, demoMode, hasLoaded]);
 
   const handleFieldChange = useCallback((name, value) => {
     setErrors([]);
@@ -421,7 +379,15 @@ useEffect(() => {
     setInsightsLoading(true);
     setInsightsError(null);
     try {
-      const response = await fetch('/api/funding/insights', { signal: controller.signal });
+      const params = new URLSearchParams();
+      if (formData.industry) params.append('industry', formData.industry);
+      if (formData.stage) params.append('stage', formData.stage);
+      if (formData.state) params.append('state', formData.state);
+      if (formData.amountRequested) params.append('amount', formData.amountRequested);
+
+      const response = await fetch(`/api/funding/insights?${params.toString()}`, {
+        signal: controller.signal,
+      });
       const json = await response.json();
       if (json.success) {
         setInsights(json.data);
@@ -440,7 +406,37 @@ useEffect(() => {
       }
       setInsightsLoading(false);
     }
-  }, [demoMode]);
+  }, [demoMode, formData.industry, formData.stage, formData.state, formData.amountRequested]);
+
+  const fetchInvestorMatches = useCallback(async () => {
+    if (demoMode) return;
+    setInvestorLoading(true);
+    try {
+      // This endpoint will implement the HyDE logic on the backend
+      const response = await fetch('/api/investors/match', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profile: formData }),
+      });
+      const json = await response.json();
+      if (json.success) {
+        setInvestorMatches(json.data || []);
+      }
+    } catch (error) {
+      console.error('Investor matching failed:', error);
+    } finally {
+      setInvestorLoading(false);
+    }
+  }, [
+    demoMode,
+    formData.startupName,
+    formData.industry,
+    formData.stage,
+    formData.problem,
+    formData.solution,
+    formData.amountRequested,
+    formData.growthMetrics,
+  ]);
 
   const fetchAnalytics = useCallback(async () => {
     if (demoMode) return;
@@ -540,6 +536,7 @@ useEffect(() => {
         message: 'Application submitted! Our team will get in touch soon.',
       });
       fetchInsights();
+      fetchInvestorMatches();
       fetchAnalytics();
       setTimeline(prev => {
         const next = [
@@ -685,8 +682,15 @@ useEffect(() => {
           </div>
         ) : null}
         {applicationStatus === 'submitted' ? (
-          <FundingInsightsPanel insights={insights} loading={insightsLoading} error={insightsError} />
+          <FundingInsightsPanel
+            insights={insights}
+            loading={insightsLoading}
+            error={insightsError}
+          />
         ) : null}
+        {applicationStatus === 'submitted' && (
+          <InvestorMatchPanel matches={investorMatches} loading={investorLoading} />
+        )}
       </header>
 
       {status ? (
@@ -748,7 +752,7 @@ useEffect(() => {
           uploading,
           goToStep: index => setCurrentStep(Math.min(Math.max(index, 0), STEPS.length - 1)),
           demoMode,
-        fieldErrors,
+          fieldErrors,
         })}
       </section>
 
@@ -771,6 +775,59 @@ useEffect(() => {
           </button>
         </div>
       </footer>
+    </div>
+  );
+}
+
+function InvestorMatchPanel({ matches, loading }) {
+  if (loading) {
+    return (
+      <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300">
+        <div className="flex items-center gap-3">
+          <RefreshCw className="h-4 w-4 animate-spin text-purple-400" />
+          <span>
+            Gemini is generating a hypothetical thesis to find your best investor matches...
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!matches?.length) return null;
+
+  return (
+    <div className="mt-4 rounded-3xl border border-purple-500/30 bg-purple-500/5 p-5">
+      <div className="flex items-center gap-2 mb-4">
+        <Sparkles className="h-5 w-5 text-purple-400" />
+        <h3 className="font-semibold text-white">Smart Investor Matches (HyDE)</h3>
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {matches.map(investor => (
+          <div key={investor.id} className="rounded-xl border border-white/10 bg-white/5 p-3">
+            <div className="font-medium text-white">{investor.name}</div>
+            <div className="text-xs text-slate-400 mb-2">{investor.firm}</div>
+            <div className="flex flex-wrap gap-1">
+              {investor.sectors
+                ?.split(',')
+                .slice(0, 2)
+                .map(s => (
+                  <span
+                    key={s}
+                    className="px-2 py-0.5 rounded-full bg-purple-400/10 text-[10px] text-purple-200 border border-purple-400/20"
+                  >
+                    {s.trim()}
+                  </span>
+                ))}
+            </div>
+            <div className="mt-3 flex justify-between items-center">
+              <span className="text-[10px] text-emerald-400 font-semibold">
+                {investor.matchScore}% Match
+              </span>
+              <button className="text-[10px] text-blue-300 hover:underline">View Profile</button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -1173,7 +1230,7 @@ function renderStep({
             required
             rows={4}
             maxLength={800}
-              error={fieldErrors.useOfFunds}
+            error={fieldErrors.useOfFunds}
           />
           <StepNavigation currentStep={currentStep} onBack={handleBack} onNext={handleNext} />
         </div>
@@ -1304,7 +1361,11 @@ function formatINR(value) {
 }
 
 function FundingInsightsPanel({ insights, loading, error, onRefresh }) {
-  if (!loading && !error && (!insights || (!insights.benchmarks && !insights.matchInsights?.length))) {
+  if (
+    !loading &&
+    !error &&
+    (!insights || (!insights.benchmarks && !insights.matchInsights?.length))
+  ) {
     return null;
   }
 
@@ -1333,14 +1394,14 @@ function FundingInsightsPanel({ insights, loading, error, onRefresh }) {
         </div>
       ) : null}
 
-      {loading ? (
-        <div className="mb-4 text-xs text-slate-400">Loading insights…</div>
-      ) : null}
+      {loading ? <div className="mb-4 text-xs text-slate-400">Loading insights…</div> : null}
 
       {insights?.benchmarks ? (
         <div className="mb-5 grid gap-4 md:grid-cols-2">
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Industry average raise</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+              Industry average raise
+            </p>
             <p className="mt-2 text-2xl font-semibold text-white">
               {formatINR(insights.benchmarks.industryAverage)}
             </p>
@@ -1349,7 +1410,9 @@ function FundingInsightsPanel({ insights, loading, error, onRefresh }) {
             </p>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Global average raise</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+              Global average raise
+            </p>
             <p className="mt-2 text-2xl font-semibold text-white">
               {formatINR(insights.benchmarks.globalAverage)}
             </p>
@@ -1399,20 +1462,6 @@ function FundingInsightsPanel({ insights, loading, error, onRefresh }) {
   );
 }
 
-const dateTimeFormatter = new Intl.DateTimeFormat('en-IN', {
-  dateStyle: 'medium',
-  timeStyle: 'short',
-});
-
-function formatDateTime(value) {
-  if (!value) return '';
-  try {
-    return dateTimeFormatter.format(new Date(value));
-  } catch {
-    return value;
-  }
-}
-
 const ACTIVITY_LABELS = {
   draft_saved: 'Draft saved',
   submitted: 'Submitted',
@@ -1440,7 +1489,9 @@ function FundingTimeline({ items }) {
           >
             <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-white">
               <span>{ACTIVITY_LABELS[item.activityType] || item.activityType}</span>
-              <span className="text-xs text-slate-400">{formatDateTime(item.createdAt)}</span>
+              <span className="text-xs text-slate-400">
+                {formatDate(item.createdAt, 'dateTime')}
+              </span>
             </div>
             {item.message ? <p className="text-xs text-slate-400">{item.message}</p> : null}
           </li>
@@ -1528,32 +1579,32 @@ function FundingAnalyticsPanel({ analytics, loading, error, onRefresh }) {
         <div className="rounded-2xl border border-white/10 bg-white/4 p-4">
           <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Top industries</p>
           <ul className="mt-3 space-y-2 text-xs text-slate-200">
-            {startupInsights.length
-              ? startupInsights.map(item => (
-                  <li key={item.industry} className="flex justify-between">
-                    <span>{item.industry}</span>
-                    <span className="text-white">{formatINR(item.averageRaise)}</span>
-                  </li>
-                ))
-              : (
-                <li className="text-slate-500">No industry data yet.</li>
-                )}
+            {startupInsights.length ? (
+              startupInsights.map(item => (
+                <li key={item.industry} className="flex justify-between">
+                  <span>{item.industry}</span>
+                  <span className="text-white">{formatINR(item.averageRaise)}</span>
+                </li>
+              ))
+            ) : (
+              <li className="text-slate-500">No industry data yet.</li>
+            )}
           </ul>
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-white/4 p-4">
           <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Investor hotspots</p>
           <ul className="mt-3 space-y-2 text-xs text-slate-200">
-            {investorInsights.length
-              ? investorInsights.map(item => (
-                  <li key={item.state} className="flex justify-between">
-                    <span>{item.state}</span>
-                    <span>{item.count}</span>
-                  </li>
-                ))
-              : (
-                <li className="text-slate-500">No state trends yet.</li>
-                )}
+            {investorInsights.length ? (
+              investorInsights.map(item => (
+                <li key={item.state} className="flex justify-between">
+                  <span>{item.state}</span>
+                  <span>{item.count}</span>
+                </li>
+              ))
+            ) : (
+              <li className="text-slate-500">No state trends yet.</li>
+            )}
           </ul>
         </div>
       </div>
@@ -1608,7 +1659,9 @@ function InputField({
         placeholder={placeholder}
         className={clsx(
           'w-full rounded-xl border bg-white/5 px-4 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none',
-          error ? 'border-rose-400/70 focus:border-rose-300' : 'border-white/10 focus:border-blue-400/70'
+          error
+            ? 'border-rose-400/70 focus:border-rose-300'
+            : 'border-white/10 focus:border-blue-400/70'
         )}
       />
       {hint ? <p className="text-xs text-slate-400">{hint}</p> : null}
@@ -1629,7 +1682,9 @@ function SelectField({ label, name, value, onChange, options, required, error })
         onChange={event => onChange(name, event.target.value)}
         className={clsx(
           'w-full rounded-xl border bg-white/5 px-3 py-2 text-sm text-white focus:outline-none',
-          error ? 'border-rose-400/70 focus:border-rose-300' : 'border-white/10 focus:border-blue-400/70'
+          error
+            ? 'border-rose-400/70 focus:border-rose-300'
+            : 'border-white/10 focus:border-blue-400/70'
         )}
       >
         <option value="">Select</option>
@@ -1673,7 +1728,9 @@ function TextAreaField({
         placeholder={placeholder}
         className={clsx(
           'w-full rounded-2xl border bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none',
-          error ? 'border-rose-400/70 focus:border-rose-300' : 'border-white/10 focus:border-blue-400/70'
+          error
+            ? 'border-rose-400/70 focus:border-rose-300'
+            : 'border-white/10 focus:border-blue-400/70'
         )}
       />
       {hint ? <p className="text-xs text-slate-400">{hint}</p> : null}
@@ -1865,20 +1922,24 @@ function FundingInsightsPanel({ insights, loading, error }) {
         {matchInsights?.length ? (
           <ul className="mt-3 space-y-3 text-xs text-slate-200">
             {matchInsights.map(match => (
-              <li key={match.stateId} className="rounded-xl border border-white/10 bg-white/[0.02] p-3">
+              <li
+                key={match.stateId}
+                className="rounded-xl border border-white/10 bg-white/[0.02] p-3"
+              >
                 <div className="flex items-center justify-between text-sm text-white">
                   <span>{match.stateName}</span>
                   <span className="font-semibold">{match.score}% fit</span>
                 </div>
                 <dl className="mt-2 grid grid-cols-2 gap-2 text-[11px] text-slate-400">
                   {(match.breakdown || []).slice(0, 3).map(item => (
-                    <div key={`${match.stateId}-${item.key}`} className="rounded border border-white/5 px-2 py-1">
+                    <div
+                      key={`${match.stateId}-${item.key}`}
+                      className="rounded border border-white/5 px-2 py-1"
+                    >
                       <dt className="uppercase tracking-[0.2em] text-[9px] text-slate-500">
                         {item.key}
                       </dt>
-                      <dd className="text-slate-200">
-                        {item.value}%
-                      </dd>
+                      <dd className="text-slate-200">{item.value}%</dd>
                     </div>
                   ))}
                 </dl>

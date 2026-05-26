@@ -16,5 +16,3 @@ export async function POST(_request, { params }) {
     return NextResponse.json({ success: false, error: 'Unable to submit draft' }, { status: 500 });
   }
 }
-
-

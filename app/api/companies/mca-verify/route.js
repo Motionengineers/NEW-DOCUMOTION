@@ -7,9 +7,9 @@ const CACHE_NAMESPACE = 'mca-verify';
 
 /**
  * GET /api/companies/mca-verify
- * 
+ *
  * Verifies company information using MCA (Ministry of Corporate Affairs) data
- * 
+ *
  * Query params:
  * - cin: Company Identification Number (required)
  * - name: Company name (alternative to CIN)
@@ -21,16 +21,16 @@ export async function GET(request) {
     const cin = searchParams.get('cin');
     const name = searchParams.get('name');
     const forceRefresh = searchParams.get('refresh') === 'true';
-    
+
     if (!cin && !name) {
       return NextResponse.json(
         { success: false, error: 'CIN or company name is required' },
         { status: 400 }
       );
     }
-    
+
     const cacheKey = `verify:${cin || name}`;
-    
+
     // Check cache
     if (!forceRefresh) {
       const cached = getCachedValue(CACHE_NAMESPACE, cacheKey);
@@ -46,17 +46,17 @@ export async function GET(request) {
 
     // Verify company with MCA
     const companyData = await verifyCompanyWithMCA({ cin, name });
-    
+
     if (!companyData) {
       return NextResponse.json(
         { success: false, error: 'Company not found in MCA database' },
         { status: 404 }
       );
     }
-    
+
     // Cache the result
     setCachedValue(CACHE_NAMESPACE, cacheKey, companyData, CACHE_TTL_MS);
-    
+
     return NextResponse.json({
       success: true,
       data: companyData,
@@ -81,13 +81,13 @@ export async function GET(request) {
 async function verifyCompanyWithMCA({ cin, name }) {
   // Sample implementation - in production, use MCA's official API
   // MCA API: https://www.mca.gov.in/mcafoportal/
-  
+
   // For now, return sample structure
   // In production, implement:
   // 1. MCA API integration (requires registration)
   // 2. Web scraping as fallback
   // 3. Third-party services that provide MCA data
-  
+
   const sampleData = {
     cin: cin || 'U12345MH2024PTC123456',
     name: name || 'Sample Startup Private Limited',
@@ -108,7 +108,6 @@ async function verifyCompanyWithMCA({ cin, name }) {
   // Example:
   // const response = await fetch(`https://www.mca.gov.in/mcafoportal/api/company/${cin}`);
   // const data = await response.json();
-  
+
   return sampleData;
 }
-

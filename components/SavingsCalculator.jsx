@@ -16,7 +16,9 @@ export default function SavingsCalculator({ schemes = [], requiredFunding = 0 })
 
     const estFunding = requiredFunding || schemes[0]?.fundingMax || 0;
     const saved =
-      bestSubsidy > 0 ? Math.round((bestSubsidy / 100) * estFunding) : Math.round(estFunding * 0.05);
+      bestSubsidy > 0
+        ? Math.round((bestSubsidy / 100) * estFunding)
+        : Math.round(estFunding * 0.05);
 
     return {
       bestSubsidy,
@@ -40,5 +42,3 @@ export default function SavingsCalculator({ schemes = [], requiredFunding = 0 })
     </div>
   );
 }
-
-

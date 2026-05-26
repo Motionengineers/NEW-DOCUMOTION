@@ -13,9 +13,28 @@ export async function POST(request) {
     const now = Date.now();
     const assets = [
       { kind: 'logo', variant: 'default', url: `/placeholders/logo-${now}.svg`, format: 'svg' },
-      { kind: 'favicon', variant: 'default', url: `/placeholders/favicon-${now}.ico`, format: 'ico' },
-      { kind: 'app_icon', variant: '192', url: `/placeholders/icon-${now}-192.png`, format: 'png', width: 192, height: 192 },
-      { kind: 'social_banner', variant: 'twitter', url: `/placeholders/twitter-${now}.png`, format: 'png', width: 1500, height: 500 },
+      {
+        kind: 'favicon',
+        variant: 'default',
+        url: `/placeholders/favicon-${now}.ico`,
+        format: 'ico',
+      },
+      {
+        kind: 'app_icon',
+        variant: '192',
+        url: `/placeholders/icon-${now}-192.png`,
+        format: 'png',
+        width: 192,
+        height: 192,
+      },
+      {
+        kind: 'social_banner',
+        variant: 'twitter',
+        url: `/placeholders/twitter-${now}.png`,
+        format: 'png',
+        width: 1500,
+        height: 500,
+      },
     ];
 
     const created = await prisma.$transaction(
@@ -38,8 +57,9 @@ export async function POST(request) {
     return NextResponse.json({ success: true, assets: created });
   } catch (error) {
     console.error('POST /api/branding/assets/generate error:', error);
-    return NextResponse.json({ success: false, error: 'Unable to generate assets' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: 'Unable to generate assets' },
+      { status: 500 }
+    );
   }
 }
-
-

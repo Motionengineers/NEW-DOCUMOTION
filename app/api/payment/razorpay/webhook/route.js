@@ -35,7 +35,9 @@ export async function POST(request) {
     const event = JSON.parse(body);
     const { event: eventType, payload } = event;
 
-    console.log(JSON.stringify({ level: 'info', rid, msg: 'Razorpay webhook received', eventType }));
+    console.log(
+      JSON.stringify({ level: 'info', rid, msg: 'Razorpay webhook received', eventType })
+    );
 
     // Handle different event types
     switch (eventType) {
@@ -60,12 +62,19 @@ export async function POST(request) {
         break;
 
       default:
-        console.log(JSON.stringify({ level: 'info', rid, msg: 'Unhandled webhook event', eventType }));
+        console.log(
+          JSON.stringify({ level: 'info', rid, msg: 'Unhandled webhook event', eventType })
+        );
     }
 
-    return NextResponse.json({ success: true, received: true }, { headers: { 'x-request-id': rid } });
+    return NextResponse.json(
+      { success: true, received: true },
+      { headers: { 'x-request-id': rid } }
+    );
   } catch (error) {
-    console.error(JSON.stringify({ level: 'error', rid, msg: 'Webhook processing error', err: String(error) }));
+    console.error(
+      JSON.stringify({ level: 'error', rid, msg: 'Webhook processing error', err: String(error) })
+    );
     return jsonError('internal_error', 'Webhook processing failed', 500, rid);
   }
 }
@@ -85,7 +94,9 @@ async function handlePaymentCaptured(payment, rid) {
     });
 
     if (!subscription) {
-      console.error(JSON.stringify({ level: 'warn', rid, msg: 'Subscription not found for order', order_id }));
+      console.error(
+        JSON.stringify({ level: 'warn', rid, msg: 'Subscription not found for order', order_id })
+      );
       return;
     }
 
@@ -96,7 +107,14 @@ async function handlePaymentCaptured(payment, rid) {
         where: { razorpayPaymentId: paymentId },
       });
       if (existingInvoice) {
-        console.log(JSON.stringify({ level: 'info', rid, msg: 'Duplicate payment captured ignored', paymentId }));
+        console.log(
+          JSON.stringify({
+            level: 'info',
+            rid,
+            msg: 'Duplicate payment captured ignored',
+            paymentId,
+          })
+        );
         return;
       }
 
@@ -132,10 +150,24 @@ async function handlePaymentCaptured(payment, rid) {
         },
       });
 
-      console.log(JSON.stringify({ level: 'info', rid, msg: 'Payment captured processed', subscriptionId: subscription.id }));
+      console.log(
+        JSON.stringify({
+          level: 'info',
+          rid,
+          msg: 'Payment captured processed',
+          subscriptionId: subscription.id,
+        })
+      );
     }
   } catch (error) {
-    console.error(JSON.stringify({ level: 'error', rid, msg: 'Error handling payment captured', err: String(error) }));
+    console.error(
+      JSON.stringify({
+        level: 'error',
+        rid,
+        msg: 'Error handling payment captured',
+        err: String(error),
+      })
+    );
     throw error;
   }
 }
@@ -149,7 +181,9 @@ async function handlePaymentFailed(payment, rid) {
       where: { razorpayPaymentId: paymentId, status: 'failed' },
     });
     if (existingInvoice) {
-      console.log(JSON.stringify({ level: 'info', rid, msg: 'Duplicate payment failed ignored', paymentId }));
+      console.log(
+        JSON.stringify({ level: 'info', rid, msg: 'Duplicate payment failed ignored', paymentId })
+      );
       return;
     }
 
@@ -183,10 +217,24 @@ async function handlePaymentFailed(payment, rid) {
         },
       });
 
-      console.log(JSON.stringify({ level: 'info', rid, msg: 'Payment failed recorded', subscriptionId: subscription.id }));
+      console.log(
+        JSON.stringify({
+          level: 'info',
+          rid,
+          msg: 'Payment failed recorded',
+          subscriptionId: subscription.id,
+        })
+      );
     }
   } catch (error) {
-    console.error(JSON.stringify({ level: 'error', rid, msg: 'Error handling payment failed', err: String(error) }));
+    console.error(
+      JSON.stringify({
+        level: 'error',
+        rid,
+        msg: 'Error handling payment failed',
+        err: String(error),
+      })
+    );
     throw error;
   }
 }
@@ -224,7 +272,14 @@ async function handleSubscriptionCharged(subscription, rid) {
         where: { razorpayOrderId: subscription.id, status: 'paid' },
       });
       if (existingInvoice) {
-        console.log(JSON.stringify({ level: 'info', rid, msg: 'Duplicate subscription charge ignored', orderId: subscription.id }));
+        console.log(
+          JSON.stringify({
+            level: 'info',
+            rid,
+            msg: 'Duplicate subscription charge ignored',
+            orderId: subscription.id,
+          })
+        );
         return;
       }
 
@@ -250,10 +305,24 @@ async function handleSubscriptionCharged(subscription, rid) {
         },
       });
 
-      console.log(JSON.stringify({ level: 'info', rid, msg: 'Subscription charged processed', subscriptionId: sub.id }));
+      console.log(
+        JSON.stringify({
+          level: 'info',
+          rid,
+          msg: 'Subscription charged processed',
+          subscriptionId: sub.id,
+        })
+      );
     }
   } catch (error) {
-    console.error(JSON.stringify({ level: 'error', rid, msg: 'Error handling subscription charged', err: String(error) }));
+    console.error(
+      JSON.stringify({
+        level: 'error',
+        rid,
+        msg: 'Error handling subscription charged',
+        err: String(error),
+      })
+    );
     throw error;
   }
 }
@@ -277,11 +346,24 @@ async function handleSubscriptionCancelled(subscription, rid) {
         },
       });
 
-      console.log(JSON.stringify({ level: 'info', rid, msg: 'Subscription cancelled processed', subscriptionId: sub.id }));
+      console.log(
+        JSON.stringify({
+          level: 'info',
+          rid,
+          msg: 'Subscription cancelled processed',
+          subscriptionId: sub.id,
+        })
+      );
     }
   } catch (error) {
-    console.error(JSON.stringify({ level: 'error', rid, msg: 'Error handling subscription cancelled', err: String(error) }));
+    console.error(
+      JSON.stringify({
+        level: 'error',
+        rid,
+        msg: 'Error handling subscription cancelled',
+        err: String(error),
+      })
+    );
     throw error;
   }
 }
-

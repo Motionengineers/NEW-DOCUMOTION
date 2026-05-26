@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Upload, X, FileText, Loader2 } from 'lucide-react';
+import { Upload, X, FileText, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import GlassCard from './GlassCard';
 
 export default function DocumentUploader({
@@ -9,18 +10,32 @@ export default function DocumentUploader({
   existingDocuments = [],
   onUploadComplete,
 }) {
+  const { data: session } = useSession();
   const [uploading, setUploading] = useState(false);
   const [documents, setDocuments] = useState(existingDocuments || []);
+  const [error, setError] = useState(null);
 
   const handleFileUpload = async e => {
     const file = e.target.files[0];
     if (!file) return;
 
+    // Production check: Validate MIME type strictly to prevent malicious uploads
+    const validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+    if (!validTypes.includes(file.type)) {
+      setError('Invalid file type. Please upload a PDF, JPG, or PNG.');
+      return;
+    }
+
     setUploading(true);
+    setError(null);
 
     try {
       // First, get the service request to find the startupId
-      const requestResponse = await fetch(`/api/service-requests/${serviceRequestId}`);
+      const requestResponse = await fetch(`/api/service-requests/${serviceRequestId}`, {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken || ''}`,
+        },
+      });
       const requestData = await requestResponse.json();
 
       if (!requestData.success || !requestData.serviceRequest.startupId) {
@@ -38,6 +53,9 @@ export default function DocumentUploader({
 
       const response = await fetch('/api/documents/upload', {
         method: 'POST',
+        headers: {
+          Authorization: `Bearer ${session?.accessToken || ''}`,
+        },
         body: formData,
       });
 
@@ -50,9 +68,9 @@ export default function DocumentUploader({
       if (data.fileUrl || data.url) {
         const newDoc = {
           url: data.fileUrl || data.url,
-          type: file.name.split('.').pop().toUpperCase(),
+          type: data.classification?.document_type || file.name.split('.').pop().toUpperCase(),
           name: file.name,
-          status: 'uploaded',
+          status: data.classification?.confidence > 0.9 ? 'verified' : 'uploaded',
           uploadedAt: new Date().toISOString(),
         };
 
@@ -62,7 +80,10 @@ export default function DocumentUploader({
         // Update service request with new document
         await fetch(`/api/service-requests/${serviceRequestId}`, {
           method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session?.accessToken || ''}`,
+          },
           body: JSON.stringify({
             documents: updatedDocs,
           }),
@@ -74,12 +95,9 @@ export default function DocumentUploader({
       } else {
         throw new Error(data.error || 'Upload failed: No file URL returned');
       }
-    } catch (error) {
-      console.error('Upload error:', error);
-      alert(
-        'Upload failed: ' +
-          (error.message || 'Please check your storage configuration (AWS S3 or Cloudinary).')
-      );
+    } catch (err) {
+      console.error('Upload error:', err);
+      setError(err.message || 'Upload failed. Check your storage configuration.');
     } finally {
       setUploading(false);
       e.target.value = ''; // Reset input
@@ -92,7 +110,10 @@ export default function DocumentUploader({
 
     await fetch(`/api/service-requests/${serviceRequestId}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session?.accessToken || ''}`,
+      },
       body: JSON.stringify({
         documents: updated,
       }),
@@ -151,6 +172,13 @@ export default function DocumentUploader({
         </label>
       </div>
 
+      {error && (
+        <div className="mb-4 p-3 rounded-lg flex items-center gap-2 text-sm bg-red-500/10 text-red-500 border border-red-500/20">
+          <AlertCircle className="h-4 w-4" />
+          {error}
+        </div>
+      )}
+
       <div className="space-y-2">
         {documents.length === 0 ? (
           <p className="text-sm text-center py-8" style={{ color: 'var(--secondary-label)' }}>
@@ -173,7 +201,15 @@ export default function DocumentUploader({
                     {doc.name || `Document ${index + 1}`}
                   </p>
                   <p className="text-xs" style={{ color: 'var(--secondary-label)' }}>
-                    {doc.type} • {doc.status || 'uploaded'}
+                    {doc.type} •{' '}
+                    <span
+                      className={doc.status === 'verified' ? 'text-emerald-500 font-medium' : ''}
+                    >
+                      {doc.status === 'verified' && (
+                        <CheckCircle2 className="inline h-3 w-3 mr-1" />
+                      )}
+                      {doc.status || 'uploaded'}
+                    </span>
                   </p>
                 </div>
               </div>

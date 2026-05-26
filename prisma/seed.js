@@ -567,7 +567,9 @@ async function seedBrandingPartners() {
     city: entry.city ?? entry.location ?? null,
     website: entry.website ?? null,
     portfolioUrl:
-      (Array.isArray(entry.portfolio) && entry.portfolio.length > 0 && entry.portfolio[0].caseStudyUrl) ||
+      (Array.isArray(entry.portfolio) &&
+        entry.portfolio.length > 0 &&
+        entry.portfolio[0].caseStudyUrl) ||
       entry.website ||
       null,
     contactEmail: entry.contactEmail ?? null,

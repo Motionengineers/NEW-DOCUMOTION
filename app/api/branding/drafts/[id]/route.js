@@ -22,5 +22,3 @@ export async function GET(_request, { params }) {
     return NextResponse.json({ success: false, error: 'Unable to load draft' }, { status: 500 });
   }
 }
-
-

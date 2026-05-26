@@ -79,7 +79,7 @@ export async function GET(request) {
         population: state.population,
         gdp: state.gdp,
         description: state.description,
-        schemeCount: includeCounts ? state._count?.schemes ?? 0 : undefined,
+        schemeCount: includeCounts ? (state._count?.schemes ?? 0) : undefined,
         topSectors: includeSectors ? (sectorSummary[state.id] || []).slice(0, 3) : undefined,
       })),
     };

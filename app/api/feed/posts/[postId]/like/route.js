@@ -39,7 +39,10 @@ export async function POST(request, { params }) {
           type: 'like',
         },
       });
-      return NextResponse.json({ success: true, data: { liked: false } }, { headers: { 'x-request-id': rid } });
+      return NextResponse.json(
+        { success: true, data: { liked: false } },
+        { headers: { 'x-request-id': rid } }
+      );
     }
 
     await prisma.feedInteraction.upsert({
@@ -58,15 +61,20 @@ export async function POST(request, { params }) {
       update: {},
     });
 
-    return NextResponse.json({ success: true, data: { liked: true } }, { headers: { 'x-request-id': rid } });
+    return NextResponse.json(
+      { success: true, data: { liked: true } },
+      { headers: { 'x-request-id': rid } }
+    );
   } catch (error) {
-    console.error(JSON.stringify({
-      level: 'error',
-      rid,
-      route: '/api/feed/posts/[postId]/like',
-      msg: 'POST failed',
-      err: String(error),
-    }));
+    console.error(
+      JSON.stringify({
+        level: 'error',
+        rid,
+        route: '/api/feed/posts/[postId]/like',
+        msg: 'POST failed',
+        err: String(error),
+      })
+    );
     return jsonError('internal_error', 'Unable to update like', 500, rid);
   }
 }

@@ -13,6 +13,7 @@
 ## CSV Format
 
 The CSV should have the following columns:
+
 - `state`: State name (required)
 - `centralOrState`: 'State', 'Central', or 'UT'
 - `fundingType`: 'Grant', 'Loan', 'Subsidy', etc.
@@ -27,4 +28,3 @@ The CSV should have the following columns:
 - `verified`: 'TRUE' or 'FALSE'
 - `popularityScore`: Integer score (0-100)
 - `description`: Scheme description
-

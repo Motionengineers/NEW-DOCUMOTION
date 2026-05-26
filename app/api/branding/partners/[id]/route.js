@@ -20,9 +20,24 @@ const updateSchema = z.object({
     .optional()
     .or(z.literal(''))
     .transform(val => (val === undefined ? undefined : val || null)),
-  contactEmail: z.string().email().optional().or(z.literal('')).transform(val => (val === undefined ? undefined : val || null)),
-  phone: z.string().max(32).optional().or(z.literal('')).transform(val => (val === undefined ? undefined : val || null)),
-  city: z.string().max(120).optional().or(z.literal('')).transform(val => (val === undefined ? undefined : val || null)),
+  contactEmail: z
+    .string()
+    .email()
+    .optional()
+    .or(z.literal(''))
+    .transform(val => (val === undefined ? undefined : val || null)),
+  phone: z
+    .string()
+    .max(32)
+    .optional()
+    .or(z.literal(''))
+    .transform(val => (val === undefined ? undefined : val || null)),
+  city: z
+    .string()
+    .max(120)
+    .optional()
+    .or(z.literal(''))
+    .transform(val => (val === undefined ? undefined : val || null)),
   rating: z.number().min(0).max(5).optional(),
   ratingCount: z.number().int().nonnegative().optional(),
 });
@@ -77,9 +92,13 @@ export async function PATCH(request, { params }) {
       where: { id },
       data: {
         ...payload,
-        ...(payload.portfolioUrl !== undefined ? { portfolioUrl: payload.portfolioUrl || null } : {}),
+        ...(payload.portfolioUrl !== undefined
+          ? { portfolioUrl: payload.portfolioUrl || null }
+          : {}),
         ...(payload.website !== undefined ? { website: payload.website || null } : {}),
-        ...(payload.contactEmail !== undefined ? { contactEmail: payload.contactEmail || null } : {}),
+        ...(payload.contactEmail !== undefined
+          ? { contactEmail: payload.contactEmail || null }
+          : {}),
         ...(payload.phone !== undefined ? { phone: payload.phone || null } : {}),
         ...(payload.city !== undefined ? { city: payload.city || null } : {}),
       },
@@ -100,4 +119,3 @@ export async function PATCH(request, { params }) {
     );
   }
 }
-

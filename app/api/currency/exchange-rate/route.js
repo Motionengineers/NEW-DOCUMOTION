@@ -7,9 +7,9 @@ const CACHE_NAMESPACE = 'currency';
 
 /**
  * GET /api/currency/exchange-rate
- * 
+ *
  * Get currency exchange rates using free API
- * 
+ *
  * Query params:
  * - from: Base currency code (e.g., USD, INR) - default: USD
  * - to: Target currency code (e.g., INR, EUR) - default: INR
@@ -21,17 +21,20 @@ export async function GET(request) {
     const from = (searchParams.get('from') || 'USD').toUpperCase();
     const to = (searchParams.get('to') || 'INR').toUpperCase();
     const amount = searchParams.get('amount') ? parseFloat(searchParams.get('amount')) : null;
-    
+
     // Validate currency codes
     if (from.length !== 3 || to.length !== 3) {
       return NextResponse.json(
-        { success: false, error: 'Invalid currency code. Use 3-letter codes (e.g., USD, INR, EUR)' },
+        {
+          success: false,
+          error: 'Invalid currency code. Use 3-letter codes (e.g., USD, INR, EUR)',
+        },
         { status: 400 }
       );
     }
-    
+
     const cacheKey = `${from}:${to}`;
-    
+
     // Check cache
     const cached = getCachedValue(CACHE_NAMESPACE, cacheKey);
     if (cached) {
@@ -50,23 +53,23 @@ export async function GET(request) {
 
     // Get exchange rate
     const rateData = await getExchangeRate(from, to);
-    
+
     if (!rateData) {
       return NextResponse.json(
         { success: false, error: 'Unable to get exchange rate' },
         { status: 500 }
       );
     }
-    
+
     // Cache the result
     setCachedValue(CACHE_NAMESPACE, cacheKey, rateData, CACHE_TTL_MS);
-    
+
     const result = { ...rateData };
     if (amount !== null) {
       result.convertedAmount = (amount * rateData.rate).toFixed(2);
       result.originalAmount = amount;
     }
-    
+
     return NextResponse.json({
       success: true,
       data: result,
@@ -92,23 +95,23 @@ async function getExchangeRate(from, to) {
     // Using exchangerate-api.com free tier
     // Alternative: fixer.io, currencyapi.net (require API keys)
     const url = `https://api.exchangerate-api.com/v4/latest/${from}`;
-    
+
     const response = await fetch(url, {
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
     });
-    
+
     if (!response.ok) {
       throw new Error(`Exchange rate API error: ${response.status}`);
     }
-    
+
     const data = await response.json();
-    
+
     if (!data.rates || !data.rates[to]) {
       throw new Error(`Currency ${to} not found in rates`);
     }
-    
+
     return {
       from,
       to,
@@ -122,4 +125,3 @@ async function getExchangeRate(from, to) {
     throw error;
   }
 }
-

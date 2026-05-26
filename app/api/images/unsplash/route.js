@@ -7,9 +7,9 @@ const CACHE_NAMESPACE = 'unsplash';
 
 /**
  * GET /api/images/unsplash
- * 
+ *
  * Search for high-quality stock images from Unsplash
- * 
+ *
  * Query params:
  * - q: Search query (required)
  * - page: Page number (default: 1)
@@ -21,18 +21,21 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const query = searchParams.get('q');
     const page = Math.max(1, Number.parseInt(searchParams.get('page') || '1', 10));
-    const perPage = Math.min(Math.max(1, Number.parseInt(searchParams.get('perPage') || '10', 10)), 30);
+    const perPage = Math.min(
+      Math.max(1, Number.parseInt(searchParams.get('perPage') || '10', 10)),
+      30
+    );
     const orientation = searchParams.get('orientation') || null;
-    
+
     if (!query) {
       return NextResponse.json(
         { success: false, error: 'Search query (q) is required' },
         { status: 400 }
       );
     }
-    
+
     const cacheKey = `search:${query}:${page}:${perPage}:${orientation || 'all'}`;
-    
+
     // Check cache
     const cached = getCachedValue(CACHE_NAMESPACE, cacheKey);
     if (cached) {
@@ -46,17 +49,14 @@ export async function GET(request) {
 
     // Search Unsplash
     const images = await searchUnsplash({ query, page, perPage, orientation });
-    
+
     if (!images || images.length === 0) {
-      return NextResponse.json(
-        { success: false, error: 'No images found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: 'No images found' }, { status: 404 });
     }
-    
+
     // Cache the result
     setCachedValue(CACHE_NAMESPACE, cacheKey, images, CACHE_TTL_MS);
-    
+
     return NextResponse.json({
       success: true,
       data: images,
@@ -83,39 +83,39 @@ export async function GET(request) {
  */
 async function searchUnsplash({ query, page, perPage, orientation }) {
   const accessKey = process.env.UNSPLASH_ACCESS_KEY;
-  
+
   if (!accessKey) {
     // Return sample data if API key not configured
     console.warn('UNSPLASH_ACCESS_KEY not configured, returning sample data');
     return generateSampleImages(query, perPage);
   }
-  
+
   try {
     const params = new URLSearchParams({
       query,
       page: page.toString(),
       per_page: perPage.toString(),
     });
-    
+
     if (orientation) {
       params.append('orientation', orientation);
     }
-    
+
     const url = `https://api.unsplash.com/search/photos?${params.toString()}`;
-    
+
     const response = await fetch(url, {
       headers: {
-        'Authorization': `Client-ID ${accessKey}`,
+        Authorization: `Client-ID ${accessKey}`,
         'Accept-Version': 'v1',
       },
     });
-    
+
     if (!response.ok) {
       throw new Error(`Unsplash API error: ${response.status}`);
     }
-    
+
     const data = await response.json();
-    
+
     return data.results.map(photo => ({
       id: photo.id,
       description: photo.description || photo.alt_description || '',
@@ -160,11 +160,11 @@ function generateSampleImages(query, count) {
       name: 'Sample Photographer',
       username: 'sample',
       profileUrl: 'https://unsplash.com/@sample',
-      avatar: 'https://images.unsplash.com/placeholder-avatars/photo-1500000000000?w=100&h=100&fit=crop',
+      avatar:
+        'https://images.unsplash.com/placeholder-avatars/photo-1500000000000?w=100&h=100&fit=crop',
     },
     likes: Math.floor(Math.random() * 1000),
     createdAt: new Date().toISOString(),
     note: 'Sample data - configure UNSPLASH_ACCESS_KEY for real images',
   }));
 }
-

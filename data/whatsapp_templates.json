@@ -1,0 +1,26 @@
+{
+  "templates": {
+    "funding_match": {
+      "body": "Hello {customer_name}, great news! A funding opportunity matching your profile (up to {amount} {currency}) is available. Reply YES to learn more.",
+      "example": "Hello Alice, great news! A funding opportunity matching your profile (up to 50000 USD) is available. Reply YES to learn more."
+    },
+    "investor_match": {
+      "body": "Hi {customer_name}, we found a matching investor for {startup_name}: {investor_name} ({firm_name}). Match score: {match_score}%. View details in your Documotion dashboard.",
+      "example": "Hi Bob, we found a matching investor for TechStart: Alice Ventures (AV Capital). Match score: 95%. View details in your Documotion dashboard."
+    },
+    "general_update": {
+      "body": "Hello {customer_name}, here is an update regarding your {startup_name} profile: {message}",
+      "example": "Hello Alice, here is an update regarding your TechStart profile: Your document has been verified."
+    }
+  },
+  "allowed_placeholders": [
+    "customer_name",
+    "amount",
+    "currency",
+    "startup_name",
+    "investor_name",
+    "firm_name",
+    "match_score",
+    "message"
+  ]
+}

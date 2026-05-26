@@ -67,23 +67,30 @@ export async function PATCH(request, { params }) {
       },
     });
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        id: updated.id,
-        status: updated.status,
-        scheduledAt: updated.scheduledAt,
-        meetingLink: updated.meetingLink,
-        notes: updated.requestNotes,
-        requesterName: updated.requesterName,
-        requesterEmail: updated.requesterEmail,
-        createdAt: updated.createdAt,
+    return NextResponse.json(
+      {
+        success: true,
+        data: {
+          id: updated.id,
+          status: updated.status,
+          scheduledAt: updated.scheduledAt,
+          meetingLink: updated.meetingLink,
+          notes: updated.requestNotes,
+          requesterName: updated.requesterName,
+          requesterEmail: updated.requesterEmail,
+          createdAt: updated.createdAt,
+        },
       },
-    }, { headers: { 'x-request-id': rid } });
+      { headers: { 'x-request-id': rid } }
+    );
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { success: false, error: { code: 'invalid_body', message: 'Invalid payload' }, details: error.flatten() },
+        {
+          success: false,
+          error: { code: 'invalid_body', message: 'Invalid payload' },
+          details: error.flatten(),
+        },
         { status: 422 }
       );
     }
@@ -130,10 +137,7 @@ export async function GET(request, { params }) {
     });
 
     if (!booking) {
-      return NextResponse.json(
-        { success: false, error: 'Booking not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -153,11 +157,6 @@ export async function GET(request, { params }) {
     });
   } catch (error) {
     console.error('Error fetching booking:', error);
-    return NextResponse.json(
-      { success: false, error: 'Unable to fetch booking' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Unable to fetch booking' }, { status: 500 });
   }
 }
-
-

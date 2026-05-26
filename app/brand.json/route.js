@@ -70,11 +70,6 @@ export async function GET() {
     return res;
   } catch (error) {
     console.error('GET /brand.json error:', error);
-    return NextResponse.json(
-      { error: 'Unable to load brand runtime' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Unable to load brand runtime' }, { status: 500 });
   }
 }
-
-

@@ -8,8 +8,18 @@ export const dynamic = 'force-dynamic';
 const createSchema = z.object({
   name: z.string().min(2).max(120),
   type: z.enum(['AGENCY', 'PHOTOGRAPHER', 'MEDIA']),
-  portfolioUrl: z.string().url().optional().or(z.literal('')).transform(val => val || undefined),
-  website: z.string().url().optional().or(z.literal('')).transform(val => val || undefined),
+  portfolioUrl: z
+    .string()
+    .url()
+    .optional()
+    .or(z.literal(''))
+    .transform(val => val || undefined),
+  website: z
+    .string()
+    .url()
+    .optional()
+    .or(z.literal(''))
+    .transform(val => val || undefined),
   contactEmail: z.string().email().optional(),
   phone: z.string().max(32).optional(),
   city: z.string().max(120).optional(),
@@ -124,5 +134,3 @@ export async function POST(request) {
     );
   }
 }
-
-

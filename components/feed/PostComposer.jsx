@@ -22,7 +22,7 @@ const TEMPLATES = [
   { id: 'general', label: 'General Update', icon: FileText, color: 'blue' },
   { id: 'funding', label: 'Funding Announcement', icon: IndianRupee, color: 'emerald' },
   { id: 'launch', label: 'Product Launch', icon: Rocket, color: 'purple' },
-  { id: 'hiring', label: 'We\'re Hiring', icon: Users, color: 'orange' },
+  { id: 'hiring', label: "We're Hiring", icon: Users, color: 'orange' },
   { id: 'milestone', label: 'Milestone Achievement', icon: Trophy, color: 'amber' },
 ];
 
@@ -51,12 +51,21 @@ export default function PostComposer({ onCreate }) {
 
   const remaining = MAX_CHARACTERS - body.length;
   const disabled =
-    submitting || (!body.trim() && !mediaUrl.trim() && !linkUrl.trim() && mediaItems.length === 0);
+    submitting ||
+    fetchingPreview ||
+    (!body.trim() && !mediaUrl.trim() && !linkUrl.trim() && mediaItems.length === 0);
   const selectedTemplate = TEMPLATES.find(t => t.id === template) || TEMPLATES[0];
 
   // Fetch link preview when linkUrl changes
   useEffect(() => {
+    // Reset preview state immediately when URL changes to avoid stale data
+    setLinkTitle('');
+    setLinkDescription('');
+    setLinkImageUrl('');
+
     if (!linkUrl || !linkUrl.startsWith('http')) return;
+
+    const controller = new AbortController();
 
     const timeoutId = setTimeout(async () => {
       try {
@@ -65,25 +74,31 @@ export default function PostComposer({ onCreate }) {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ url: linkUrl }),
+          signal: controller.signal,
         });
 
         if (response.ok) {
           const json = await response.json();
           if (json.success && json.data) {
-            if (json.data.title && !linkTitle) setLinkTitle(json.data.title);
-            if (json.data.description && !linkDescription) setLinkDescription(json.data.description);
-            if (json.data.image && !linkImageUrl) setLinkImageUrl(json.data.image);
+            setLinkTitle(json.data.title || '');
+            setLinkDescription(json.data.description || '');
+            setLinkImageUrl(json.data.image || '');
           }
         }
       } catch (error) {
-        console.error('Failed to fetch link preview', error);
+        if (error.name !== 'AbortError') {
+          console.error('Failed to fetch link preview', error);
+        }
       } finally {
         setFetchingPreview(false);
       }
     }, 1000); // Debounce 1 second
 
-    return () => clearTimeout(timeoutId);
-  }, [linkUrl, linkTitle, linkDescription, linkImageUrl]);
+    return () => {
+      clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [linkUrl]);
 
   // Update template data based on template type
   useEffect(() => {
@@ -405,7 +420,9 @@ export default function PostComposer({ onCreate }) {
       {template === 'launch' && (
         <div className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-4">
           <div className="space-y-1">
-            <label className="text-xs uppercase tracking-[0.3em] text-slate-400">Product Name</label>
+            <label className="text-xs uppercase tracking-[0.3em] text-slate-400">
+              Product Name
+            </label>
             <input
               value={templateData.productName || ''}
               onChange={e => setTemplateData(prev => ({ ...prev, productName: e.target.value }))}
@@ -414,7 +431,9 @@ export default function PostComposer({ onCreate }) {
             />
           </div>
           <div className="space-y-1">
-            <label className="text-xs uppercase tracking-[0.3em] text-slate-400">Key Features</label>
+            <label className="text-xs uppercase tracking-[0.3em] text-slate-400">
+              Key Features
+            </label>
             <textarea
               value={templateData.features || ''}
               onChange={e => setTemplateData(prev => ({ ...prev, features: e.target.value }))}
@@ -487,13 +506,13 @@ export default function PostComposer({ onCreate }) {
           onChange={event => setBody(event.target.value.slice(0, MAX_CHARACTERS))}
           placeholder={
             template === 'funding'
-              ? 'We\'re thrilled to announce...'
+              ? "We're thrilled to announce..."
               : template === 'launch'
                 ? 'Excited to launch...'
                 : template === 'hiring'
-                  ? 'We\'re growing and looking for...'
+                  ? "We're growing and looking for..."
                   : template === 'milestone'
-                    ? 'Proud to share that we\'ve...'
+                    ? "Proud to share that we've..."
                     : 'Share a milestone, product launch, or insight...'
           }
           rows={4}
@@ -501,7 +520,9 @@ export default function PostComposer({ onCreate }) {
         />
         <div className="flex flex-wrap gap-3 text-xs text-slate-400">
           <span>{remaining} characters left</span>
-          {professional ? <span className="text-emerald-200">Professional badge enabled</span> : null}
+          {professional ? (
+            <span className="text-emerald-200">Professional badge enabled</span>
+          ) : null}
         </div>
       </div>
 
@@ -531,7 +552,8 @@ export default function PostComposer({ onCreate }) {
         </div>
         <div className="space-y-2">
           <label className="text-xs uppercase tracking-[0.3em] text-slate-400">
-            Link (optional) {fetchingPreview && <span className="text-blue-400">Fetching preview...</span>}
+            Link (optional){' '}
+            {fetchingPreview && <span className="text-blue-400">Fetching preview...</span>}
           </label>
           <div className="relative">
             <Link2 className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
@@ -542,10 +564,21 @@ export default function PostComposer({ onCreate }) {
               className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-400/70 focus:outline-none"
             />
           </div>
-          {linkTitle && (
-            <div className="mt-2 rounded-xl border border-white/10 bg-white/5 p-3 text-xs">
-              <div className="font-semibold text-white">{linkTitle}</div>
-              {linkDescription && <div className="mt-1 text-slate-400">{linkDescription}</div>}
+          {(linkTitle || linkImageUrl) && (
+            <div className="mt-2 rounded-xl border border-white/10 bg-white/5 overflow-hidden text-xs">
+              {linkImageUrl && (
+                <img
+                  src={linkImageUrl}
+                  alt=""
+                  className="w-full h-32 object-cover border-b border-white/10"
+                />
+              )}
+              <div className="p-3">
+                <div className="font-semibold text-white">{linkTitle || 'Link Preview'}</div>
+                {linkDescription && (
+                  <div className="mt-1 text-slate-400 line-clamp-2">{linkDescription}</div>
+                )}
+              </div>
             </div>
           )}
         </div>

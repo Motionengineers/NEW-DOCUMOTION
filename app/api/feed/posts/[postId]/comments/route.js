@@ -102,15 +102,20 @@ export async function POST(request, { params }) {
       },
     });
 
-    return NextResponse.json({ success: true, data: serializeComment(created) }, { headers: { 'x-request-id': rid } });
+    return NextResponse.json(
+      { success: true, data: serializeComment(created) },
+      { headers: { 'x-request-id': rid } }
+    );
   } catch (error) {
-    console.error(JSON.stringify({
-      level: 'error',
-      rid,
-      route: '/api/feed/posts/[postId]/comments',
-      msg: 'POST failed',
-      err: String(error),
-    }));
+    console.error(
+      JSON.stringify({
+        level: 'error',
+        rid,
+        route: '/api/feed/posts/[postId]/comments',
+        msg: 'POST failed',
+        err: String(error),
+      })
+    );
     return jsonError('internal_error', 'Unable to add comment', 500, rid);
   }
 }

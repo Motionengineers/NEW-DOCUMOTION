@@ -24,8 +24,11 @@ export default function PDFThumbnail({ fileUrl, width = 600, height = 450 }) {
       if (!safeUrl) return setFailed(true);
       try {
         const pdfjs = await import('pdfjs-dist/build/pdf');
-        // worker
-        const ver = pdfjs.version || '4.4.168';
+
+        // Use internal version to ensure worker compatibility
+        const ver = pdfjs.version;
+        if (!ver) throw new Error('PDF.js version not found');
+
         pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${ver}/pdf.worker.min.js`;
         const loadingTask = pdfjs.getDocument({ url: safeUrl, withCredentials: false });
         const pdf = await loadingTask.promise;

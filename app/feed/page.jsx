@@ -11,11 +11,11 @@ const PLACEHOLDER_CAPTIONS = [
   'Product launch drop: introducing our AI underwriting sandbox for founders in Fintech and ClimateTech.',
   'Investor spotlight: sharing portfolio wins and lessons from onboarding 120+ venture-backed founders.',
   'Talent shoutout: scaling our design practice with fresh leadership across Bengaluru and Mumbai hubs.',
-  'We\'re thrilled to announce our ₹40 Cr Series A led by Accel Partners! This funding will accelerate our mission to democratize AI for Indian startups.',
+  "We're thrilled to announce our ₹40 Cr Series A led by Accel Partners! This funding will accelerate our mission to democratize AI for Indian startups.",
   'Excited to launch V2.0 of our platform with real-time collaboration, advanced analytics, and enterprise-grade security.',
-  'We\'re hiring! Looking for Senior Engineers and Product Managers to join our growing team in Bangalore.',
+  "We're hiring! Looking for Senior Engineers and Product Managers to join our growing team in Bangalore.",
   'Proud milestone: Reached 10K active users in just 6 months! Thank you to our amazing community of founders.',
-  'Breaking barriers: Our AI-powered compliance tool just processed 1M+ documents. Here\'s what we learned.',
+  "Breaking barriers: Our AI-powered compliance tool just processed 1M+ documents. Here's what we learned.",
   'Product update: New dashboard features, improved UX, and 10x faster performance. Try it now!',
 ];
 const TAG_SETS = [
@@ -129,7 +129,9 @@ function loadDemoPosts() {
   if (!fs.existsSync(FEED_IMAGES_DIR)) return [];
   const files = fs
     .readdirSync(FEED_IMAGES_DIR)
-    .filter(file => ['.jpg', '.jpeg', '.png', '.webp', '.gif'].includes(path.extname(file).toLowerCase()))
+    .filter(file =>
+      ['.jpg', '.jpeg', '.png', '.webp', '.gif'].includes(path.extname(file).toLowerCase())
+    )
     .sort()
     .slice(0, 20); // Show first 20 images for demo
 
@@ -147,7 +149,7 @@ function loadDemoPosts() {
     // Template-specific data
     let templateData = {};
     let title = author.verified ? 'Verified milestone update' : 'Community spotlight';
-    
+
     if (template === 'funding') {
       title = 'Funding Announcement';
       templateData = {
@@ -163,7 +165,7 @@ function loadDemoPosts() {
         earlyAccess: index % 2 === 0,
       };
     } else if (template === 'hiring') {
-      title = 'We\'re Hiring!';
+      title = "We're Hiring!";
       templateData = {
         roles: ['Senior Engineer', 'Product Manager', 'Designer', 'Data Scientist'][index % 4],
         location: 'Bangalore, India',

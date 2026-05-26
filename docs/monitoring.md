@@ -3,18 +3,21 @@
 ## Metrics to Track
 
 ### Ingestion Metrics
+
 - `telemetry.ingest.success` - Counter of successful event ingestion
 - `telemetry.ingest.failure` - Counter of failed ingestion attempts
 - `telemetry.ingest.batch_size` - Histogram of batch sizes
 - `telemetry.ingest.latency` - Histogram of API response times
 
 ### Warehouse Metrics
+
 - `telemetry.bq.insert.success` - BigQuery insert success count
 - `telemetry.bq.insert.failure` - BigQuery insert failure count
 - `telemetry.bq.lag` - Time between event creation and BigQuery ingestion
 - `telemetry.jsonl.backup.size` - Size of JSONL backup files
 
 ### Business Metrics (from warehouse)
+
 - `events.search.query` - Search query volume
 - `events.match.run` - Match runs per day
 - `events.scheme.apply_click` - Apply click-through rate
@@ -23,30 +26,32 @@
 ## Alerting Rules
 
 ### Critical Alerts
+
 ```yaml
 # High failure rate
 - alert: HighTelemetryFailureRate
   expr: rate(telemetry_ingest_failure[5m]) / rate(telemetry_ingest_total[5m]) > 0.01
   for: 5m
   annotations:
-    summary: "Telemetry failure rate > 1%"
+    summary: 'Telemetry failure rate > 1%'
 
 # BigQuery lag too high
 - alert: BigQueryIngestionLag
   expr: telemetry_bq_lag > 600
   for: 10m
   annotations:
-    summary: "BigQuery ingestion lag > 10 minutes"
+    summary: 'BigQuery ingestion lag > 10 minutes'
 ```
 
 ### Warning Alerts
+
 ```yaml
 # Low event volume (possible issue)
 - alert: LowEventVolume
   expr: rate(telemetry_ingest_success[1h]) < 10
   for: 30m
   annotations:
-    summary: "Event volume unusually low"
+    summary: 'Event volume unusually low'
 ```
 
 ## Prometheus Exporter (Example)
@@ -78,8 +83,9 @@ module.exports = { register, ingestSuccess, ingestFailure };
 ## Dashboard Queries (BigQuery)
 
 ### Daily Active Users
+
 ```sql
-SELECT 
+SELECT
   DATE(timestamp) as date,
   COUNT(DISTINCT session_id) as dau
 FROM `project.dataset.events`
@@ -89,8 +95,9 @@ ORDER BY date DESC
 ```
 
 ### Top Searched States
+
 ```sql
-SELECT 
+SELECT
   JSON_EXTRACT_SCALAR(properties, '$.query') as state,
   COUNT(*) as searches
 FROM `project.dataset.events`
@@ -102,8 +109,9 @@ LIMIT 10
 ```
 
 ### Match Run Success Rate
+
 ```sql
-SELECT 
+SELECT
   JSON_EXTRACT_SCALAR(properties, '$.profile.industry') as industry,
   COUNT(*) as match_runs
 FROM `project.dataset.events`
@@ -130,4 +138,3 @@ try {
   throw error;
 }
 ```
-

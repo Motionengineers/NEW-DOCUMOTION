@@ -102,6 +102,9 @@ export default function RequestFormUX({ agencyId, startupId, onSubmitted }) {
     setLoading(true);
     setError('');
 
+    const rawBudget = normalizeBudget(formData.budget);
+    const parsedBudget = rawBudget ? parseInt(rawBudget) : null;
+
     try {
       const res = await fetch('/api/agency-requests', {
         method: 'POST',
@@ -110,7 +113,7 @@ export default function RequestFormUX({ agencyId, startupId, onSubmitted }) {
           agencyId,
           startupId,
           serviceType: formData.serviceType,
-          budget: formData.budget ? parseInt(normalizeBudget(formData.budget)) : null,
+          budget: isNaN(parsedBudget) ? null : parsedBudget,
           timeline: formData.timeline,
           message: formData.message,
         }),

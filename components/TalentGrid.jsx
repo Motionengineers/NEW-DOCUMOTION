@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import {
   Loader2,
   Search,
@@ -188,6 +189,7 @@ export default function TalentGrid({
   initialFilters = DEFAULT_FILTERS,
   initialSort = 'relevance',
 }) {
+  const { data: session } = useSession();
   const [profiles, setProfiles] = useState(initialProfiles);
   const [facets, setFacets] = useState(initialFacets);
   const [filters, setFilters] = useState(() => sanitizeFilters(initialFilters));
@@ -296,7 +298,7 @@ export default function TalentGrid({
   }, [filters, query]);
 
   const fetchSearch = useCallback(
-    async (nextPage = 1, override = {}) => {
+    async (nextPage = 1, override = {}, signal) => {
       setLoading(true);
       setError(null);
       try {
@@ -310,8 +312,12 @@ export default function TalentGrid({
 
         const res = await fetch('/api/talent/search', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session?.accessToken || ''}`,
+          },
           body: JSON.stringify(payload),
+          signal,
         });
         if (!res.ok) {
           throw new Error(`Request failed with status ${res.status}`);
@@ -364,20 +370,26 @@ export default function TalentGrid({
       initialisedRef.current = true;
       return;
     }
-    fetchSearch(1);
-  }, [filters, sort, fetchSearch]);
+    const controller = new AbortController();
+    fetchSearch(1, {}, controller.signal);
+    return () => controller.abort();
+  }, [filters, sort, fetchSearch, session]);
 
   useEffect(() => {
     if (!initialisedRef.current) return;
+    const controller = new AbortController();
     const handler = setTimeout(() => {
       const trimmed = searchInput.trim();
       if (trimmed !== query) {
         setQuery(trimmed);
-        fetchSearch(1, { query: trimmed });
+        fetchSearch(1, { query: trimmed }, controller.signal);
       }
     }, 400);
-    return () => clearTimeout(handler);
-  }, [searchInput]); // eslint-disable-line react-hooks/exhaustive-deps
+    return () => {
+      clearTimeout(handler);
+      controller.abort();
+    };
+  }, [searchInput, session]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const trimmed = searchInput.trim();

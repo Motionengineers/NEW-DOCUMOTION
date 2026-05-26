@@ -39,7 +39,10 @@ export async function POST(request, { params }) {
           userId,
         },
       });
-      return NextResponse.json({ success: true, data: { bookmarked: false } }, { headers: { 'x-request-id': rid } });
+      return NextResponse.json(
+        { success: true, data: { bookmarked: false } },
+        { headers: { 'x-request-id': rid } }
+      );
     }
 
     await prisma.feedBookmark.upsert({
@@ -59,15 +62,20 @@ export async function POST(request, { params }) {
       },
     });
 
-    return NextResponse.json({ success: true, data: { bookmarked: true, collection } }, { headers: { 'x-request-id': rid } });
+    return NextResponse.json(
+      { success: true, data: { bookmarked: true, collection } },
+      { headers: { 'x-request-id': rid } }
+    );
   } catch (error) {
-    console.error(JSON.stringify({
-      level: 'error',
-      rid,
-      route: '/api/feed/posts/[postId]/bookmark',
-      msg: 'POST failed',
-      err: String(error),
-    }));
+    console.error(
+      JSON.stringify({
+        level: 'error',
+        rid,
+        route: '/api/feed/posts/[postId]/bookmark',
+        msg: 'POST failed',
+        err: String(error),
+      })
+    );
     return jsonError('internal_error', 'Unable to update bookmark', 500, rid);
   }
 }

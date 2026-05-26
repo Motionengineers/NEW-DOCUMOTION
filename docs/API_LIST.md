@@ -8,20 +8,20 @@
 
 ## 📊 API Summary by Category
 
-| Category | Count | Endpoints |
-|----------|-------|-----------|
-| **Free External APIs** | 10 | RBI Rates, Startup India, MCA, MSME, Email, Geocoding, IP Geo, Currency, GitHub, Unsplash |
-| State Funding Explorer | 5 | States, Funding, Match |
-| Branding Studio | 20+ | Drafts, Assets, Partners, Agencies |
-| Team & Invitations | 9 | Create, Accept, Revoke, Roles |
-| Subscriptions & Payments | 8 | Plans, Invoices, Usage, Razorpay |
-| Feed & Social | 7 | Posts, Comments, Reactions, Follow |
-| Agencies & Partners | 5 | Requests, Messages, Bookings |
-| Talent & Founders | 3 | List, Search, Suggest |
-| Service Requests | 3 | Create, Update, List |
-| Notifications | 2 | List, Mark Read |
-| Eligibility & Matching | 2 | Eligibility, Recommendations |
-| Others | 15+ | Dashboard, Documents, Settings, etc. |
+| Category                 | Count | Endpoints                                                                                 |
+| ------------------------ | ----- | ----------------------------------------------------------------------------------------- |
+| **Free External APIs**   | 10    | RBI Rates, Startup India, MCA, MSME, Email, Geocoding, IP Geo, Currency, GitHub, Unsplash |
+| State Funding Explorer   | 5     | States, Funding, Match                                                                    |
+| Branding Studio          | 20+   | Drafts, Assets, Partners, Agencies                                                        |
+| Team & Invitations       | 9     | Create, Accept, Revoke, Roles                                                             |
+| Subscriptions & Payments | 8     | Plans, Invoices, Usage, Razorpay                                                          |
+| Feed & Social            | 7     | Posts, Comments, Reactions, Follow                                                        |
+| Agencies & Partners      | 5     | Requests, Messages, Bookings                                                              |
+| Talent & Founders        | 3     | List, Search, Suggest                                                                     |
+| Service Requests         | 3     | Create, Update, List                                                                      |
+| Notifications            | 2     | List, Mark Read                                                                           |
+| Eligibility & Matching   | 2     | Eligibility, Recommendations                                                              |
+| Others                   | 15+   | Dashboard, Documents, Settings, etc.                                                      |
 
 ---
 
@@ -68,116 +68,116 @@
    - List branding agencies
    - Query: `?service=branding&location=Delhi`
 
-9. **GET /api/branding/agencies/[slug]**
-   - Get agency by slug
-   - Path: `/api/branding/agencies/agency-name`
+10. **GET /api/branding/agencies/[slug]**
+    - Get agency by slug
+    - Path: `/api/branding/agencies/agency-name`
 
-10. **POST /api/branding/agencies/lead**
+11. **POST /api/branding/agencies/lead**
     - Submit agency lead
     - Body: `{name, email, company, message}`
 
-11. **GET /api/branding/admin/agencies/[id]**
+12. **GET /api/branding/admin/agencies/[id]**
     - Admin: Get agency details
     - Auth: Admin only
 
-12. **GET /api/branding/assets**
+13. **GET /api/branding/assets**
     - List branding assets
     - Query: `?startupId=1&kind=logo`
 
-13. **POST /api/branding/assets/generate**
+14. **POST /api/branding/assets/generate**
     - Generate new asset
     - Body: `{kind, variant, startupId}`
 
-14. **GET /api/branding/drafts**
+15. **GET /api/branding/drafts**
     - List branding drafts
     - Query: `?startupId=1&status=draft`
 
-15. **POST /api/branding/drafts**
+16. **POST /api/branding/drafts**
     - Create new draft
     - Body: `{startupId, dataJson, status}`
 
-16. **GET /api/branding/drafts/[id]**
+17. **GET /api/branding/drafts/[id]**
     - Get specific draft
     - Path: `/api/branding/drafts/123`
 
-17. **POST /api/branding/drafts/[id]/submit**
+18. **POST /api/branding/drafts/[id]/submit**
     - Submit draft for review
     - Path: `/api/branding/drafts/123/submit`
 
-18. **POST /api/branding/drafts/[id]/approve**
+19. **POST /api/branding/drafts/[id]/approve**
     - Approve draft
     - Path: `/api/branding/drafts/123/approve`
     - Auth: Admin/Reviewer
 
-19. **POST /api/branding/drafts/[id]/publish**
+20. **POST /api/branding/drafts/[id]/publish**
     - Publish draft
     - Path: `/api/branding/drafts/123/publish`
 
-20. **GET /api/branding/drafts/[id]/comments**
+21. **GET /api/branding/drafts/[id]/comments**
     - Get draft comments
     - Path: `/api/branding/drafts/123/comments`
 
-21. **POST /api/branding/drafts/[id]/comments**
+22. **POST /api/branding/drafts/[id]/comments**
     - Add comment to draft
     - Body: `{content, authorId}`
 
-22. **POST /api/branding/generate**
+23. **POST /api/branding/generate**
     - Generate branding from prompt
     - Body: `{companyName, industry, style}`
 
-23. **POST /api/branding/kit/export**
+24. **POST /api/branding/kit/export**
     - Export branding kit
     - Body: `{versionId, formats: ['png', 'svg']}`
 
-24. **GET /api/branding/kit/[jobId]**
+25. **GET /api/branding/kit/[jobId]**
     - Get export job status
     - Path: `/api/branding/kit/export-123`
 
-25. **POST /api/branding/parse**
+26. **POST /api/branding/parse**
     - Parse branding from URL/image
     - Body: `{url, imageUrl}`
 
-26. **GET /api/branding/partners**
+27. **GET /api/branding/partners**
     - List branding partners
     - Query: `?verified=true&service=logo`
 
-27. **GET /api/branding/partners/[id]**
+28. **GET /api/branding/partners/[id]**
     - Get partner details
     - Path: `/api/branding/partners/123`
 
-28. **POST /api/branding/partners/[id]/book**
+29. **POST /api/branding/partners/[id]/book**
     - Book a partner
     - Body: `{startDate, endDate, serviceType}`
 
-29. **GET /api/branding/partners/[id]/bookings**
+30. **GET /api/branding/partners/[id]/bookings**
     - List partner bookings
     - Query: `?status=confirmed`
 
-30. **GET /api/branding/partners/[id]/bookings/[bookingId]**
+31. **GET /api/branding/partners/[id]/bookings/[bookingId]**
     - Get booking details
     - Path: `/api/branding/partners/123/bookings/456`
 
-31. **GET /api/branding/partners/[id]/availability**
+32. **GET /api/branding/partners/[id]/availability**
     - Check partner availability
     - Query: `?startDate=2024-01-01&endDate=2024-01-31`
 
-32. **POST /api/branding/partners/[id]/verify**
+33. **POST /api/branding/partners/[id]/verify**
     - Verify partner
     - Auth: Admin only
 
-33. **GET /api/branding/roles**
+34. **GET /api/branding/roles**
     - Get branding roles
     - Returns: `{roles: ['admin', 'reviewer', 'viewer']}`
 
-34. **GET /api/branding/tokens**
+35. **GET /api/branding/tokens**
     - Get branding tokens
     - Query: `?startupId=1`
 
-35. **GET /api/branding/workspace**
+36. **GET /api/branding/workspace**
     - Get workspace info
     - Query: `?startupId=1`
 
-36. **POST /api/branding/workspace/[id]/upload**
+37. **POST /api/branding/workspace/[id]/upload**
     - Upload asset to workspace
     - Multipart: `file, kind, variant`
 
@@ -453,6 +453,7 @@
 ## 📋 API List by HTTP Method
 
 ### GET Endpoints (53)
+
 - `/api/dashboard`
 - `/api/states`
 - `/api/funding/state`
@@ -493,6 +494,7 @@
 - `/api/banks/match` (POST but listed here for reference)
 
 ### POST Endpoints (26)
+
 - `/api/funding/match`
 - `/api/eligibility`
 - `/api/schemes/recommend`
@@ -522,10 +524,12 @@
 - `/api/openai/chat`
 
 ### PATCH Endpoints (2)
+
 - `/api/service-requests/[id]`
 - `/api/agency-requests/[id]`
 
 ### DELETE Endpoints (0)
+
 - None currently (but can be added following same pattern)
 
 ---
@@ -533,6 +537,7 @@
 ## 🔐 Authentication Required
 
 **Public APIs** (No auth needed):
+
 - `GET /api/dashboard`
 - `GET /api/states`
 - `GET /api/funding/state`
@@ -541,6 +546,7 @@
 - `GET /api/feed/posts` (public feed)
 
 **Protected APIs** (Auth required):
+
 - All POST/PATCH/DELETE endpoints
 - User-specific GET endpoints
 - Admin endpoints (marked with "Admin:")
@@ -594,4 +600,3 @@
 ---
 
 **Last Updated**: 2024-11-18
-

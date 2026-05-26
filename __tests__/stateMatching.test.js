@@ -45,4 +45,3 @@ describe('computeStateMatches', () => {
     assert.ok(first.score >= second.score);
   });
 });
-

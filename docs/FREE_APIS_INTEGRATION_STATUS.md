@@ -8,6 +8,7 @@
 ## ✅ Integrated APIs
 
 ### 1. **RBI Banking Rates API** ✅
+
 - **Endpoint**: `GET /api/banking/rbi-rates`
 - **Status**: ✅ Implemented
 - **Features**:
@@ -35,6 +36,7 @@
   ```
 
 ### 2. **Startup India Hub API** ✅
+
 - **Endpoint**: `GET /api/startup-india/schemes`
 - **Status**: ✅ Implemented
 - **Features**:
@@ -63,6 +65,7 @@
   ```
 
 ### 3. **MCA Company Verification API** ✅
+
 - **Endpoint**: `GET /api/companies/mca-verify`
 - **Status**: ✅ Implemented
 - **Features**:
@@ -89,6 +92,7 @@
   ```
 
 ### 4. **MSME Schemes API** ✅
+
 - **Endpoint**: `GET /api/msme/schemes`
 - **Status**: ✅ Implemented
 - **Features**:
@@ -116,6 +120,7 @@
   ```
 
 ### 5. **Resend Email API** ✅
+
 - **Endpoint**: `POST /api/email/test`
 - **Status**: ✅ Configured (already in dependencies)
 - **Features**:
@@ -153,12 +158,14 @@ EMAIL_FROM=Documotion <no-reply@documotion.in>
 ## 🚀 Next Steps
 
 ### Phase 1: Enhance Current Integrations
+
 1. **RBI Rates**: Implement web scraping for real-time rates
 2. **Startup India**: Add web scraping or official API integration
 3. **MCA Verification**: Register for official MCA API access
 4. **MSME Schemes**: Integrate with official MSME portal APIs
 
 ### Phase 2: Add More Free APIs
+
 5. **Crunchbase API** - Startup enrichment
 6. **LinkedIn API** - Talent profiles
 7. **OpenStreetMap API** - Location services
@@ -194,13 +201,13 @@ curl -X POST http://localhost:3000/api/email/test \
 
 ## 📊 API Summary
 
-| API | Endpoint | Status | Cache TTL | Free Tier |
-|-----|----------|--------|-----------|-----------|
-| RBI Rates | `/api/banking/rbi-rates` | ✅ | 24h | Unlimited |
-| Startup India | `/api/startup-india/schemes` | ✅ | 6h | Unlimited |
-| MCA Verify | `/api/companies/mca-verify` | ✅ | 7d | Unlimited |
-| MSME Schemes | `/api/msme/schemes` | ✅ | 12h | Unlimited |
-| Resend Email | `POST /api/email/test` | ✅ | N/A | 3000/month |
+| API           | Endpoint                     | Status | Cache TTL | Free Tier  |
+| ------------- | ---------------------------- | ------ | --------- | ---------- |
+| RBI Rates     | `/api/banking/rbi-rates`     | ✅     | 24h       | Unlimited  |
+| Startup India | `/api/startup-india/schemes` | ✅     | 6h        | Unlimited  |
+| MCA Verify    | `/api/companies/mca-verify`  | ✅     | 7d        | Unlimited  |
+| MSME Schemes  | `/api/msme/schemes`          | ✅     | 12h       | Unlimited  |
+| Resend Email  | `POST /api/email/test`       | ✅     | N/A       | 3000/month |
 
 **Total**: 5 APIs integrated  
 **Cost**: $0/month (all free tiers)
@@ -210,11 +217,13 @@ curl -X POST http://localhost:3000/api/email/test \
 ## 🔧 Implementation Notes
 
 ### Caching Strategy
+
 - All APIs use in-memory caching via `lib/cache.js`
 - Cache TTL varies by data freshness requirements
 - Use `?refresh=true` to bypass cache
 
 ### Error Handling
+
 - All APIs return consistent error format:
   ```json
   {
@@ -224,10 +233,12 @@ curl -X POST http://localhost:3000/api/email/test \
   ```
 
 ### Rate Limiting
+
 - Currently no rate limiting (using free tiers)
 - Consider adding rate limiting for production
 
 ### Data Sources
+
 - Current implementations use sample/static data
 - TODO: Implement actual API calls or web scraping
 - All APIs have fallback mechanisms
@@ -244,4 +255,3 @@ curl -X POST http://localhost:3000/api/email/test \
 
 **Status**: ✅ 5 Free APIs Successfully Integrated  
 **Next**: Enhance with real data sources and add more APIs
-

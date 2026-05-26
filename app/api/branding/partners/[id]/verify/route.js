@@ -35,7 +35,10 @@ export async function PATCH(request, { params }) {
       data: { verified: payload.verified },
     });
 
-    return NextResponse.json({ success: true, data: { id: partner.id, verified: partner.verified } });
+    return NextResponse.json({
+      success: true,
+      data: { id: partner.id, verified: partner.verified },
+    });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -50,4 +53,3 @@ export async function PATCH(request, { params }) {
     );
   }
 }
-

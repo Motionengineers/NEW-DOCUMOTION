@@ -38,7 +38,7 @@ const REGION_FALLBACKS = {
   'Jammu & Kashmir': 'North',
   Ladakh: 'North',
   Chandigarh: 'North',
-  'Puducherry': 'South',
+  Puducherry: 'South',
 };
 
 function normalizeNumber(value) {
@@ -117,7 +117,8 @@ async function seedSchemes(rows, stateIds) {
         return null;
       }
       // Generate title from fundingType + sector if title not provided
-      const title = row.title || `${row.fundingType || 'Grant'} - ${row.sector || 'General'} - ${row.state}`;
+      const title =
+        row.title || `${row.fundingType || 'Grant'} - ${row.sector || 'General'} - ${row.state}`;
 
       return {
         stateId,
@@ -183,5 +184,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
-

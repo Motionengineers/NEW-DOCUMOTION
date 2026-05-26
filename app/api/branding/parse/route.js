@@ -51,10 +51,7 @@ export async function POST(request) {
     });
 
     if (!workspace) {
-      return NextResponse.json(
-        { success: false, error: 'Workspace not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: 'Workspace not found' }, { status: 404 });
     }
 
     // Get upload record
@@ -66,10 +63,7 @@ export async function POST(request) {
     });
 
     if (!upload) {
-      return NextResponse.json(
-        { success: false, error: 'Upload not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: 'Upload not found' }, { status: 404 });
     }
 
     // Read file content
@@ -94,10 +88,7 @@ export async function POST(request) {
       }
     } catch (readError) {
       console.error('Error reading file:', readError);
-      return NextResponse.json(
-        { success: false, error: 'Failed to read file' },
-        { status: 500 }
-      );
+      return NextResponse.json({ success: false, error: 'Failed to read file' }, { status: 500 });
     }
 
     // Parse the content
@@ -145,19 +136,25 @@ async function parseBrandingText(text) {
   };
 
   // Extract Vision
-  const visionMatch = text.match(/vision[:\s]+([^\n]+(?:\n(?!mission|target|sku|ingredient|marketing)[^\n]+)*)/i);
+  const visionMatch = text.match(
+    /vision[:\s]+([^\n]+(?:\n(?!mission|target|sku|ingredient|marketing)[^\n]+)*)/i
+  );
   if (visionMatch) {
     parsed.vision = visionMatch[1].trim();
   }
 
   // Extract Mission
-  const missionMatch = text.match(/mission[:\s]+([^\n]+(?:\n(?!vision|target|sku|ingredient|marketing)[^\n]+)*)/i);
+  const missionMatch = text.match(
+    /mission[:\s]+([^\n]+(?:\n(?!vision|target|sku|ingredient|marketing)[^\n]+)*)/i
+  );
   if (missionMatch) {
     parsed.mission = missionMatch[1].trim();
   }
 
   // Extract Target Consumer
-  const targetMatch = text.match(/target\s+(?:consumer|audience|customer)[:\s]+([^\n]+(?:\n(?!vision|mission|sku|ingredient|marketing)[^\n]+)*)/i);
+  const targetMatch = text.match(
+    /target\s+(?:consumer|audience|customer)[:\s]+([^\n]+(?:\n(?!vision|mission|sku|ingredient|marketing)[^\n]+)*)/i
+  );
   if (targetMatch) {
     parsed.targetConsumer = targetMatch[1].trim();
   }
@@ -170,7 +167,9 @@ async function parseBrandingText(text) {
   }
 
   // Extract Hero Ingredients
-  const ingredientMatch = text.match(/hero\s+ingredient[s]?[:\s]+([^\n]+(?:\n(?!vision|mission|target|sku|marketing)[^\n]+)*)/i);
+  const ingredientMatch = text.match(
+    /hero\s+ingredient[s]?[:\s]+([^\n]+(?:\n(?!vision|mission|target|sku|marketing)[^\n]+)*)/i
+  );
   if (ingredientMatch) {
     parsed.heroIngredients = ingredientMatch[1]
       .split(/[,;]/)
@@ -179,7 +178,9 @@ async function parseBrandingText(text) {
   }
 
   // Extract Marketing Strategy
-  const marketingMatch = text.match(/marketing\s+strategy[:\s]+([^\n]+(?:\n(?!vision|mission|target|sku|ingredient)[^\n]+)*)/i);
+  const marketingMatch = text.match(
+    /marketing\s+strategy[:\s]+([^\n]+(?:\n(?!vision|mission|target|sku|ingredient)[^\n]+)*)/i
+  );
   if (marketingMatch) {
     parsed.marketingStrategy = marketingMatch[1].trim();
   }
@@ -193,5 +194,3 @@ async function parseBrandingText(text) {
 
   return parsed;
 }
-
-

@@ -123,6 +123,7 @@ documotion/
 ```
 
 ## Key Commands
+
 - `node prisma/seeds/stateFunding.js` - Import state funding CSV (requires `prisma/seeds/stateFunding.csv`)
 
 ### Search indexing (PostgreSQL optional)
@@ -132,7 +133,6 @@ Enable trigram indexes for richer search results:
 ```
 psql -f docs/state-funding-indexes.sql
 ```
-
 
 - `npm run dev` - Start development server
 - `npm run lint` - Run ESLint (no warnings allowed in CI)

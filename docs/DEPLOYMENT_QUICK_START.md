@@ -8,7 +8,9 @@
 ## ⚡ 5-Minute Deployment
 
 ### Step 1: Fix Build Issues ✅
+
 All build errors have been fixed:
+
 - ✅ BigQuery module made optional
 - ✅ Linting warnings fixed
 - ✅ Unescaped entities fixed
@@ -57,6 +59,7 @@ git push -u origin main
    - Output Directory: `.next` (auto-detected)
 
 6. **Add Environment Variables**:
+
    ```
    DATABASE_URL=your-postgresql-url
    NEXTAUTH_URL=https://your-app.vercel.app
@@ -91,12 +94,14 @@ vercel --prod
 #### Get Free PostgreSQL Database
 
 **Option A: Supabase** (Recommended)
+
 1. Go to https://supabase.com
 2. Create new project
 3. Get connection string from Settings > Database
 4. Format: `postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres`
 
 **Option B: Neon**
+
 1. Go to https://neon.tech
 2. Create new project
 3. Get connection string from dashboard
@@ -104,6 +109,7 @@ vercel --prod
 #### Update Prisma Schema
 
 Change `prisma/schema.prisma`:
+
 ```prisma
 datasource db {
   provider = "postgresql"  // Changed from sqlite
@@ -124,6 +130,7 @@ npx prisma migrate deploy
 ## 🔧 Required Environment Variables
 
 ### Minimum (Required)
+
 ```bash
 DATABASE_URL=postgresql://...
 NEXTAUTH_URL=https://your-app.vercel.app
@@ -131,6 +138,7 @@ NEXTAUTH_SECRET=your-secret-here
 ```
 
 ### Optional (Enhanced Features)
+
 ```bash
 # Free APIs (optional)
 GITHUB_TOKEN=ghp_...
@@ -162,6 +170,7 @@ RAZORPAY_KEY_SECRET=...
 ## 🆘 Troubleshooting
 
 ### Build Fails
+
 ```bash
 # Fix: Run locally first
 npm run build
@@ -170,11 +179,13 @@ npm run build
 ```
 
 ### Database Connection Fails
+
 - Check `DATABASE_URL` format
 - Verify database allows Vercel IPs
 - Check SSL mode: `?sslmode=require`
 
 ### Internal Server Error
+
 - Check Vercel logs: Dashboard > Deployments > View Logs
 - Verify environment variables are set
 - Check database connection
@@ -199,6 +210,7 @@ npm run build
    - Verify APIs work
 
 2. **Seed Database** (Optional)
+
    ```bash
    DATABASE_URL="your-db-url" npm run db:seed
    ```
@@ -222,4 +234,3 @@ npm run build
 ---
 
 **Full Guide**: See `docs/DEPLOYMENT_CHECKLIST.md` for detailed steps.
-

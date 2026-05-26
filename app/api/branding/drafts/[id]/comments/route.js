@@ -34,5 +34,3 @@ export async function POST(request, { params }) {
     return NextResponse.json({ success: false, error: 'Unable to add comment' }, { status: 500 });
   }
 }
-
-

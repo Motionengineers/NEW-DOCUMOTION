@@ -3,15 +3,18 @@
 ## Core APIs (5 Required)
 
 ### 1. **GET /api/states**
+
 **Purpose**: List all states with optional metadata
 
 **Query Parameters**:
+
 - `withCounts=true` - Include scheme counts per state
 - `withSectors=true` - Include top sectors per state
 - `region=North|South|East|West|NE` - Filter by region
 - `limit=10` - Limit results
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -22,7 +25,7 @@
       "abbreviation": "KA",
       "region": "South",
       "schemeCount": 3,
-      "topSectors": [{"sector": "AI", "count": 2}]
+      "topSectors": [{ "sector": "AI", "count": 2 }]
     }
   ]
 }
@@ -33,9 +36,11 @@
 ---
 
 ### 2. **GET /api/funding/state**
+
 **Purpose**: Get funding schemes filtered by state and other criteria
 
 **Query Parameters**:
+
 - `state=Karnataka` (required) - State name
 - `sector=AI` - Filter by sector
 - `fundingType=Grant|Loan|Subsidy` - Filter by type
@@ -49,6 +54,7 @@
 - `limit=20` - Results per page (max 50)
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -64,9 +70,11 @@
 ---
 
 ### 3. **POST /api/funding/match**
+
 **Purpose**: Match startup profile to best-fit states
 
 **Request Body**:
+
 ```json
 {
   "industry": "AI",
@@ -79,6 +87,7 @@
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -102,9 +111,11 @@
 ---
 
 ### 4. **GET /api/funding/[schemeId]**
+
 **Purpose**: Get detailed information about a specific scheme
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -120,9 +131,11 @@
 ---
 
 ### 5. **POST /api/telemetry/events**
+
 **Purpose**: Ingest telemetry events for analytics
 
 **Request Body**:
+
 ```json
 {
   "events": [
@@ -142,9 +155,11 @@
 ## Optional/Enhancement APIs (3 Recommended)
 
 ### 6. **GET /api/funding/sectors** (Optional)
+
 **Purpose**: Get list of all available sectors
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -160,6 +175,7 @@
 ---
 
 ### 7. **GET /api/funding/export** (Optional)
+
 **Purpose**: Export filtered schemes as CSV
 
 **Query Parameters**: Same as `/api/funding/state`
@@ -171,9 +187,11 @@
 ---
 
 ### 8. **POST /api/funding/report-stale** (Optional)
+
 **Purpose**: Report stale or incorrect scheme data
 
 **Request Body**:
+
 ```json
 {
   "schemeId": 123,
@@ -189,6 +207,7 @@
 ## Summary
 
 ### Minimum Required: **5 APIs**
+
 1. GET /api/states
 2. GET /api/funding/state
 3. POST /api/funding/match
@@ -196,6 +215,7 @@
 5. POST /api/telemetry/events
 
 ### Recommended Additions: **3 APIs**
+
 6. GET /api/funding/sectors
 7. GET /api/funding/export
 8. POST /api/funding/report-stale
@@ -210,4 +230,3 @@
 ⚠️ **0/3 Optional APIs** - Can be added if needed
 
 The current implementation covers all essential functionality. Optional APIs can be added based on user feedback and requirements.
-

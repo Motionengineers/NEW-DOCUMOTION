@@ -292,7 +292,7 @@ export default function BrandingStudio() {
   const handleSaveCheckpoint = async () => {
     setSaving(true);
     setSaveStatus(null);
-    
+
     try {
       const snapshot = {
         brandName,
@@ -306,13 +306,14 @@ export default function BrandingStudio() {
 
       // Apply branding globally across the app
       const selectedLogo = logos.length > 0 ? logos[0] : null;
-      const logoUrl = selectedLogo?.url || selectedLogo?.symbol 
-        ? `data:image/svg+xml,${encodeURIComponent(
-            `<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+      const logoUrl =
+        selectedLogo?.url || selectedLogo?.symbol
+          ? `data:image/svg+xml,${encodeURIComponent(
+              `<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
               <text x="50" y="50" font-size="60" fill="${primaryColor}" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-weight="bold">${selectedLogo?.symbol || brandName?.charAt(0)?.toUpperCase() || 'A'}</text>
             </svg>`
-          )}`
-        : '';
+            )}`
+          : '';
 
       // Prepare branding settings to save
       const brandingSettings = {
@@ -350,7 +351,7 @@ export default function BrandingStudio() {
       // Wait for all settings to be saved and verify
       const saveResults = await Promise.all(savePromises);
       const results = await Promise.all(
-        saveResults.map(async (res) => {
+        saveResults.map(async res => {
           try {
             const json = await res.json();
             return { ok: res.ok, json, status: res.status };
@@ -359,9 +360,9 @@ export default function BrandingStudio() {
           }
         })
       );
-      
+
       const failedSaves = results.filter(r => !r.ok || !r.json.success);
-      
+
       if (failedSaves.length > 0) {
         const errorDetails = failedSaves.map(r => r.json.error || `HTTP ${r.status}`);
         throw new Error(`Failed to save: ${errorDetails.join(', ')}`);
@@ -400,24 +401,25 @@ export default function BrandingStudio() {
 
       // Save locally for version history
       pushVersion(snapshot);
-      
+
       setSaveStatus({
         type: 'success',
-        message: 'Branding saved permanently! Your colors, logo, and company name are now live across the app.',
+        message:
+          'Branding saved permanently! Your colors, logo, and company name are now live across the app.',
       });
-      
+
       // Reload after a delay to show the success message and ensure all components refresh
       setTimeout(() => {
         window.location.reload();
       }, 2000);
     } catch (error) {
       console.error('Error saving checkpoint:', error);
-      
+
       setSaveStatus({
         type: 'error',
         message: 'Failed to save branding. Please try again or check your connection.',
       });
-      
+
       // Still save locally for version history
       pushVersion({
         brandName,
@@ -437,7 +439,7 @@ export default function BrandingStudio() {
   const handleAutoGenerate = async () => {
     setSaving(true);
     setSaveStatus(null);
-    
+
     try {
       // Generate logos and visuals using AI
       const response = await fetch('/api/branding/generate', {
@@ -456,18 +458,18 @@ export default function BrandingStudio() {
       if (!response.ok || !data.success) {
         throw new Error(data.error || 'Generation failed');
       }
-      
+
       // Update store with generated assets
       let logosAdded = 0;
       let visualsAdded = 0;
-      
+
       if (data.logos && Array.isArray(data.logos) && data.logos.length > 0) {
         data.logos.forEach(logo => {
           addLogo(logo);
           logosAdded++;
         });
       }
-      
+
       if (data.visuals && Array.isArray(data.visuals) && data.visuals.length > 0) {
         data.visuals.forEach(visual => {
           addProductImage(visual);
@@ -481,7 +483,7 @@ export default function BrandingStudio() {
       });
     } catch (error) {
       console.error('Error generating assets:', error);
-      
+
       // Fallback: generate smart placeholder logos based on brand name
       const firstLetter = brandName?.charAt(0)?.toUpperCase() || 'A';
       const generatedLogos = [
@@ -504,9 +506,9 @@ export default function BrandingStudio() {
           style: 'abstract',
         },
       ];
-      
+
       generatedLogos.forEach(logo => addLogo(logo));
-      
+
       // Generate a simple visual
       const generatedVisual = {
         id: `visual-${Date.now()}-1`,
@@ -525,7 +527,7 @@ export default function BrandingStudio() {
         )}`,
       };
       addProductImage(generatedVisual);
-      
+
       setSaveStatus({
         type: 'success',
         message: `Generated 3 logos and 1 visual using your brand colors! (AI service unavailable, using smart placeholders)`,
@@ -802,8 +804,7 @@ export default function BrandingStudio() {
                   <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Font pairings</p>
                   <div className="space-y-3">
                     {placeholderFonts.map(pair => {
-                      const isSelected =
-                        fonts.heading === pair.heading && fonts.body === pair.body;
+                      const isSelected = fonts.heading === pair.heading && fonts.body === pair.body;
                       return (
                         <button
                           key={`${pair.heading}-${pair.body}`}
@@ -815,10 +816,14 @@ export default function BrandingStudio() {
                               : 'border-white/5 bg-white/[0.02] hover:border-blue-500/30 hover:bg-blue-500/10'
                           }`}
                         >
-                          <p className={`text-base font-semibold ${isSelected ? 'text-white' : 'text-white'}`}>
+                          <p
+                            className={`text-base font-semibold ${isSelected ? 'text-white' : 'text-white'}`}
+                          >
                             {pair.heading}
                           </p>
-                          <p className={`text-xs ${isSelected ? 'text-slate-300' : 'text-slate-400'}`}>
+                          <p
+                            className={`text-xs ${isSelected ? 'text-slate-300' : 'text-slate-400'}`}
+                          >
                             Body: {pair.body}
                           </p>
                         </button>
@@ -911,7 +916,8 @@ export default function BrandingStudio() {
                 </div>
               ) : partners.length === 0 ? (
                 <div className="rounded-2xl border border-white/5 bg-white/5 px-4 py-6 text-sm text-slate-300">
-                  No verified partners found yet. Our concierge team is adding new agencies this week.
+                  No verified partners found yet. Our concierge team is adding new agencies this
+                  week.
                 </div>
               ) : (
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -923,7 +929,9 @@ export default function BrandingStudio() {
                       <div className="space-y-2">
                         <div className="flex items-center gap-2">
                           <BadgeCheck className="h-4 w-4 text-emerald-300" />
-                          <span className="text-xs uppercase tracking-[0.3em] text-slate-400">Verified</span>
+                          <span className="text-xs uppercase tracking-[0.3em] text-slate-400">
+                            Verified
+                          </span>
                         </div>
                         <h4 className="text-lg font-semibold text-white">{partner.name}</h4>
                         <p className="text-xs text-slate-400">{formatPartnerType(partner.type)}</p>

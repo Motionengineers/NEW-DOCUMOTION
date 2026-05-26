@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 
 /**
  * Example API Endpoint - Hello World
- * 
+ *
  * This is a simple example API to help you learn how to create APIs.
- * 
+ *
  * GET /api/hello - Returns a greeting
  * GET /api/hello?name=John - Returns personalized greeting
  * POST /api/hello - Accepts JSON body with name and email
@@ -42,10 +42,10 @@ export async function POST(request) {
     // Validate required fields
     if (!name || !email) {
       return NextResponse.json(
-        { 
-          success: false, 
+        {
+          success: false,
           error: 'Name and email are required',
-          example: { name: 'John Doe', email: 'john@example.com' }
+          example: { name: 'John Doe', email: 'john@example.com' },
         },
         { status: 400 }
       );
@@ -56,8 +56,8 @@ export async function POST(request) {
     return NextResponse.json({
       success: true,
       message: `User ${name} received!`,
-      data: { 
-        name, 
+      data: {
+        name,
         email,
         receivedAt: new Date().toISOString(),
       },
@@ -65,7 +65,7 @@ export async function POST(request) {
     });
   } catch (error) {
     console.error('POST /api/hello failed:', error);
-    
+
     // Check if it's a JSON parsing error
     if (error instanceof SyntaxError) {
       return NextResponse.json(
@@ -80,4 +80,3 @@ export async function POST(request) {
     );
   }
 }
-

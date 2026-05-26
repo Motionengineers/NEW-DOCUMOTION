@@ -36,9 +36,11 @@
 ## Dashboard & Analytics
 
 ### GET /api/dashboard
+
 Get dashboard summary statistics.
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -59,15 +61,18 @@ Get dashboard summary statistics.
 ## State Funding Explorer
 
 ### GET /api/states
+
 List all states with optional metadata.
 
 **Query Parameters**:
+
 - `withCounts=true` - Include scheme counts per state
 - `withSectors=true` - Include top sectors per state
 - `region=North|South|East|West|NE` - Filter by region
 - `limit=10` - Limit results
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -80,16 +85,18 @@ List all states with optional metadata.
       "population": 61000000,
       "gdp": 2500000000000,
       "schemeCount": 3,
-      "topSectors": [{"sector": "AI", "count": 2}]
+      "topSectors": [{ "sector": "AI", "count": 2 }]
     }
   ]
 }
 ```
 
 ### GET /api/funding/state
+
 Get funding schemes filtered by state and criteria.
 
 **Query Parameters**:
+
 - `state=Karnataka` (required) - State name
 - `sector=AI` - Filter by sector
 - `fundingType=Grant|Loan|Subsidy` - Filter by type
@@ -103,6 +110,7 @@ Get funding schemes filtered by state and criteria.
 - `limit=20` - Results per page (max 50)
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -119,7 +127,7 @@ Get funding schemes filtered by state and criteria.
         "interestRate": 0,
         "subsidyPercent": null,
         "sector": "AI",
-        "state": {"id": 1, "name": "Karnataka", "abbreviation": "KA"}
+        "state": { "id": 1, "name": "Karnataka", "abbreviation": "KA" }
       }
     ],
     "nextCursor": 123
@@ -128,9 +136,11 @@ Get funding schemes filtered by state and criteria.
 ```
 
 ### POST /api/funding/match
+
 Match startup profile to best-fit states.
 
 **Request Body**:
+
 ```json
 {
   "industry": "AI",
@@ -143,6 +153,7 @@ Match startup profile to best-fit states.
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -164,9 +175,11 @@ Match startup profile to best-fit states.
 ```
 
 ### GET /api/funding/[schemeId]
+
 Get detailed information about a specific scheme.
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -182,9 +195,11 @@ Get detailed information about a specific scheme.
 ## Government Schemes
 
 ### GET /api/govt-schemes
+
 List government schemes (if implemented).
 
 **Query Parameters**:
+
 - `sector=AI` - Filter by sector
 - `ministry=MSME` - Filter by ministry
 - `region=North` - Filter by region
@@ -194,9 +209,11 @@ List government schemes (if implemented).
 ## Bank Schemes
 
 ### GET /api/banks/match
+
 Match startup to bank loan schemes.
 
 **Request Body**:
+
 ```json
 {
   "startupId": 1,
@@ -206,6 +223,7 @@ Match startup to bank loan schemes.
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -226,14 +244,17 @@ Match startup to bank loan schemes.
 ## Talent & Founders
 
 ### GET /api/talent
+
 List founder/talent profiles.
 
 **Query Parameters**:
+
 - `location=Delhi` - Filter by location
 - `skills=AI,ML` - Filter by skills
 - `available=true` - Only available founders
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -251,16 +272,20 @@ List founder/talent profiles.
 ```
 
 ### GET /api/talent/search
+
 Search talent profiles.
 
 **Query Parameters**:
+
 - `q=AI engineer` - Search query
 - `location=Delhi` - Filter by location
 
 ### GET /api/talent/suggest
+
 Get talent suggestions for a startup.
 
 **Query Parameters**:
+
 - `startupId=1` - Startup ID
 - `role=CTO` - Desired role
 
@@ -269,14 +294,17 @@ Get talent suggestions for a startup.
 ## Pitch Decks
 
 ### GET /api/pitch-decks
+
 List pitch decks in library.
 
 **Query Parameters**:
+
 - `stage=seed|series_a` - Filter by stage
 - `industry=Fintech` - Filter by industry
 - `year=2023` - Filter by year
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -298,14 +326,17 @@ List pitch decks in library.
 ## Documents
 
 ### POST /api/documents/upload
+
 Upload a document.
 
 **Request**: Multipart form data
+
 - `file` - PDF, PNG, or JPEG file (max 10MB)
 - `type` - Document type
 - `startupId` - Startup ID
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -324,9 +355,11 @@ Upload a document.
 ## Eligibility & Matching
 
 ### POST /api/eligibility
+
 Check eligibility for schemes.
 
 **Request Body**:
+
 ```json
 {
   "startupId": 1,
@@ -335,6 +368,7 @@ Check eligibility for schemes.
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -346,9 +380,11 @@ Check eligibility for schemes.
 ```
 
 ### POST /api/schemes/recommend
+
 Get recommended schemes for a startup.
 
 **Request Body**:
+
 ```json
 {
   "startupId": 1,
@@ -358,6 +394,7 @@ Get recommended schemes for a startup.
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -377,13 +414,16 @@ Get recommended schemes for a startup.
 ## Funding Applications
 
 ### GET /api/funding/applications
+
 List funding applications.
 
 **Query Parameters**:
+
 - `startupId=1` - Filter by startup
 - `status=pending|approved|rejected` - Filter by status
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -404,9 +444,11 @@ List funding applications.
 ## Branding Studio
 
 ### GET /api/branding/tokens
+
 Get branding tokens.
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -418,9 +460,11 @@ Get branding tokens.
 ```
 
 ### POST /api/branding/generate
+
 Generate branding assets.
 
 **Request Body**:
+
 ```json
 {
   "companyName": "My Startup",
@@ -430,84 +474,111 @@ Generate branding assets.
 ```
 
 ### GET /api/branding/drafts
+
 List branding drafts.
 
 ### POST /api/branding/drafts
+
 Create a new branding draft.
 
 ### GET /api/branding/drafts/[id]
+
 Get a specific draft.
 
 ### POST /api/branding/drafts/[id]/submit
+
 Submit draft for review.
 
 ### POST /api/branding/drafts/[id]/approve
+
 Approve a draft.
 
 ### POST /api/branding/drafts/[id]/publish
+
 Publish a draft.
 
 ### GET /api/branding/drafts/[id]/comments
+
 Get draft comments.
 
 ### POST /api/branding/drafts/[id]/comments
+
 Add a comment to draft.
 
 ### GET /api/branding/assets
+
 List branding assets.
 
 ### POST /api/branding/assets/generate
+
 Generate new asset.
 
 ### POST /api/branding/kit/export
+
 Export branding kit.
 
 ### GET /api/branding/kit/[jobId]
+
 Get export job status.
 
 ### GET /api/branding/workspace
+
 Get workspace info.
 
 ### POST /api/branding/workspace/[id]/upload
+
 Upload asset to workspace.
 
 ### GET /api/branding/partners
+
 List branding partners.
 
 ### GET /api/branding/partners/[id]
+
 Get partner details.
 
 ### POST /api/branding/partners/[id]/book
+
 Book a partner.
 
 ### GET /api/branding/partners/[id]/bookings
+
 List partner bookings.
 
 ### GET /api/branding/partners/[id]/bookings/[bookingId]
+
 Get booking details.
 
 ### GET /api/branding/partners/[id]/availability
+
 Check partner availability.
 
 ### POST /api/branding/partners/[id]/verify
+
 Verify a partner.
 
 ### GET /api/branding/agencies
+
 List agencies.
 
 ### GET /api/branding/agencies/[slug]
+
 Get agency by slug.
 
 ### POST /api/branding/agencies/lead
+
 Submit agency lead.
 
 ### GET /api/branding/admin/agencies/[id]
+
 Admin: Get agency details.
 
 ### GET /api/branding/roles
+
 Get branding roles.
 
 ### POST /api/branding/parse
+
 Parse branding from URL/image.
 
 ---
@@ -515,12 +586,15 @@ Parse branding from URL/image.
 ## Agencies & Partners
 
 ### GET /api/agency-requests
+
 List agency requests.
 
 ### POST /api/agency-requests
+
 Create agency request.
 
 **Request Body**:
+
 ```json
 {
   "agencyId": 1,
@@ -532,12 +606,15 @@ Create agency request.
 ```
 
 ### GET /api/agency-requests/[id]
+
 Get agency request details.
 
 ### GET /api/agency-requests/[id]/messages
+
 Get request messages.
 
 ### POST /api/agency-requests/[id]/messages
+
 Send message.
 
 ---
@@ -545,14 +622,17 @@ Send message.
 ## Feed & Social
 
 ### GET /api/feed/posts
+
 List feed posts.
 
 **Query Parameters**:
+
 - `type=funding|hiring|product` - Filter by type
 - `limit=20` - Results per page
 - `cursor=123` - Pagination cursor
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -564,9 +644,11 @@ List feed posts.
 ```
 
 ### POST /api/feed/posts
+
 Create a new post.
 
 **Request Body**:
+
 ```json
 {
   "type": "funding",
@@ -577,33 +659,43 @@ Create a new post.
 ```
 
 ### GET /api/feed/posts/[postId]
+
 Get post details.
 
 ### POST /api/feed/posts/[postId]/like
+
 Like a post.
 
 ### POST /api/feed/posts/[postId]/bookmark
+
 Bookmark a post.
 
 ### GET /api/feed/posts/[postId]/comments
+
 Get post comments.
 
 ### POST /api/feed/posts/[postId]/comments
+
 Add a comment.
 
 ### POST /api/feed/posts/[postId]/reactions
+
 Add reaction to post.
 
 ### POST /api/feed/follow
+
 Follow a user/startup.
 
 ### POST /api/feed/media/upload
+
 Upload media for posts.
 
 ### GET /api/feed/link-preview
+
 Get link preview metadata.
 
 **Query Parameters**:
+
 - `url=https://example.com` - URL to preview
 
 ---
@@ -611,9 +703,11 @@ Get link preview metadata.
 ## Subscriptions & Payments
 
 ### GET /api/subscription
+
 Get current subscription.
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -627,30 +721,39 @@ Get current subscription.
 ```
 
 ### POST /api/subscription/upgrade
+
 Upgrade subscription plan.
 
 ### POST /api/subscription/cancel
+
 Cancel subscription.
 
 ### POST /api/subscription/addon
+
 Add subscription addon.
 
 ### GET /api/subscription/usage
+
 Get usage statistics.
 
 ### POST /api/subscription/usage/record
+
 Record usage event.
 
 ### GET /api/subscription/invoices
+
 List invoices.
 
 ### GET /api/subscription/invoices/[id]
+
 Get invoice details.
 
 ### POST /api/payment/razorpay/create-order
+
 Create Razorpay payment order.
 
 **Request Body**:
+
 ```json
 {
   "amount": 10000,
@@ -660,6 +763,7 @@ Create Razorpay payment order.
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -672,9 +776,11 @@ Create Razorpay payment order.
 ```
 
 ### POST /api/payment/razorpay/verify
+
 Verify Razorpay payment.
 
 **Request Body**:
+
 ```json
 {
   "razorpay_order_id": "order_123",
@@ -684,6 +790,7 @@ Verify Razorpay payment.
 ```
 
 ### POST /api/payment/razorpay/webhook
+
 Razorpay webhook handler.
 
 ---
@@ -691,12 +798,15 @@ Razorpay webhook handler.
 ## Team & Invitations
 
 ### GET /api/invitations
+
 List team invitations.
 
 ### POST /api/invitations/create
+
 Create invitation.
 
 **Request Body**:
+
 ```json
 {
   "email": "user@example.com",
@@ -706,24 +816,31 @@ Create invitation.
 ```
 
 ### POST /api/invitations/accept
+
 Accept invitation.
 
 ### POST /api/invitations/revoke
+
 Revoke invitation.
 
 ### POST /api/invitations/resend
+
 Resend invitation.
 
 ### POST /api/invitations/change-role
+
 Change member role.
 
 ### POST /api/invitations/remove-member
+
 Remove team member.
 
 ### POST /api/invitations/manual
+
 Manually add member.
 
 ### GET /api/invitations/validate
+
 Validate invitation token.
 
 ---
@@ -731,12 +848,15 @@ Validate invitation token.
 ## Settings
 
 ### GET /api/settings
+
 Get settings.
 
 **Query Parameters**:
+
 - `category=branding` - Settings category
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -748,9 +868,11 @@ Get settings.
 ```
 
 ### POST /api/settings
+
 Update settings.
 
 **Request Body**:
+
 ```json
 {
   "category": "branding",
@@ -766,9 +888,11 @@ Update settings.
 ## Service Requests
 
 ### GET /api/service-requests
+
 List service requests.
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -784,9 +908,11 @@ List service requests.
 ```
 
 ### POST /api/service-requests
+
 Create service request.
 
 **Request Body**:
+
 ```json
 {
   "startupId": 1,
@@ -796,9 +922,11 @@ Create service request.
 ```
 
 ### GET /api/service-requests/[id]
+
 Get service request details.
 
 ### PATCH /api/service-requests/[id]
+
 Update service request.
 
 ---
@@ -806,9 +934,11 @@ Update service request.
 ## Telemetry
 
 ### POST /api/telemetry/events
+
 Ingest telemetry events.
 
 **Request Body**:
+
 ```json
 {
   "events": [
@@ -828,11 +958,12 @@ Ingest telemetry events.
 ```
 
 **Response**:
+
 ```json
 {
   "ok": true,
   "count": 1,
-  "bq": {"inserted": 1},
+  "bq": { "inserted": 1 },
   "backup": "jsonl"
 }
 ```
@@ -842,19 +973,20 @@ Ingest telemetry events.
 ## AI & OpenAI
 
 ### POST /api/openai/chat
+
 Chat with OpenAI.
 
 **Request Body**:
+
 ```json
 {
-  "messages": [
-    {"role": "user", "content": "Hello"}
-  ],
+  "messages": [{ "role": "user", "content": "Hello" }],
   "model": "gpt-4"
 }
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -867,13 +999,16 @@ Chat with OpenAI.
 ## Notifications
 
 ### GET /api/notifications
+
 List notifications.
 
 **Query Parameters**:
+
 - `unread=true` - Only unread notifications
 - `limit=20` - Results per page
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -890,9 +1025,11 @@ List notifications.
 ```
 
 ### POST /api/notifications/read
+
 Mark notifications as read.
 
 **Request Body**:
+
 ```json
 {
   "notificationIds": [1, 2, 3]
@@ -904,13 +1041,16 @@ Mark notifications as read.
 ## Live Updates
 
 ### GET /api/live-updates
+
 Get live updates/news feed.
 
 **Query Parameters**:
+
 - `category=startups` - Filter by category
 - `limit=10` - Results per page
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -930,12 +1070,15 @@ Get live updates/news feed.
 ## Startups
 
 ### GET /api/startups/profile
+
 Get startup profile.
 
 **Query Parameters**:
+
 - `startupId=1` - Startup ID
 
 ### POST /api/startups/profile
+
 Update startup profile.
 
 ---
@@ -952,6 +1095,7 @@ All endpoints return errors in this format:
 ```
 
 **HTTP Status Codes**:
+
 - `200` - Success
 - `400` - Bad Request
 - `401` - Unauthorized
@@ -982,10 +1126,12 @@ Response includes `nextCursor` if more results available.
 ## Authentication
 
 Most endpoints require authentication via:
+
 - NextAuth session cookie
 - Bearer token in `Authorization` header
 
 Public endpoints:
+
 - `GET /api/dashboard`
 - `GET /api/states`
 - `GET /api/funding/state`
@@ -1007,4 +1153,3 @@ Future versions will be available at `/api/v2/...`
 For API support, contact: api@documotion.com
 
 Documentation: https://docs.documotion.com/api
-

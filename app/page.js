@@ -106,7 +106,11 @@ export default function HomePage() {
             </p>
             <p
               className={`${hindiDisplay.className} text-sm md:text-base font-semibold tracking-[0.25em] uppercase text-center text-slate-200/90`}
-              style={{ fontFeatureSettings: "'ss01' on, 'liga' on", letterSpacing: '0.25em', marginBottom: '0.75rem' }}
+              style={{
+                fontFeatureSettings: "'ss01' on, 'liga' on",
+                letterSpacing: '0.25em',
+                marginBottom: '0.75rem',
+              }}
             >
               भारतीय उद्यमियों के लिए विश्वसनीय साथी—सब कुछ एक ही प्लेटफ़ॉर्म पर।
             </p>
@@ -166,7 +170,8 @@ export default function HomePage() {
                 {
                   label: 'Scale & M&A Support',
                   icon: Link2,
-                  gradient: 'linear-gradient(135deg, rgba(192,132,252,0.32), rgba(99,102,241,0.24))',
+                  gradient:
+                    'linear-gradient(135deg, rgba(192,132,252,0.32), rgba(99,102,241,0.24))',
                   border: 'rgba(192,132,252,0.3)',
                   iconBg: 'rgba(192,132,252,0.22)',
                 },
@@ -355,7 +360,12 @@ export default function HomePage() {
                 ].map(item => (
                   <li key={item} className="flex items-start gap-4">
                     <CheckCircle2 className="w-6 h-6 text-emerald-400 mt-1" />
-                    <span className="text-base leading-relaxed text-gray-900 dark:text-gray-100" style={{ color: 'var(--label)' }}>{item}</span>
+                    <span
+                      className="text-base leading-relaxed text-gray-900 dark:text-gray-100"
+                      style={{ color: 'var(--label)' }}
+                    >
+                      {item}
+                    </span>
                   </li>
                 ))}
               </ul>

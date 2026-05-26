@@ -19,8 +19,9 @@ export async function GET(_request, { params }) {
     return NextResponse.json({ success: true, job: { ...job, files } });
   } catch (error) {
     console.error('GET /api/branding/kit/[jobId] error:', error);
-    return NextResponse.json({ success: false, error: 'Unable to load export job' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: 'Unable to load export job' },
+      { status: 500 }
+    );
   }
 }
-
-

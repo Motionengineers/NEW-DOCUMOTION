@@ -22,10 +22,7 @@ export async function POST(request, { params }) {
     const workspaceId = parseInt(params.id);
 
     if (Number.isNaN(workspaceId)) {
-      return NextResponse.json(
-        { success: false, error: 'Invalid workspace ID' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'Invalid workspace ID' }, { status: 400 });
     }
 
     // Verify workspace belongs to user
@@ -37,20 +34,14 @@ export async function POST(request, { params }) {
     });
 
     if (!workspace) {
-      return NextResponse.json(
-        { success: false, error: 'Workspace not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: 'Workspace not found' }, { status: 404 });
     }
 
     const formData = await request.formData();
     const file = formData.get('file');
 
     if (!file) {
-      return NextResponse.json(
-        { success: false, error: 'No file provided' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'No file provided' }, { status: 400 });
     }
 
     // Validate file type
@@ -152,5 +143,3 @@ export async function POST(request, { params }) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
-
-

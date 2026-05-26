@@ -26,7 +26,9 @@ export async function POST(request, { params }) {
       return NextResponse.json({ success: false, error: 'Partner not available' }, { status: 404 });
     }
 
-    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET }).catch(() => null);
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET }).catch(
+      () => null
+    );
     const requesterId = token?.sub ? Number(token.sub) : null;
 
     await prisma.brandingPartnerBooking.create({
@@ -54,4 +56,3 @@ export async function POST(request, { params }) {
     );
   }
 }
-

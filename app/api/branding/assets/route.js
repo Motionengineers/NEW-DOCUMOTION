@@ -24,5 +24,3 @@ export async function GET(request) {
     return NextResponse.json({ success: false, error: 'Unable to list assets' }, { status: 500 });
   }
 }
-
-

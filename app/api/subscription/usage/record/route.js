@@ -57,9 +57,7 @@ export async function POST(request) {
         usage: {
           current: usageRecord.currentUsage,
           limit: usageRecord.limit,
-          remaining: usageRecord.limit
-            ? usageRecord.limit - usageRecord.currentUsage
-            : null,
+          remaining: usageRecord.limit ? usageRecord.limit - usageRecord.currentUsage : null,
         },
       },
     });
@@ -68,5 +66,3 @@ export async function POST(request) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
-
-

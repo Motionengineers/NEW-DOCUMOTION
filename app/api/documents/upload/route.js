@@ -10,6 +10,7 @@ import prisma from '@/lib/prisma';
 import { logger } from '@/lib/logger';
 import sanitizeHtml from 'sanitize-html';
 import { inferDocumentMetadata } from '@/lib/documents/metadata';
+import { classifyDocumentContent } from '@/lib/documents/classifier';
 
 export const runtime = 'nodejs';
 
@@ -105,10 +106,21 @@ export async function POST(request) {
     }
 
     const metadata = inferDocumentMetadata({
+    let metadata = inferDocumentMetadata({
       name: documentData.name,
       type: documentData.type,
       mimeType: file.type,
     });
+
+    /**
+     * Layer 2 & 3: Document Classification & Extraction
+     * Here we would integrate OCR (Tesseract/Gemini Vision) followed by 
+     * the fine-tuned classifier call.
+     */
+    const classification = await classifyDocumentContent(sanitizedName); // Fallback to filename analysis
+    if (classification.confidence > 0.6) {
+      metadata = { ...metadata, ...classification };
+    }
 
     // Create document record in database
     const document = await prisma.document.create({

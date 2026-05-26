@@ -15,10 +15,7 @@ export async function GET(request, { params }) {
     const endDate = searchParams.get('endDate');
 
     if (Number.isNaN(partnerId)) {
-      return NextResponse.json(
-        { success: false, error: 'Invalid partner ID' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'Invalid partner ID' }, { status: 400 });
     }
 
     const partner = await prisma.brandingPartner.findUnique({
@@ -26,10 +23,7 @@ export async function GET(request, { params }) {
     });
 
     if (!partner) {
-      return NextResponse.json(
-        { success: false, error: 'Partner not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: 'Partner not found' }, { status: 404 });
     }
 
     // Get existing bookings in the date range
@@ -66,9 +60,10 @@ export async function GET(request, { params }) {
         scheduledAt: b.scheduledAt,
         status: b.status,
       })),
-      message: bookings.length > 0
-        ? `${bookings.length} booking(s) in this period`
-        : 'Available for booking',
+      message:
+        bookings.length > 0
+          ? `${bookings.length} booking(s) in this period`
+          : 'Available for booking',
     };
 
     return NextResponse.json({
@@ -83,5 +78,3 @@ export async function GET(request, { params }) {
     );
   }
 }
-
-

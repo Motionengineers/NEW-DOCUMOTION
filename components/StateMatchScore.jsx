@@ -37,7 +37,9 @@ export default function StateMatchScore({ data, loading, onSubmit }) {
     event.preventDefault();
     const profile = {
       ...form,
-      requiredFunding: form.requiredFunding ? Number(form.requiredFunding.replace(/[,₹\s]/g, '')) : null,
+      requiredFunding: form.requiredFunding
+        ? Number(form.requiredFunding.replace(/[,₹\s]/g, ''))
+        : null,
     };
     track('match.run', {
       profile: {
@@ -53,31 +55,39 @@ export default function StateMatchScore({ data, loading, onSubmit }) {
   }
 
   return (
-    <div className="rounded-3xl border p-6 shadow-2xl backdrop-blur" style={{ borderColor: 'var(--separator)', backgroundColor: 'var(--system-secondary-background)' }}>
+    <div
+      className="rounded-3xl border p-6 shadow-2xl backdrop-blur"
+      style={{
+        borderColor: 'var(--separator)',
+        backgroundColor: 'var(--system-secondary-background)',
+      }}
+    >
       <div className="flex flex-col gap-4 md:flex-row md:items-center">
         <div className="flex-1 space-y-2">
-          <p className="text-xs uppercase tracking-[0.4em]" style={{ color: 'var(--secondary-label)' }}>AI match score</p>
+          <p
+            className="text-xs uppercase tracking-[0.4em]"
+            style={{ color: 'var(--secondary-label)' }}
+          >
+            AI match score
+          </p>
           <h3 className="text-2xl font-semibold" style={{ color: 'var(--label)' }}>
             Not sure which state fits best? Get an instant suitability score.
           </h3>
           <p className="text-sm" style={{ color: 'var(--secondary-label)' }}>
-            Tell us your industry, stage, and benefit preference. We&apos;ll crunch every state policy and
-            surface the best matches for your team.
+            Tell us your industry, stage, and benefit preference. We&apos;ll crunch every state
+            policy and surface the best matches for your team.
           </p>
         </div>
-        <form
-          onSubmit={handleSubmit}
-          className="flex w-full flex-col gap-3 md:w-1/2"
-        >
+        <form onSubmit={handleSubmit} className="flex w-full flex-col gap-3 md:w-1/2">
           <input
             value={form.industry}
             onChange={event => handleChange('industry', event.target.value)}
             placeholder="Industry (e.g., EV, SaaS, Climate)"
             className="w-full rounded-2xl border px-4 py-3 text-sm focus:outline-none"
-            style={{ 
-              borderColor: 'var(--separator)', 
+            style={{
+              borderColor: 'var(--separator)',
               backgroundColor: 'var(--system-secondary-background)',
-              color: 'var(--label)'
+              color: 'var(--label)',
             }}
             placeholderStyle={{ color: 'var(--tertiary-label)' }}
           />
@@ -86,10 +96,10 @@ export default function StateMatchScore({ data, loading, onSubmit }) {
               value={form.stage}
               onChange={event => handleChange('stage', event.target.value)}
               className="w-full rounded-2xl border px-4 py-3 text-sm focus:outline-none"
-              style={{ 
-                borderColor: 'var(--separator)', 
+              style={{
+                borderColor: 'var(--separator)',
                 backgroundColor: 'var(--system-secondary-background)',
-                color: 'var(--label)'
+                color: 'var(--label)',
               }}
             >
               {STAGE_OPTIONS.map(option => (
@@ -102,10 +112,10 @@ export default function StateMatchScore({ data, loading, onSubmit }) {
               value={form.preferredBenefit}
               onChange={event => handleChange('preferredBenefit', event.target.value)}
               className="w-full rounded-2xl border px-4 py-3 text-sm focus:outline-none"
-              style={{ 
-                borderColor: 'var(--separator)', 
+              style={{
+                borderColor: 'var(--separator)',
                 backgroundColor: 'var(--system-secondary-background)',
-                color: 'var(--label)'
+                color: 'var(--label)',
               }}
             >
               {BENEFIT_TYPES.map(option => (
@@ -121,10 +131,10 @@ export default function StateMatchScore({ data, loading, onSubmit }) {
               onChange={event => handleChange('registeredState', event.target.value)}
               placeholder="Registered state (optional)"
               className="rounded-2xl border px-4 py-3 text-sm focus:outline-none"
-              style={{ 
-                borderColor: 'var(--separator)', 
+              style={{
+                borderColor: 'var(--separator)',
                 backgroundColor: 'var(--system-secondary-background)',
-                color: 'var(--label)'
+                color: 'var(--label)',
               }}
               placeholderStyle={{ color: 'var(--tertiary-label)' }}
             />
@@ -133,10 +143,10 @@ export default function StateMatchScore({ data, loading, onSubmit }) {
               onChange={event => handleChange('requiredFunding', event.target.value)}
               placeholder="Funding need (₹)"
               className="rounded-2xl border px-4 py-3 text-sm focus:outline-none"
-              style={{ 
-                borderColor: 'var(--separator)', 
+              style={{
+                borderColor: 'var(--separator)',
                 backgroundColor: 'var(--system-secondary-background)',
-                color: 'var(--label)'
+                color: 'var(--label)',
               }}
               placeholderStyle={{ color: 'var(--tertiary-label)' }}
             />
@@ -161,12 +171,12 @@ export default function StateMatchScore({ data, loading, onSubmit }) {
       </div>
 
       {data?.error && (
-        <div 
+        <div
           className="mt-4 rounded-2xl border p-4 text-sm"
           style={{
             borderColor: 'var(--system-red)',
             backgroundColor: 'rgba(255, 59, 48, 0.1)',
-            color: 'var(--system-red)'
+            color: 'var(--system-red)',
           }}
         >
           {data.error}
@@ -179,17 +189,24 @@ export default function StateMatchScore({ data, loading, onSubmit }) {
             <div
               key={reco.state?.id}
               className="rounded-2xl border p-4"
-              style={{ 
-                borderColor: 'var(--separator)', 
+              style={{
+                borderColor: 'var(--separator)',
                 backgroundColor: 'var(--system-secondary-background)',
-                color: 'var(--label)'
+                color: 'var(--label)',
               }}
             >
-              <p className="text-xs uppercase tracking-[0.3em]" style={{ color: 'var(--tertiary-label)' }}>
+              <p
+                className="text-xs uppercase tracking-[0.3em]"
+                style={{ color: 'var(--tertiary-label)' }}
+              >
                 Suitability {reco.matchScore}%
               </p>
-              <h4 className="mt-2 text-xl font-semibold" style={{ color: 'var(--label)' }}>{reco.state?.name}</h4>
-              <p className="text-sm" style={{ color: 'var(--secondary-label)' }}>{reco.state?.description}</p>
+              <h4 className="mt-2 text-xl font-semibold" style={{ color: 'var(--label)' }}>
+                {reco.state?.name}
+              </h4>
+              <p className="text-sm" style={{ color: 'var(--secondary-label)' }}>
+                {reco.state?.description}
+              </p>
               {reco.explanation && (
                 <div className="mt-4 space-y-2 text-xs" style={{ color: 'var(--secondary-label)' }}>
                   {reco.explanation.map(item => (
@@ -207,5 +224,3 @@ export default function StateMatchScore({ data, loading, onSubmit }) {
     </div>
   );
 }
-
-

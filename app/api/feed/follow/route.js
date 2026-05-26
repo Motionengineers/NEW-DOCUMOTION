@@ -37,7 +37,12 @@ export async function POST(request) {
 
     // Validate that at least one target is provided
     if (!targetUserId && !targetStartupId && !tag) {
-      return jsonError('invalid_params', 'Must provide targetUserId, targetStartupId, or tag', 400, rid);
+      return jsonError(
+        'invalid_params',
+        'Must provide targetUserId, targetStartupId, or tag',
+        400,
+        rid
+      );
     }
 
     // Prevent self-follow
@@ -84,7 +89,9 @@ export async function POST(request) {
       return jsonOk({ following: false }, rid);
     }
   } catch (error) {
-    console.error(JSON.stringify({ level: 'error', rid, route: '/api/feed/follow', msg: String(error) }));
+    console.error(
+      JSON.stringify({ level: 'error', rid, route: '/api/feed/follow', msg: String(error) })
+    );
     return jsonError('internal_error', 'An unexpected error occurred', 500, rid);
   }
 }
@@ -151,8 +158,9 @@ export async function GET(request) {
       rid
     );
   } catch (error) {
-    console.error(JSON.stringify({ level: 'error', rid, route: '/api/feed/follow', msg: String(error) }));
+    console.error(
+      JSON.stringify({ level: 'error', rid, route: '/api/feed/follow', msg: String(error) })
+    );
     return jsonError('internal_error', 'An unexpected error occurred', 500, rid);
   }
 }
-

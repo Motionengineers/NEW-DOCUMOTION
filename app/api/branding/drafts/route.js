@@ -41,5 +41,3 @@ export async function POST(request) {
     return NextResponse.json({ success: false, error: 'Unable to save draft' }, { status: 500 });
   }
 }
-
-

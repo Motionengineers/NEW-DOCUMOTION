@@ -36,7 +36,10 @@ export async function POST(request) {
     });
 
     if (!subscription) {
-      return NextResponse.json({ success: false, error: 'No active subscription' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: 'No active subscription' },
+        { status: 400 }
+      );
     }
 
     // Calculate price
@@ -76,4 +79,3 @@ export async function POST(request) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
-

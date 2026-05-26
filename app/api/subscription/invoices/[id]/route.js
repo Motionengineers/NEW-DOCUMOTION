@@ -89,36 +89,39 @@ export async function GET(request, { params }) {
       }
     }
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        id: invoice.id,
-        invoiceNumber: invoice.invoiceNumber,
-        amount: invoice.amount,
-        totalAmount: invoice.totalAmount,
-        taxAmount: invoice.taxAmount,
-        discountAmount: invoice.discountAmount,
-        currency: invoice.currency,
-        status: invoice.status,
-        items,
-        razorpayOrderId: invoice.razorpayOrderId,
-        razorpayPaymentId: invoice.razorpayPaymentId,
-        dueDate: invoice.dueDate,
-        paidAt: invoice.paidAt,
-        createdAt: invoice.createdAt,
-        subscription: invoice.subscription,
+    return NextResponse.json(
+      {
+        success: true,
+        data: {
+          id: invoice.id,
+          invoiceNumber: invoice.invoiceNumber,
+          amount: invoice.amount,
+          totalAmount: invoice.totalAmount,
+          taxAmount: invoice.taxAmount,
+          discountAmount: invoice.discountAmount,
+          currency: invoice.currency,
+          status: invoice.status,
+          items,
+          razorpayOrderId: invoice.razorpayOrderId,
+          razorpayPaymentId: invoice.razorpayPaymentId,
+          dueDate: invoice.dueDate,
+          paidAt: invoice.paidAt,
+          createdAt: invoice.createdAt,
+          subscription: invoice.subscription,
+        },
       },
-    }, { headers: { 'x-request-id': rid } });
+      { headers: { 'x-request-id': rid } }
+    );
   } catch (error) {
-    console.error(JSON.stringify({
-      level: 'error',
-      rid,
-      route: '/api/subscription/invoices/[id]',
-      msg: 'Error fetching invoice',
-      err: String(error),
-    }));
+    console.error(
+      JSON.stringify({
+        level: 'error',
+        rid,
+        route: '/api/subscription/invoices/[id]',
+        msg: 'Error fetching invoice',
+        err: String(error),
+      })
+    );
     return jsonError('internal_error', 'An unexpected error occurred', 500, rid);
   }
 }
-
-

@@ -75,10 +75,6 @@ export async function POST(request) {
     });
   } catch (error) {
     console.error('POST /api/feed/media/upload failed:', error);
-    return NextResponse.json(
-      { success: false, error: 'Unable to upload media' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Unable to upload media' }, { status: 500 });
   }
 }
-

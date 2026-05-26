@@ -47,10 +47,6 @@ export async function GET(request, { params }) {
     return NextResponse.json({ success: true, data: bookings });
   } catch (error) {
     console.error(`GET /api/branding/partners/${params.id}/bookings failed:`, error);
-    return NextResponse.json(
-      { success: false, error: 'Unable to load bookings' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Unable to load bookings' }, { status: 500 });
   }
 }
-

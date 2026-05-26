@@ -168,9 +168,7 @@ export default function FeedTimeline({ initialPosts = [], onReady }) {
           onClick={() => setFeedType('all')}
           className={clsx(
             'flex-1 rounded-xl px-4 py-2 text-sm font-medium transition',
-            feedType === 'all'
-              ? 'bg-blue-500/20 text-blue-100'
-              : 'text-slate-300 hover:text-white'
+            feedType === 'all' ? 'bg-blue-500/20 text-blue-100' : 'text-slate-300 hover:text-white'
           )}
         >
           All Posts

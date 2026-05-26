@@ -15,6 +15,7 @@ This doc explains how telemetry works and how to pipe events to a warehouse.
 ## Canonical Event Schema
 
 All events follow this schema:
+
 ```json
 {
   "event_id": "uuid-v4",
@@ -24,7 +25,9 @@ All events follow this schema:
   "platform": "web|mobile|api",
   "app_version": "1.2.3",
   "timestamp": "2025-11-18T14:00:00.000Z",
-  "properties": { /* event-specific payload */ },
+  "properties": {
+    /* event-specific payload */
+  },
   "context": { "ua": "...", "url": "...", "referrer": "..." }
 }
 ```
@@ -50,4 +53,3 @@ All events follow this schema:
 - `docs/telemetry-setup.md` - Setup guide for BigQuery
 - `docs/monitoring.md` - Monitoring and observability
 - `docs/bigquery-schema.json` - BigQuery table schema
-

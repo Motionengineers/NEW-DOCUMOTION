@@ -314,12 +314,20 @@ export default function AdminDashboard() {
           <table className="min-w-full divide-y divide-white/10 text-sm">
             <thead className="bg-white/5" style={{ color: 'var(--tertiary-label)' }}>
               <tr>
-                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">Partner</th>
+                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                  Partner
+                </th>
                 <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">Type</th>
                 <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">City</th>
-                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">Verified</th>
-                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">Contact</th>
-                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">Actions</th>
+                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                  Verified
+                </th>
+                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                  Contact
+                </th>
+                <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>

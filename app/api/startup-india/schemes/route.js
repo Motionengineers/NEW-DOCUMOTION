@@ -7,9 +7,9 @@ const CACHE_NAMESPACE = 'startup-india';
 
 /**
  * GET /api/startup-india/schemes
- * 
+ *
  * Fetches schemes and resources from Startup India Hub
- * 
+ *
  * Query params:
  * - category: Filter by category (funding, mentorship, incubation, etc.)
  * - limit: Number of results (default: 20)
@@ -21,9 +21,9 @@ export async function GET(request) {
     const category = searchParams.get('category') || null;
     const limit = Math.min(Number.parseInt(searchParams.get('limit') || '20', 10), 100);
     const forceRefresh = searchParams.get('refresh') === 'true';
-    
+
     const cacheKey = `schemes:${category || 'all'}:${limit}`;
-    
+
     // Check cache
     if (!forceRefresh) {
       const cached = getCachedValue(CACHE_NAMESPACE, cacheKey);
@@ -39,10 +39,10 @@ export async function GET(request) {
 
     // Fetch from Startup India Hub
     const schemes = await fetchStartupIndiaSchemes({ category, limit });
-    
+
     // Cache the result
     setCachedValue(CACHE_NAMESPACE, cacheKey, schemes, CACHE_TTL_MS);
-    
+
     return NextResponse.json({
       success: true,
       data: schemes,
@@ -73,7 +73,8 @@ async function fetchStartupIndiaSchemes({ category, limit }) {
       id: 'si-1',
       title: 'Startup India Seed Fund Scheme',
       category: 'funding',
-      description: 'Financial assistance to startups for proof of concept, prototype development, product trials',
+      description:
+        'Financial assistance to startups for proof of concept, prototype development, product trials',
       amount: 'Up to ₹50 Lakhs',
       eligibility: 'Registered startups less than 2 years old',
       link: 'https://www.startupindia.gov.in/content/sih/en/government-schemes/seed-fund-scheme.html',
@@ -112,9 +113,7 @@ async function fetchStartupIndiaSchemes({ category, limit }) {
   ];
 
   // Filter by category if provided
-  let filtered = category
-    ? allSchemes.filter(s => s.category === category)
-    : allSchemes;
+  let filtered = category ? allSchemes.filter(s => s.category === category) : allSchemes;
 
   // Apply limit
   filtered = filtered.slice(0, limit);
@@ -123,7 +122,6 @@ async function fetchStartupIndiaSchemes({ category, limit }) {
   // Example:
   // const response = await fetch('https://www.startupindia.gov.in/api/schemes');
   // const data = await response.json();
-  
+
   return filtered;
 }
-

@@ -5,10 +5,10 @@ export const dynamic = 'force-dynamic';
 
 /**
  * POST /api/email/test
- * 
+ *
  * Test endpoint for Resend email API
  * Sends a test email to verify configuration
- * 
+ *
  * Body:
  * - to: Email address to send test email to
  * - subject: Optional custom subject (default: "Test Email from Documotion")
@@ -17,7 +17,7 @@ export async function POST(request) {
   try {
     const body = await request.json();
     const { to, subject } = body;
-    
+
     if (!to) {
       return NextResponse.json(
         { success: false, error: 'Email address (to) is required' },
@@ -28,10 +28,7 @@ export async function POST(request) {
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(to)) {
-      return NextResponse.json(
-        { success: false, error: 'Invalid email address' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'Invalid email address' }, { status: 400 });
     }
 
     // Send test email
@@ -61,8 +58,8 @@ export async function POST(request) {
   } catch (error) {
     console.error('POST /api/email/test failed:', error);
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         error: 'Failed to send test email',
         details: error.message,
       },
@@ -70,4 +67,3 @@ export async function POST(request) {
     );
   }
 }
-

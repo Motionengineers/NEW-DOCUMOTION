@@ -1,11 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import StatsCard from './StatsCard';
 import { motion } from 'framer-motion';
 import SkeletonLoader from './SkeletonLoader';
 import { AlertCircle, RefreshCw, Inbox } from 'lucide-react';
 import Button from './Button';
+
+const PRIMARY_KEYS = ['Govt Schemes', 'Bank Schemes', 'Talent Profiles', 'Pitch Decks'];
+const SECONDARY_KEYS = [
+  'Registrations',
+  'Govt Loans',
+  'Private Banks',
+  'Venture Debt',
+  'Updated Today',
+];
 
 export default function SummaryCards() {
   const [stats, setStats] = useState(null);
@@ -13,15 +22,15 @@ export default function SummaryCards() {
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
 
-  async function load() {
+  const load = useCallback(async signal => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/dashboard');
+      const res = await fetch('/api/dashboard', { signal });
       const json = await res.json();
-      
+
       if (json.success && json.data) {
-        setStats({
+        const newStats = {
           'Govt Schemes': json.data.schemes || 0,
           'Bank Schemes': json.data.banks || 0,
           'Talent Profiles': json.data.talent || 0,
@@ -31,54 +40,67 @@ export default function SummaryCards() {
           'Private Banks': json.data.privateBanks || 0,
           'Venture Debt': json.data.ventureDebt || 0,
           'Updated Today': json.data.updatedToday || 0,
+        };
+
+        // Only update state if the data has actually changed to prevent unnecessary re-renders
+        setStats(prevStats => {
+          if (!prevStats) return newStats;
+
+          const isIdentical = Object.keys(newStats).every(key => prevStats[key] === newStats[key]);
+
+          if (isIdentical) return prevStats;
+          return newStats;
         });
+
         setRetryCount(0); // Reset retry count on success
       } else {
         throw new Error(json.error || 'Failed to load dashboard data');
       }
     } catch (e) {
-      console.error('Failed to fetch dashboard', e);
-      setError(e.message || 'Failed to load dashboard data');
-      // Set empty stats on error
-      setStats({
-        'Govt Schemes': 0,
-        'Bank Schemes': 0,
-        'Talent Profiles': 0,
-        'Pitch Decks': 0,
-        Registrations: 0,
-        'Govt Loans': 0,
-        'Private Banks': 0,
-        'Venture Debt': 0,
-        'Updated Today': 0,
-      });
+      if (e.name !== 'AbortError') {
+        console.error('Failed to fetch dashboard', e);
+        setError(e.message || 'Failed to load dashboard data');
+        setStats({
+          'Govt Schemes': 0,
+          'Bank Schemes': 0,
+          'Talent Profiles': 0,
+          'Pitch Decks': 0,
+          Registrations: 0,
+          'Govt Loans': 0,
+          'Private Banks': 0,
+          'Venture Debt': 0,
+          'Updated Today': 0,
+        });
+      }
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
   const handleRetry = () => {
+    const controller = new AbortController();
     setRetryCount(prev => prev + 1);
-    load();
+    load(controller.signal);
+    // Note: We don't store this controller because it's a one-off manual trigger,
+    // but providing the signal prevents potential undefined errors.
   };
 
   useEffect(() => {
-    load();
-    // refresh every 60s for near-live counts
-    const id = setInterval(load, 60_000);
-    return () => clearInterval(id);
-  }, []);
+    const controller = new AbortController();
+    load(controller.signal);
 
-  const primaryKeys = ['Govt Schemes', 'Bank Schemes', 'Talent Profiles', 'Pitch Decks'];
-  const secondaryKeys = [
-    'Registrations',
-    'Govt Loans',
-    'Private Banks',
-    'Venture Debt',
-    'Updated Today',
-  ];
+    const id = setInterval(() => load(controller.signal), 60_000);
+
+    return () => {
+      controller.abort();
+      clearInterval(id);
+    };
+  }, [load]);
 
   // Empty state check
-  const hasData = stats && Object.values(stats).some(val => val > 0);
+  const hasData = useMemo(() => {
+    return stats && Object.values(stats).some(val => val > 0);
+  }, [stats]);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -125,7 +147,7 @@ export default function SummaryCards() {
             role="list"
             aria-label="Dashboard summary cards"
           >
-            {primaryKeys.map(k => (
+            {PRIMARY_KEYS.map(k => (
               <div role="listitem" key={k}>
                 <StatsCard title={k} value={stats[k]} />
               </div>
@@ -136,7 +158,7 @@ export default function SummaryCards() {
             role="list"
             aria-label="Bank scheme details"
           >
-            {secondaryKeys.map(k => (
+            {SECONDARY_KEYS.map(k => (
               <div role="listitem" key={k}>
                 <StatsCard title={k} value={stats[k]} />
               </div>
@@ -169,7 +191,7 @@ export default function SummaryCards() {
                 Your dashboard will populate as you use DOCUMOTION. Start by exploring schemes or
                 uploading documents.
               </p>
-              <Button variant="primary" size="md" onClick={load}>
+              <Button variant="primary" size="md" onClick={() => load()} loading={loading}>
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Refresh
               </Button>

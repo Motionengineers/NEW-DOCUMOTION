@@ -32,9 +32,11 @@ export async function GET(request) {
       } else if (addOn.addOnType === 'extra_seat') {
         effectiveLimits.teamSeats = (effectiveLimits.teamSeats || 0) + addOn.quantity;
       } else if (addOn.addOnType === 'auto_apply_workflow') {
-        effectiveLimits.autoApplyWorkflows = (effectiveLimits.autoApplyWorkflows || 0) + addOn.quantity;
+        effectiveLimits.autoApplyWorkflows =
+          (effectiveLimits.autoApplyWorkflows || 0) + addOn.quantity;
       } else if (addOn.addOnType === 'ai_parsing_pages') {
-        effectiveLimits.aiParsingPages = (effectiveLimits.aiParsingPages || 0) + 100 * addOn.quantity;
+        effectiveLimits.aiParsingPages =
+          (effectiveLimits.aiParsingPages || 0) + 100 * addOn.quantity;
       }
     }
 
@@ -70,5 +72,3 @@ export async function GET(request) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
-
-

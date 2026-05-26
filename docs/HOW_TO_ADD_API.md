@@ -17,6 +17,7 @@ This guide will walk you through creating a new API endpoint in Documotion from 
 In Next.js App Router, API routes are created in the `app/api/` directory.
 
 **Structure:**
+
 ```
 app/
   api/
@@ -25,6 +26,7 @@ app/
 ```
 
 **Example:**
+
 - `app/api/states/route.js` → `GET /api/states`
 - `app/api/funding/state/route.js` → `GET /api/funding/state`
 - `app/api/users/[id]/route.js` → `GET /api/users/123` (dynamic route)
@@ -60,11 +62,13 @@ export async function GET() {
 ### 2.3 Test It
 
 Start your dev server:
+
 ```bash
 npm run dev
 ```
 
 Test the API:
+
 ```bash
 curl http://localhost:3000/api/hello
 ```
@@ -72,6 +76,7 @@ curl http://localhost:3000/api/hello
 Or open in browser: `http://localhost:3000/api/hello`
 
 **Expected Response:**
+
 ```json
 {
   "success": true,
@@ -109,6 +114,7 @@ export async function GET(request) {
 ```
 
 **Test:**
+
 ```bash
 curl "http://localhost:3000/api/hello?name=John&age=25"
 ```
@@ -170,6 +176,7 @@ export async function POST(request) {
 ```
 
 **Test POST:**
+
 ```bash
 curl -X POST http://localhost:3000/api/hello \
   -H "Content-Type: application/json" \
@@ -210,10 +217,7 @@ export async function GET() {
     });
   } catch (error) {
     console.error('GET /api/users failed:', error);
-    return NextResponse.json(
-      { success: false, error: 'Unable to load users' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Unable to load users' }, { status: 500 });
   }
 }
 ```
@@ -255,10 +259,7 @@ export async function GET(request) {
     });
   } catch (error) {
     console.error('GET /api/products failed:', error);
-    return NextResponse.json(
-      { success: false, error: 'Unable to load products' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Unable to load products' }, { status: 500 });
   }
 }
 
@@ -321,16 +322,13 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     // Check authentication
-    const token = await getToken({ 
-      req: request, 
-      secret: process.env.NEXTAUTH_SECRET 
+    const token = await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET,
     });
 
     if (!token) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user ID from token
@@ -364,10 +362,7 @@ export async function GET(request, { params }) {
     const productId = parseInt(id);
 
     if (!Number.isFinite(productId)) {
-      return NextResponse.json(
-        { success: false, error: 'Invalid product ID' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'Invalid product ID' }, { status: 400 });
     }
 
     const product = await prisma.product.findUnique({
@@ -375,10 +370,7 @@ export async function GET(request, { params }) {
     });
 
     if (!product) {
-      return NextResponse.json(
-        { success: false, error: 'Product not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: 'Product not found' }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -387,10 +379,7 @@ export async function GET(request, { params }) {
     });
   } catch (error) {
     console.error('GET /api/products/[id] failed:', error);
-    return NextResponse.json(
-      { success: false, error: 'Unable to load product' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Unable to load product' }, { status: 500 });
   }
 }
 
@@ -462,7 +451,7 @@ const CACHE_NAMESPACE = 'your-endpoint';
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
-    
+
     // Check cache first
     const cacheKey = searchParams.toString();
     const cached = getCachedValue(CACHE_NAMESPACE, cacheKey);
@@ -486,10 +475,7 @@ export async function GET(request) {
     return NextResponse.json(response);
   } catch (error) {
     console.error('GET /api/your-endpoint failed:', error);
-    return NextResponse.json(
-      { success: false, error: 'Unable to load data' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Unable to load data' }, { status: 500 });
   }
 }
 ```
@@ -602,7 +588,7 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const body = await request.json();
-    
+
     // Validation
     if (!body.requiredField) {
       return NextResponse.json(
@@ -620,19 +606,13 @@ export async function POST(request) {
     });
   } catch (error) {
     console.error('POST /api/endpoint failed:', error);
-    
+
     // Return appropriate error
     if (error.code === 'P2002') {
-      return NextResponse.json(
-        { success: false, error: 'Duplicate entry' },
-        { status: 409 }
-      );
+      return NextResponse.json({ success: false, error: 'Duplicate entry' }, { status: 409 });
     }
 
-    return NextResponse.json(
-      { success: false, error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
 ```
@@ -670,18 +650,22 @@ Study these existing APIs:
 ## 🆘 Troubleshooting
 
 ### Issue: "Route not found"
+
 - Check file path: `app/api/your-endpoint/route.js`
 - Restart dev server: `npm run dev`
 
 ### Issue: "Cannot read property of undefined"
+
 - Check if `request.json()` was called (for POST)
 - Check if `params` exists (for dynamic routes)
 
 ### Issue: "Database error"
+
 - Check Prisma client is generated: `npx prisma generate`
 - Check database connection in `.env`
 
 ### Issue: "CORS error"
+
 - Next.js handles CORS automatically for same-origin
 - For external access, add CORS headers
 
@@ -711,17 +695,14 @@ export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     // Add your logic here
-    
+
     return NextResponse.json({
       success: true,
       data: [],
     });
   } catch (error) {
     console.error('GET /api/your-endpoint failed:', error);
-    return NextResponse.json(
-      { success: false, error: 'Unable to load data' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Unable to load data' }, { status: 500 });
   }
 }
 
@@ -729,7 +710,7 @@ export async function POST(request) {
   try {
     const body = await request.json();
     // Add your logic here
-    
+
     return NextResponse.json({
       success: true,
       data: {},
@@ -747,4 +728,3 @@ export async function POST(request) {
 ---
 
 **Happy coding! 🚀**
-

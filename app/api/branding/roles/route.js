@@ -37,5 +37,3 @@ export async function POST(request) {
     return NextResponse.json({ success: false, error: 'Unable to upsert role' }, { status: 500 });
   }
 }
-
-

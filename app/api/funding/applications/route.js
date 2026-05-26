@@ -147,11 +147,7 @@ async function logFundingActivity(applicationId, actorUserId, activityType, mess
   }
 }
 
-async function emitFundingNotification({
-  userId,
-  type,
-  payload = {},
-}) {
+async function emitFundingNotification({ userId, type, payload = {} }) {
   try {
     // Placeholder for email/SMS integrations (Resend, Twilio, etc.)
     logger.info({
@@ -170,7 +166,13 @@ async function emitFundingNotification({
   }
 }
 
-const TRUSTED_VIDEO_DOMAINS = ['youtube.com', 'youtu.be', 'vimeo.com', 'loom.com', 'drive.google.com'];
+const TRUSTED_VIDEO_DOMAINS = [
+  'youtube.com',
+  'youtu.be',
+  'vimeo.com',
+  'loom.com',
+  'drive.google.com',
+];
 
 function isTrustedVideoUrl(url) {
   try {

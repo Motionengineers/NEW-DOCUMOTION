@@ -3,6 +3,7 @@
 ## Overview
 
 The telemetry system uses a canonical event schema and supports multiple ingestion backends:
+
 - **BigQuery streaming** (recommended for real-time analytics)
 - **JSONL file backup** (always enabled as fallback)
 
@@ -19,7 +20,9 @@ All events follow this canonical schema:
   "platform": "web|mobile|api",
   "app_version": "1.2.3",
   "timestamp": "2025-11-18T14:00:00.000Z",
-  "properties": { /* event-specific payload */ },
+  "properties": {
+    /* event-specific payload */
+  },
   "context": { "ip_country": "IN", "ua": "..." }
 }
 ```
@@ -72,12 +75,14 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 ### 4. Service Account Permissions
 
 The service account needs:
+
 - `BigQuery Data Editor` role
 - `BigQuery Job User` role
 
 ## JSONL Backup
 
 Events are always written to `prisma/seeds/telemetry_events.jsonl` as a backup. This file can be:
+
 - Batch-loaded to BigQuery via `bq load`
 - Uploaded to GCS/S3 for Snowpipe ingestion
 - Processed by ETL pipelines
@@ -92,12 +97,14 @@ Events are always written to `prisma/seeds/telemetry_events.jsonl` as a backup. 
 ## Monitoring
 
 Monitor these metrics:
+
 - `telemetry.ingest.success` - Successful event ingestion
 - `telemetry.ingest.failure` - Failed ingestion attempts
 - `telemetry.batch.size` - Average batch size
 - `telemetry.bq.lag` - BigQuery ingestion lag
 
 Set alerts for:
+
 - Failure rate > 1%
 - Warehouse lag > 10 minutes (streaming) or > 1 hour (batch)
 
@@ -106,15 +113,16 @@ Set alerts for:
 For cost-effective batch loading:
 
 1. Upload JSONL to GCS:
+
 ```bash
 gsutil cp prisma/seeds/telemetry_events.jsonl gs://documotion-telemetry/YYYY-MM-DD/
 ```
 
 2. Load to BigQuery:
+
 ```bash
 bq load --source_format=NEWLINE_DELIMITED_JSON \
   dataset.events \
   gs://documotion-telemetry/YYYY-MM-DD/*.jsonl \
   schema.json
 ```
-

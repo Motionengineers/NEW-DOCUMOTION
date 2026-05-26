@@ -4,35 +4,36 @@
 
 ## API Count by Category
 
-| Category | Count | Status |
-|----------|-------|--------|
-| State Funding Explorer | 5 | ✅ Complete |
-| Dashboard & Analytics | 1 | ✅ Complete |
-| Government Schemes | 1 | ✅ Complete |
-| Bank Schemes | 1 | ✅ Complete |
-| Talent & Founders | 3 | ✅ Complete |
-| Pitch Decks | 1 | ✅ Complete |
-| Documents | 1 | ✅ Complete |
-| Eligibility & Matching | 2 | ✅ Complete |
-| Funding Applications | 1 | ✅ Complete |
-| Branding Studio | 20+ | ✅ Complete |
-| Agencies & Partners | 5 | ✅ Complete |
-| Feed & Social | 7 | ✅ Complete |
-| Subscriptions & Payments | 8 | ✅ Complete |
-| Team & Invitations | 9 | ✅ Complete |
-| Settings | 1 | ✅ Complete |
-| Service Requests | 3 | ✅ Complete |
-| Telemetry | 1 | ✅ Complete |
-| AI & OpenAI | 1 | ✅ Complete |
-| Notifications | 2 | ✅ Complete |
-| Live Updates | 1 | ✅ Complete |
-| Startups | 1 | ✅ Complete |
+| Category                 | Count | Status      |
+| ------------------------ | ----- | ----------- |
+| State Funding Explorer   | 5     | ✅ Complete |
+| Dashboard & Analytics    | 1     | ✅ Complete |
+| Government Schemes       | 1     | ✅ Complete |
+| Bank Schemes             | 1     | ✅ Complete |
+| Talent & Founders        | 3     | ✅ Complete |
+| Pitch Decks              | 1     | ✅ Complete |
+| Documents                | 1     | ✅ Complete |
+| Eligibility & Matching   | 2     | ✅ Complete |
+| Funding Applications     | 1     | ✅ Complete |
+| Branding Studio          | 20+   | ✅ Complete |
+| Agencies & Partners      | 5     | ✅ Complete |
+| Feed & Social            | 7     | ✅ Complete |
+| Subscriptions & Payments | 8     | ✅ Complete |
+| Team & Invitations       | 9     | ✅ Complete |
+| Settings                 | 1     | ✅ Complete |
+| Service Requests         | 3     | ✅ Complete |
+| Telemetry                | 1     | ✅ Complete |
+| AI & OpenAI              | 1     | ✅ Complete |
+| Notifications            | 2     | ✅ Complete |
+| Live Updates             | 1     | ✅ Complete |
+| Startups                 | 1     | ✅ Complete |
 
 ---
 
 ## All Endpoints (Alphabetical)
 
 ### A
+
 - `POST /api/agency-requests` - Create agency request
 - `GET /api/agency-requests` - List agency requests
 - `GET /api/agency-requests/[id]` - Get agency request
@@ -40,6 +41,7 @@
 - `POST /api/agency-requests/[id]/messages` - Send message
 
 ### B
+
 - `GET /api/banks/match` - Match bank schemes
 - `GET /api/branding/agencies` - List agencies
 - `GET /api/branding/agencies/[slug]` - Get agency
@@ -72,13 +74,16 @@
 - `POST /api/branding/workspace/[id]/upload` - Upload to workspace
 
 ### D
+
 - `GET /api/dashboard` - Dashboard summary
 - `POST /api/documents/upload` - Upload document
 
 ### E
+
 - `POST /api/eligibility` - Check eligibility
 
 ### F
+
 - `GET /api/feed/follow` - Follow user
 - `GET /api/feed/link-preview` - Get link preview
 - `POST /api/feed/media/upload` - Upload media
@@ -96,6 +101,7 @@
 - `GET /api/funding/state` - Get state schemes
 
 ### I
+
 - `GET /api/invitations` - List invitations
 - `POST /api/invitations/accept` - Accept invitation
 - `POST /api/invitations/change-role` - Change role
@@ -107,21 +113,26 @@
 - `GET /api/invitations/validate` - Validate token
 
 ### L
+
 - `GET /api/live-updates` - Get live updates
 
 ### N
+
 - `GET /api/notifications` - List notifications
 - `POST /api/notifications/read` - Mark as read
 
 ### O
+
 - `POST /api/openai/chat` - Chat with AI
 
 ### P
+
 - `POST /api/payment/razorpay/create-order` - Create order
 - `POST /api/payment/razorpay/verify` - Verify payment
 - `POST /api/payment/razorpay/webhook` - Webhook
 
 ### S
+
 - `POST /api/schemes/recommend` - Get recommendations
 - `GET /api/service-requests` - List requests
 - `POST /api/service-requests` - Create request
@@ -142,6 +153,7 @@
 - `POST /api/subscription/usage/record` - Record usage
 
 ### T
+
 - `GET /api/talent` - List talent
 - `GET /api/talent/search` - Search talent
 - `GET /api/talent/suggest` - Suggest talent
@@ -167,6 +179,7 @@
 ## Authentication Required
 
 Most endpoints require authentication. Public endpoints:
+
 - `GET /api/dashboard`
 - `GET /api/states`
 - `GET /api/funding/state`
@@ -179,6 +192,7 @@ Most endpoints require authentication. Public endpoints:
 ## Response Format
 
 **Success**:
+
 ```json
 {
   "success": true,
@@ -187,6 +201,7 @@ Most endpoints require authentication. Public endpoints:
 ```
 
 **Error**:
+
 ```json
 {
   "success": false,
@@ -199,4 +214,3 @@ Most endpoints require authentication. Public endpoints:
 ## Full Documentation
 
 See `docs/API_REFERENCE.md` for complete API documentation with request/response examples.
-

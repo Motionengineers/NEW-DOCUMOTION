@@ -1,0 +1,22 @@
+dataset:
+  total_samples: 5000
+  split_ratio:
+    train: 0.8
+    eval: 0.1
+    test: 0.1
+  labels:
+    - gst_certificate
+    - pan_card
+    - pitch_deck
+    - incorporation_certificate
+    - msme_registration
+    - aadhaar_card
+    - bank_statement
+    - contract
+    - invoice
+
+paths:
+  output_dir: "../data/synthetic"
+  raw_dir: "raw"
+  augmented_dir: "augmented"
+  training_dir: "training"

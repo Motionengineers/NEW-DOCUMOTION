@@ -73,7 +73,10 @@ export default function StateCompareModal({ open, onClose, selections = [] }) {
         ) : (
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {summary.map(item => (
-              <div key={item.state?.id} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div
+                key={item.state?.id}
+                className="rounded-2xl border border-white/10 bg-white/5 p-4"
+              >
                 <p className="text-xs uppercase tracking-[0.3em] text-white/50">
                   {item.state?.abbreviation}
                 </p>
@@ -82,7 +85,9 @@ export default function StateCompareModal({ open, onClose, selections = [] }) {
 
                 <dl className="mt-4 space-y-2 text-sm text-white/80">
                   <div>
-                    <dt className="text-xs uppercase tracking-wide text-white/50">Schemes loaded</dt>
+                    <dt className="text-xs uppercase tracking-wide text-white/50">
+                      Schemes loaded
+                    </dt>
                     <dd className="font-semibold">{item.schemeCount}</dd>
                   </div>
                   <div>
@@ -90,7 +95,9 @@ export default function StateCompareModal({ open, onClose, selections = [] }) {
                     <dd className="font-semibold">{item.topFunding}</dd>
                   </div>
                   <div>
-                    <dt className="text-xs uppercase tracking-wide text-white/50">Best interest rate</dt>
+                    <dt className="text-xs uppercase tracking-wide text-white/50">
+                      Best interest rate
+                    </dt>
                     <dd className="font-semibold">
                       {item.interestRate !== null && item.interestRate !== undefined
                         ? `${item.interestRate}%`
@@ -98,7 +105,9 @@ export default function StateCompareModal({ open, onClose, selections = [] }) {
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-xs uppercase tracking-wide text-white/50">Prominent sector</dt>
+                    <dt className="text-xs uppercase tracking-wide text-white/50">
+                      Prominent sector
+                    </dt>
                     <dd className="font-semibold">{item.prominentSector || 'General'}</dd>
                   </div>
                 </dl>
@@ -117,5 +126,3 @@ export default function StateCompareModal({ open, onClose, selections = [] }) {
     </div>
   );
 }
-
-

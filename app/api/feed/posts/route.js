@@ -81,7 +81,7 @@ export async function GET(request) {
           ...(followedUserIds.length > 0 ? [{ authorUserId: { in: followedUserIds } }] : []),
           ...(followedStartupIds.length > 0 ? [{ startupId: { in: followedStartupIds } }] : []),
         ];
-        
+
         // Combine with search query if present
         if (q) {
           where.AND = [

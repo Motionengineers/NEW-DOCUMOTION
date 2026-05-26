@@ -89,5 +89,3 @@ function safeJsonParse(value) {
     return null;
   }
 }
-
-

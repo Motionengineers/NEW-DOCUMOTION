@@ -141,7 +141,8 @@ export default function UsageDashboard() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-lg font-semibold text-white mb-1">
-                Current Plan: {subscription.tier.charAt(0).toUpperCase() + subscription.tier.slice(1)}
+                Current Plan:{' '}
+                {subscription.tier.charAt(0).toUpperCase() + subscription.tier.slice(1)}
               </h3>
               <p className="text-sm text-slate-400">
                 Billing: {subscription.billingCycle} • Status: {subscription.status}

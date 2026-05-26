@@ -8,6 +8,7 @@
 ## ✅ Pre-Deployment Checklist
 
 ### 1. Code Preparation
+
 - [ ] All code committed to Git
 - [ ] No sensitive data in code (API keys, passwords)
 - [ ] `.env` file in `.gitignore`
@@ -16,6 +17,7 @@
 - [ ] All tests pass: `npm test`
 
 ### 2. Database Setup
+
 - [ ] Choose database provider:
   - [ ] **SQLite** (for development/testing)
   - [ ] **PostgreSQL** (for production - recommended)
@@ -24,6 +26,7 @@
     - [ ] Database connection string ready
 
 ### 3. Environment Variables
+
 - [ ] `DATABASE_URL` - Database connection string
 - [ ] `NEXTAUTH_URL` - Production URL (e.g., `https://your-app.vercel.app`)
 - [ ] `NEXTAUTH_SECRET` - Secure random string
@@ -35,6 +38,7 @@
 - [ ] `UNSPLASH_ACCESS_KEY` - (Optional) For images
 
 ### 4. Build Configuration
+
 - [ ] `package.json` has correct build script
 - [ ] `next.config.js` configured
 - [ ] Prisma generate in build script: `"build": "prisma generate && next build"`
@@ -46,18 +50,21 @@
 ### Step 1: Prepare Database (PostgreSQL Recommended)
 
 #### Option A: Supabase (Free Tier)
+
 1. Go to https://supabase.com
 2. Create new project
 3. Get connection string from Settings > Database
 4. Format: `postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres`
 
 #### Option B: Neon (Free Tier)
+
 1. Go to https://neon.tech
 2. Create new project
 3. Get connection string from dashboard
 4. Format: `postgresql://[USER]:[PASSWORD]@[HOST]/[DATABASE]?sslmode=require`
 
 #### Update Prisma Schema
+
 ```prisma
 datasource db {
   provider = "postgresql"
@@ -106,15 +113,17 @@ git push -u origin main
 
 4. **Set Environment Variables**
    Click "Environment Variables" and add:
-   
+
    **Required:**
+
    ```
    DATABASE_URL=postgresql://...
    NEXTAUTH_URL=https://your-app.vercel.app
    NEXTAUTH_SECRET=your-secret-here
    ```
-   
+
    **Optional:**
+
    ```
    OPENAI_API_KEY=sk-...
    RAZORPAY_KEY_ID=rzp_...
@@ -193,12 +202,14 @@ DATABASE_URL="your-production-db-url" npm run import:founders
 ## 🔧 Post-Deployment Configuration
 
 ### 1. Verify Deployment
+
 - [ ] Visit your production URL
 - [ ] Check all pages load correctly
 - [ ] Test API endpoints
 - [ ] Verify database connection
 
 ### 2. Configure Razorpay (If Using)
+
 - [ ] Update webhook URL in Razorpay dashboard:
   ```
   https://your-app.vercel.app/api/payment/razorpay/webhook
@@ -207,17 +218,20 @@ DATABASE_URL="your-production-db-url" npm run import:founders
 - [ ] Test payment flow
 
 ### 3. Set Up Custom Domain (Optional)
+
 - [ ] Go to Vercel Dashboard > Settings > Domains
 - [ ] Add your custom domain
 - [ ] Update DNS records as instructed
 - [ ] Update `NEXTAUTH_URL` to custom domain
 
 ### 4. Enable Analytics (Optional)
+
 ```bash
 npm install @vercel/analytics
 ```
 
 Add to `app/layout.js`:
+
 ```javascript
 import { Analytics } from '@vercel/analytics/react';
 
@@ -238,6 +252,7 @@ export default function RootLayout({ children }) {
 ## 📊 Deployment Summary
 
 ### What Gets Deployed
+
 - ✅ 90 API endpoints
 - ✅ All frontend pages
 - ✅ Database schema (via migrations)
@@ -245,6 +260,7 @@ export default function RootLayout({ children }) {
 - ✅ Environment variables
 
 ### What Needs Manual Setup
+
 - ⚠️ Database (PostgreSQL)
 - ⚠️ Environment variables
 - ⚠️ Database migrations
@@ -255,6 +271,7 @@ export default function RootLayout({ children }) {
 ## 🆘 Troubleshooting
 
 ### Build Fails
+
 ```bash
 # Check build locally first
 npm run build
@@ -266,16 +283,19 @@ npm run build
 ```
 
 ### Database Connection Fails
+
 - Check `DATABASE_URL` format
 - Verify database allows connections from Vercel IPs
 - Check SSL mode (should be `?sslmode=require`)
 
 ### Environment Variables Not Working
+
 - Verify variables are set in Vercel dashboard
 - Check variable names match code exactly
 - Redeploy after adding variables
 
 ### API Routes Not Working
+
 - Check build logs for errors
 - Verify API routes are in `app/api/` directory
 - Check CORS settings if calling from frontend
@@ -327,4 +347,3 @@ DATABASE_URL="your-db-url" npm run db:seed
 ---
 
 **Next**: Follow the steps above to deploy your application!
-
