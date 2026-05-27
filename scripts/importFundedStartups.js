@@ -22,8 +22,8 @@ function sleep(ms) {
 function parseAmountToNumber(val) {
   if (!val) return null;
   const s = String(val).replace(/[,\s]/g, '');
-  // Match patterns like $15M, €47M, $2.238094M, $725K, etc.
-  const m = s.match(/([$€₹]?)([0-9]*\.?[0-9]+)([kKmMbB])?/);
+  // Capture any non-digit prefix and handle scientific notation or decimals
+  const m = s.match(/^([^0-9.]*)([0-9]*\.?[0-9]+)([kKmMbB])?$/);
   if (!m) return null;
   const num = parseFloat(m[2]);
   const mult = m[3]?.toLowerCase();
@@ -85,12 +85,6 @@ async function processBatch(rows) {
 
         const fundingAmountNumeric = parseAmountToNumber(fundingAmount);
 
-        // Check if startup already exists by name (case-insensitive for SQLite)
-        const allExisting = await tx.fundedStartup.findMany({
-          where: { name: { contains: name } },
-        });
-        const existing = allExisting.find(s => s.name.toLowerCase() === name.toLowerCase());
-
         const data = {
           name,
           industry,
@@ -105,16 +99,12 @@ async function processBatch(rows) {
           sourceUrl: CSV_EXPORT_URL,
         };
 
-        if (!existing) {
-          await tx.fundedStartup.create({ data });
-          inserted++;
-        } else {
-          await tx.fundedStartup.update({
-            where: { id: existing.id },
-            data,
-          });
-          updated++;
-        }
+        await tx.fundedStartup.upsert({
+          where: { name }, // Note: Requires @unique constraint on 'name' in schema.prisma
+          update: data,
+          create: data,
+        });
+        inserted++;
       }
 
       return { inserted, updated };

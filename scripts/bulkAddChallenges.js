@@ -144,12 +144,13 @@ async function upsertItem(i) {
     eligibilityJson: null,
     evaluationJson: null,
   };
-  const existing = await prisma.challenge.findUnique({ where: { slug } });
-  if (existing) {
-    await prisma.challenge.update({ where: { slug }, data });
-  } else {
-    await prisma.challenge.create({ data });
-  }
+
+  await prisma.challenge.upsert({
+    where: { slug },
+    update: data,
+    create: data,
+  });
+
   return slug;
 }
 
