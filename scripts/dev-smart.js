@@ -3,7 +3,15 @@
 
 const { execa } = require('execa');
 const waitOn = require('wait-on');
-const open = require('open');
+const openModule = require('open');
+// The `open` package can export either a function (CJS default) or `{ default: fn }`
+// depending on version/bundler interop.
+const open =
+  typeof openModule === 'function'
+    ? openModule
+    : openModule?.default
+      ? openModule.default
+      : openModule;
 const os = require('os');
 
 const HOST = process.env.HOST || 'localhost';

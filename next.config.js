@@ -47,6 +47,33 @@ const nextConfig = {
     esmExternals: 'loose',
   },
   transpilePackages: ['pdfjs-dist', 'react-pdf'],
+  webpack: (config, { dev }) => {
+    // Avoid hitting macOS file-descriptor limits (EMFILE) during dev watch.
+    // Polling is slower but far more stable for large repos.
+    if (dev) {
+      const existingIgnored = config.watchOptions?.ignored;
+      const ignoredArray = Array.isArray(existingIgnored)
+        ? existingIgnored
+        : existingIgnored
+          ? [existingIgnored]
+          : [];
+
+      config.watchOptions = {
+        ...(config.watchOptions || {}),
+        poll: 1000,
+        aggregateTimeout: 300,
+        ignored: [
+          '**/node_modules/**',
+          '**/.next/**',
+          '**/build-artifacts/**',
+          '**/data/**',
+          '**/branding-10x/**',
+          ...ignoredArray,
+        ],
+      };
+    }
+    return config;
+  },
   images: {
     domains: ['res.cloudinary.com', 'localhost'],
   },
