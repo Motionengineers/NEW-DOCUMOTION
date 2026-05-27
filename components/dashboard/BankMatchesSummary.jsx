@@ -39,11 +39,38 @@ export default function BankMatchesSummary() {
 
   useEffect(() => {
     let cancelled = false;
-    fetchMatches();
+    (async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch('/api/banks/match', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ limit: 3 }),
+        });
+        if (cancelled) return;
+        if (!res.ok) throw new Error('Request failed');
+        const data = await res.json();
+        if (cancelled) return;
+        if (data.success) {
+          setMatches(data.topPicks || []);
+          setRetryCount(0);
+        } else {
+          throw new Error(data.error || 'Failed to load matches');
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(err.message || 'Failed to load bank matches');
+          setMatches([]);
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [retryCount]);
 
   const handleRetry = () => {
     setRetryCount(prev => prev + 1);

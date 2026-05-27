@@ -344,7 +344,7 @@ export default function TalentGrid({
         setLoading(false);
       }
     },
-    [filters, query, sort, pageSize]
+    [filters, query, sort, pageSize, session?.accessToken]
   );
 
   const handleSearchSubmit = async event => {

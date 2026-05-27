@@ -8,10 +8,12 @@ import {
 } from '@/lib/invitations';
 import { rateLimitFromRequest } from '@/lib/rate-limit';
 
-const APP_URL = process.env.APP_URL || process.env.NEXTAUTH_URL;
-
-if (!APP_URL) {
-  throw new Error('APP_URL or NEXTAUTH_URL must be configured for invitation emails.');
+function getAppUrl() {
+  const appUrl = process.env.APP_URL || process.env.NEXTAUTH_URL;
+  if (!appUrl) {
+    throw new Error('APP_URL or NEXTAUTH_URL must be configured for invitation emails.');
+  }
+  return appUrl;
 }
 
 export async function POST(request) {
@@ -52,7 +54,7 @@ export async function POST(request) {
       },
     });
 
-    const acceptUrl = `${APP_URL.replace(/\/$/, '')}/invite/${token}`;
+    const acceptUrl = `${getAppUrl().replace(/\/$/, '')}/invite/${token}`;
     await sendInviteEmail({
       to: invite.email,
       inviteeName: invite.name,

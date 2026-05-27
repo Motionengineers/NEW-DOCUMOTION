@@ -5,4 +5,8 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
   },
+  transform: {
+    '^.+\\.(js|jsx)$': '<rootDir>/jest.transform.cjs',
+  },
+  transformIgnorePatterns: ['/node_modules/'],
 };

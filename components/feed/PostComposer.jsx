@@ -54,8 +54,6 @@ export default function PostComposer({ onCreate }) {
     submitting ||
     fetchingPreview ||
     (!body.trim() && !mediaUrl.trim() && !linkUrl.trim() && mediaItems.length === 0);
-  const selectedTemplate = TEMPLATES.find(t => t.id === template) || TEMPLATES[0];
-
   // Fetch link preview when linkUrl changes
   useEffect(() => {
     // Reset preview state immediately when URL changes to avoid stale data

@@ -51,25 +51,12 @@ const nextConfig = {
     // Avoid hitting macOS file-descriptor limits (EMFILE) during dev watch.
     // Polling is slower but far more stable for large repos.
     if (dev) {
-      const existingIgnored = config.watchOptions?.ignored;
-      const ignoredArray = Array.isArray(existingIgnored)
-        ? existingIgnored
-        : existingIgnored
-          ? [existingIgnored]
-          : [];
-
       config.watchOptions = {
         ...(config.watchOptions || {}),
         poll: 1000,
         aggregateTimeout: 300,
-        ignored: [
-          '**/node_modules/**',
-          '**/.next/**',
-          '**/build-artifacts/**',
-          '**/data/**',
-          '**/branding-10x/**',
-          ...ignoredArray,
-        ],
+        // Keep this very simple to satisfy webpack schema: a single glob string.
+        ignored: '**/node_modules/**',
       };
     }
     return config;

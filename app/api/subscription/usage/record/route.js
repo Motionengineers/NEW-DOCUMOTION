@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { recordUsage, canPerformAction } from '@/lib/subscription';
-import prisma from '@/lib/prisma';
-
 export const dynamic = 'force-dynamic';
 
 /**

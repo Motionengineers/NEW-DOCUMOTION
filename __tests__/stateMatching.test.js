@@ -1,5 +1,5 @@
-import assert from 'assert';
-import computeStateMatches from '../lib/stateMatching.js';
+const assert = require('assert');
+const { computeStateMatches } = require('../lib/stateMatching.js');
 
 const states = [
   { id: 1, name: 'Karnataka', abbreviation: 'KA' },

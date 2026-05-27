@@ -45,6 +45,8 @@ const AUTHOR_POOL = [
 
 const TEMPLATES = ['general', 'funding', 'launch', 'hiring', 'milestone'];
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Startup Feed • Documotion',
   description:
@@ -59,36 +61,42 @@ async function loadInitialFeed() {
     return loadDemoPosts();
   }
 
-  const posts = await prisma.feedPost.findMany({
-    orderBy: { createdAt: 'desc' },
-    take: 10,
-    include: {
-      author: { select: { id: true, name: true, image: true } },
-      startup: { select: { id: true, name: true } },
-      tags: true,
-      media: true,
-      interactions: {
-        where: { type: 'like' },
-        select: { userId: true, type: true },
-      },
-      bookmarks: {
-        select: { userId: true, postId: true },
-      },
-      comments: {
-        where: { parentCommentId: null },
-        orderBy: { createdAt: 'desc' },
-        take: 2,
-        include: {
-          author: { select: { id: true, name: true, image: true } },
-          replies: {
-            orderBy: { createdAt: 'asc' },
-            include: { author: { select: { id: true, name: true, image: true } } },
+  let posts = [];
+  try {
+    posts = await prisma.feedPost.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 10,
+      include: {
+        author: { select: { id: true, name: true, image: true } },
+        startup: { select: { id: true, name: true } },
+        tags: true,
+        media: true,
+        interactions: {
+          where: { type: 'like' },
+          select: { userId: true, type: true },
+        },
+        bookmarks: {
+          select: { userId: true, postId: true },
+        },
+        comments: {
+          where: { parentCommentId: null },
+          orderBy: { createdAt: 'desc' },
+          take: 2,
+          include: {
+            author: { select: { id: true, name: true, image: true } },
+            replies: {
+              orderBy: { createdAt: 'asc' },
+              include: { author: { select: { id: true, name: true, image: true } } },
+            },
           },
         },
+        _count: { select: { comments: true } },
       },
-      _count: { select: { comments: true } },
-    },
-  });
+    });
+  } catch (error) {
+    console.warn('[feed] Unable to load posts from database, using demo feed.', error.message);
+    return loadDemoPosts();
+  }
 
   const serialized = posts.map(post => serializePost(post));
 

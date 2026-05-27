@@ -3,19 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import {
-  Check,
-  Sparkles,
-  Shield,
-  TrendingUp,
-  Megaphone,
-  Handshake,
-  Rocket,
-  Link2,
-  Lock,
-  Zap,
-  ArrowRight,
-} from 'lucide-react';
+import { Check, Sparkles, Shield, TrendingUp, Rocket } from 'lucide-react';
 
 const PRICING_TIERS = [
   {

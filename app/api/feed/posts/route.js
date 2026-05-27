@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { createPostSchema } from '@/lib/api-validation';
-import { validateBody, validateQuery } from '@/lib/api-validation';
+import { validateBody } from '@/lib/api-validation';
 import { ApiError } from '@/lib/api-error';
 import prisma from '@/lib/prisma';
 import { normaliseTag, serializePost } from '@/lib/feed/serializers';

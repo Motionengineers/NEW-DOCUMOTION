@@ -8,64 +8,6 @@ import { logger } from '@/lib/logger';
 import sanitizeHtml from 'sanitize-html';
 import { serializeFundingApplication } from '@/lib/serializers/funding';
 
-function parseNumber(value) {
-  if (value === null || value === undefined || value === '') return null;
-  const num = Number(value);
-  return Number.isFinite(num) ? num : null;
-}
-
-function normaliseSocialLinks(value) {
-  if (!value) return null;
-  if (Array.isArray(value)) {
-    const cleaned = value.map(link => link?.toString().trim()).filter(Boolean);
-    if (!cleaned.length) return null;
-    try {
-      return JSON.stringify(cleaned);
-    } catch (error) {
-      return cleaned.join(',');
-    }
-  }
-  const cleaned = value
-    .toString()
-    .split(/\n|,/)
-    .map(link => link.trim())
-    .filter(Boolean);
-  if (!cleaned.length) return null;
-  try {
-    return JSON.stringify(cleaned);
-  } catch (error) {
-    return cleaned.join(',');
-  }
-}
-
-function buildApplicationData(payload = {}) {
-  return {
-    fullName: payload.fullName?.toString().trim() || '',
-    email: payload.email?.toString().trim() || '',
-    phone: payload.phone?.toString().trim() || null,
-    city: payload.city?.toString().trim() || null,
-    state: payload.state?.toString().trim() || null,
-    startupName: payload.startupName?.toString().trim() || null,
-    website: payload.website?.toString().trim() || null,
-    socialLinks: normaliseSocialLinks(payload.socialLinks),
-    industry: payload.industry?.toString().trim() || null,
-    stage: payload.stage?.toString().trim() || null,
-    problem: payload.problem?.toString().trim() || null,
-    solution: payload.solution?.toString().trim() || null,
-    targetAudience: payload.targetAudience?.toString().trim() || null,
-    revenue: payload.revenue?.toString().trim() || null,
-    profit: payload.profit?.toString().trim() || null,
-    customers: payload.customers?.toString().trim() || null,
-    fundingRaised: payload.fundingRaised?.toString().trim() || null,
-    growthMetrics: payload.growthMetrics?.toString().trim() || null,
-    amountRequested: parseNumber(payload.amountRequested),
-    equityOffered: parseNumber(payload.equityOffered),
-    useOfFunds: payload.useOfFunds?.toString().trim() || null,
-    pitchVideoUrl: payload.pitchVideoUrl?.toString().trim() || null,
-    pitchDeckUrl: payload.pitchDeckUrl?.toString().trim() || null,
-  };
-}
-
 function validateSubmission(data = {}) {
   const missing = [];
   if (!data.fullName) missing.push('Full Name');
@@ -84,47 +26,6 @@ function validateSubmission(data = {}) {
   if (!data.equityOffered && data.equityOffered !== 0) missing.push('Equity offered');
   if (!data.pitchDeckUrl && !data.pitchVideoUrl) missing.push('Pitch deck or video');
   return missing;
-}
-
-function buildDemoApplication() {
-  return {
-    id: 'demo-application',
-    status: 'demo',
-    progress: 80,
-    fullName: 'Aarav Mehta',
-    email: 'founder@aurorapay.in',
-    phone: '+91-98765-43210',
-    city: 'Bengaluru',
-    state: 'Karnataka',
-    startupName: 'AuroraPay',
-    website: 'https://aurorapay.in',
-    socialLinks: 'https://linkedin.com/company/aurorapay\nhttps://twitter.com/aurorapay',
-    industry: 'Fintech',
-    stage: 'Growth',
-    problem:
-      'Traditional SME payment rails are fragmented, expensive, and lack working capital insights for founder-led businesses.',
-    solution:
-      'AuroraPay unifies collections, payouts, and credit underwriting into one API-first dashboard. We layer GST and banking data to build instant risk scores.',
-    targetAudience:
-      'Digital-first wholesalers and D2C brands with ₹2–10 crore annual GMV across Tier-1 and Tier-2 cities.',
-    revenue: '₹1.8 crore ARR (FY25 run-rate)',
-    profit: 'EBITDA -12% (investing in onboarding automation)',
-    customers: '540 active merchants · 62K monthly transactions',
-    fundingRaised: '₹4.2 crore pre-seed (July 2024)',
-    growthMetrics:
-      '6.2x TPV growth over 9 months · 94% net revenue retention · 38% margin expansion after workflow automation.',
-    amountRequested: 70000000,
-    equityOffered: 10,
-    useOfFunds:
-      'Expand credit underwriting pod, launch co-lending rails with two NBFC partners, and extend GTM to Pune & Delhi NCR.',
-    pitchVideoUrl: '/uploads/demo/aurorapay-pitch.mp4',
-    pitchDeckUrl: '/uploads/demo/aurorapay-deck.pdf',
-    submittedAt: null,
-    reviewedAt: null,
-    reviewNotes: 'Demo preview',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
 }
 
 async function logFundingActivity(applicationId, actorUserId, activityType, message) {

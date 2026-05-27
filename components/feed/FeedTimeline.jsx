@@ -52,7 +52,7 @@ export default function FeedTimeline({ initialPosts = [], onReady }) {
         setLoading(false);
       }
     },
-    [loading]
+    [loading, feedType]
   );
 
   useEffect(() => {

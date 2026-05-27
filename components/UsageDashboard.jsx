@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  BarChart3,
-  TrendingUp,
   AlertCircle,
   CheckCircle2,
   Zap,
@@ -12,7 +10,6 @@ import {
   Users,
   Rocket,
   FileText,
-  Calendar,
 } from 'lucide-react';
 
 export default function UsageDashboard() {

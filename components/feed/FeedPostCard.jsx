@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import {
-  Heart,
   MessageCircle,
   Share2,
   ShieldCheck,
