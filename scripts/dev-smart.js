@@ -7,10 +7,22 @@ const open = require('open');
 const os = require('os');
 
 const HOST = process.env.HOST || 'localhost';
-const CANDIDATE_PORTS = (process.env.PORTS || '3000,3001,3002,3003,3004,3005')
+
+// Parse CLI arguments for --port
+const args = process.argv.slice(2);
+const portArgIndex = args.indexOf('--port');
+const cliPort = portArgIndex !== -1 ? parseInt(args[portArgIndex + 1], 10) : null;
+
+let CANDIDATE_PORTS = (process.env.PORTS || '3000,3001,3002,3003,3004,3005')
   .split(',')
   .map(p => parseInt(p.trim(), 10))
   .filter(Boolean);
+
+// If a specific port is requested via CLI or ENV, prioritize it
+const preferredPort = cliPort || (process.env.PORT ? parseInt(process.env.PORT, 10) : null);
+if (preferredPort && !isNaN(preferredPort)) {
+  CANDIDATE_PORTS = [preferredPort, ...CANDIDATE_PORTS.filter(p => p !== preferredPort)];
+}
 
 async function startOnPort(port) {
   const url = `http://${HOST}:${port}`;
